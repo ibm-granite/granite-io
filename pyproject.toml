@@ -39,7 +39,7 @@ transformers = [
     "transformers",
 ]
 dev = [
-    "isort==5.11.5",
+    "isort==5.13.2",
     "pre-commit>=3.0.4,<5.0",
     "pylint>=2.16.2,<4.0",
     "pylint-pydantic",
