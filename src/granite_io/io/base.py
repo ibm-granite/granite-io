@@ -13,11 +13,7 @@ import aconfig
 # Local
 from granite_io.backend.base import Backend, ChatCompletionBackend
 from granite_io.factory import FactoryConstructible
-from granite_io.types import (
-    AssistantMessage,
-    ChatCompletionInputs,
-    ChatCompletionResult,
-)
+from granite_io.types import ChatCompletionInputs, ChatCompletionResult
 
 
 class InputOutputProcessor(FactoryConstructible):
@@ -43,7 +39,6 @@ class InputOutputProcessor(FactoryConstructible):
         :returns: The next message that the model produces when fed the specified
             inputs, plus additional information about the low-level request.
         """
-        raise NotImplementedError()
 
 
 class ModelDirectInputOutputProcessor(InputOutputProcessor):
@@ -68,7 +63,9 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
         super().__init__(config)
         self._backend = backend
 
-    def create_chat_completion(self, inputs) -> ChatCompletionResult:
+    def create_chat_completion(
+        self, inputs: ChatCompletionInputs
+    ) -> ChatCompletionResult:
         if self._backend is None:
             raise ValueError(
                 "Attempted to call create_chat_completion() without "
@@ -76,10 +73,7 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
             )
         input_string = self.inputs_to_string(inputs)
         generation_output = self._backend.generate(input_string)
-        next_message = self.output_to_message(
-            generation_output.completion_string, inputs
-        )
-        return ChatCompletionResult(next_message=next_message)
+        return self.output_to_result(generation_output.completion_string, inputs)
 
     @abc.abstractmethod
     def inputs_to_string(
@@ -99,12 +93,11 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
         :returns: String that can be passed to the model's tokenizer to create a prompt
             for generation.
         """
-        raise NotImplementedError()
 
     @abc.abstractmethod
-    def output_to_message(
+    def output_to_result(
         self, output: str, inputs: ChatCompletionInputs | None = None
-    ) -> tuple[bool, AssistantMessage]:
+    ) -> ChatCompletionResult:
         """
         Convert the structured representation of the inputs to a completion request into
         the string representation of the tokens that should be sent to the model to
@@ -117,9 +110,5 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
            provided, this method may skip some validations but will still produce the
            same result.
 
-        :returns: Tuple of:
-          * ``True`` if ``output`` was a complete and valid output, ``False`` if output
-            is not complete (an exception is raised on invalid and complete output)
-          * The parsed output so far
+        :returns: The parsed output so far
         """
-        raise NotImplementedError()
