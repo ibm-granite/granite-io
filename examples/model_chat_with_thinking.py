@@ -11,7 +11,7 @@ to provide better understanding of how the model arrived at its answer.
 from granite_io import make_backend, make_io_processor
 from granite_io.types import ChatCompletionInputs, UserMessage
 
-model_name = "granite3.1"
+model_name = "granite3.2:8b"
 io_processor = make_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )

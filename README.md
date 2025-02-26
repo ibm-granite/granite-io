@@ -54,7 +54,7 @@ Sample code snippet showing how to use the framework:
 from granite_io import make_backend, make_io_processor
 from granite_io.types import ChatCompletionInputs, UserMessage
 
-model_name = "granite3.2"
+model_name = "granite3.2:8b"
 io_processor = make_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )
@@ -90,7 +90,7 @@ To help you get up and running as quickly as possible with the Granite IO Proces
 1. Python script examples:
 
 > [!IMPORTANT]  
-> To get started with the examples, make sure you have followed the [Installation](#installation) steps first. You will also need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/granite) model cached (`ollama pull granite3.2-dense:8b`).
+> To get started with the examples, make sure you have followed the [Installation](#installation) steps first. You will also need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/new/announcements/ibm-granite-3-2-open-source-reasoning-and-vision) model cached (`ollama pull granite3.2:8b`).
 
    - [Granite 3.2 chat request](./examples/model_chat.py)
    - [Granite 3.2 chat request with thinking](./examples/inference_with_thinking.py)
