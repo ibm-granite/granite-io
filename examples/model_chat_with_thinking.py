@@ -2,9 +2,9 @@
 
 """
 This example show how to infer or call a model using the framework
-and Ollama backend to serve the model.
-In this situation the chat request enables thinking mode in the model
-to provide better understanding of how the model came to its answer.
+and an Ollama backend to serve the model.
+In this scenario the chat request enables thinking mode in the model
+to provide better understanding of how the model arrived at its answer.
 """
 
 # Local
@@ -18,11 +18,11 @@ io_processor = make_io_processor(
 question = "Find the fastest way for a seller to visit all the cities in their region"
 messages = [UserMessage(content=question)]
 
-# Without Thinking
+# With Thinking
 outputs = io_processor.create_chat_completion(
     ChatCompletionInputs(messages=messages, thinking=True)
 )
-print("-- WITH THINKING ------")
+print("------ WITH THINKING ------")
 print(">> Thoughts:")
 print(outputs.reasoning_content)
 print(">> Response:")

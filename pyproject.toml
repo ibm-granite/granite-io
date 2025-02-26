@@ -51,7 +51,6 @@ dev = [
     "pytest-cov",
     "pytest-html",
     "ruff==0.5.0",
-    "torch",
     "tox",
     "granite-io[transformers]",
 ]

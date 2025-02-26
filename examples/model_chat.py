@@ -2,7 +2,7 @@
 
 """
 This example show how to infer or call a model using the framework
-and Ollama backend to serv the model
+and an Ollama backend to serve the model.
 """
 
 # Local
@@ -16,5 +16,5 @@ io_processor = make_io_processor(
 question = "Find the fastest way for a seller to visit all the cities in their region"
 messages = [UserMessage(content=question)]
 outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
-print("-- NO THINKING ------")
+print("------ WITHOUT THINKING ------")
 print(outputs.next_message.content)
