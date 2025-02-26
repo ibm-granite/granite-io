@@ -81,7 +81,7 @@ print(outputs.next_message.content)
 ```
 
 > [!IMPORTANT]  
-> To be able to run the above code snippet, you will need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/granite) model cached (`ollama pull granite3.2-dense:8b`).
+> To be able to run the above code snippet, you will need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/granite) model cached (`ollama pull granite3.2:8b`).
 
 ### Try It Out!
 
