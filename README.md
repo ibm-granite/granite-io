@@ -49,18 +49,25 @@ model_name = "granite3.2"
 io_processor = make_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )
+messages=[
+    UserMessage(
+        content="What's the fastest way for a seller to visit all the cities in their region?",
+    )
+]
 
 # Without Thinking
-inputs = ChatCompletionInputs(
-    messages=[
-        UserMessage(
-            content="What's the fastest way for a seller to visit all the cities in their region?",
-        )
-    ],
+outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
+print("-- NO THINKING ------")
+print(outputs.next_message.content)
+
+# With Thinking
+outputs = io_processor.create_chat_completion(
+    ChatCompletionInputs(messages=messages, thinking=True)
 )
-outputs = io_processor.create_chat_completion(inputs)
-print(f"ROLE: {outputs.next_message.content}")
-print("--------")
+print("-- WITH THINKING ------")
+print(">> Thoughts:")
+print(outputs.reasoning_content)
+print(">> Response:")
 print(outputs.next_message.content)
 ```
 
