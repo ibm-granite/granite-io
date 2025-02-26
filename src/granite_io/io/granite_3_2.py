@@ -15,6 +15,7 @@ from granite_io.io.registry import io_processor
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    ChatCompletionResult,
     FunctionDefinition,
     SystemMessage,
     ToolResultMessage,
@@ -68,10 +69,15 @@ provided documents. If the information needed to answer the question is not avai
 in the documents, inform the user that the question cannot be answered based on the \
 available data."""
 
+# Strings that a Granite 3.2 model uses to separate Chain of Thought output from
+# responses.
+_COT_START = "Here is my thought process:"
+_COT_END = "Here is my response:"
+
 # String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
 # if there are no tools or documents in the current request and the "thinking" flag is
 # set to `True`.
-_NO_TOOLS_AND_NO_DOCS_AND_THINKING_SYSTEM_MESSAGE_PART = """\
+_NO_TOOLS_AND_NO_DOCS_AND_THINKING_SYSTEM_MESSAGE_PART = f"""\
  You are a helpful AI assistant.
 Respond to every user query in a comprehensive and detailed way. You can write down \
 your thoughts and reasoning process before responding. In the thought process, engage \
@@ -79,9 +85,8 @@ in a comprehensive cycle of analysis, summarization, exploration, reassessment, 
 reflection, backtracing, and iteration to develop well-considered thinking process. \
 In the response section, based on various attempts, explorations, and reflections from \
 the thoughts section, systematically present the final solution that you deem correct. \
-The response should summarize the thought process. Write your thoughts after 'Here is \
-my thought process:' and write your response after 'Here is my response:' for each \
-user query."""
+The response should summarize the thought process. Write your thoughts after '\
+{_COT_START}' and write your response after '{_COT_END}' for each user query."""
 
 # String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
 # if there are no tools or documents in the current request and the "thinking" flag is
@@ -184,6 +189,14 @@ class _Granite3Point2Inputs(ChatCompletionInputs):
         # TODO: Validate this invariant.
 
         return messages
+
+
+class _Granite3Point2ChatCompletionResult(ChatCompletionResult):
+    """
+    Chat completion result type for granite 3.2 language models
+    """
+
+    reasoning_content: str | None
 
 
 @io_processor(
@@ -530,7 +543,25 @@ class Granite3Point2InputOutputProcessor(ModelDirectInputOutputProcessor):
             + generation_prompt_part
         )
 
-    def output_to_message(self, output, inputs: ChatCompletionInputs | None = None):
+    def output_to_result(
+        self,
+        output: str,
+        inputs: ChatCompletionInputs | None = None,
+    ) -> _Granite3Point2ChatCompletionResult:
+        cot = None
+
+        # Parse out CoT reasoning
+        if inputs.thinking:
+            cot_start = output.find(_COT_START)
+            cot_end = output.find(_COT_END)
+            if -1 not in [cot_start, cot_end]:
+                cot = output[cot_start + len(_COT_START) : cot_end]
+                output = output[:cot_start] + output[cot_end + len(_COT_END) :]
+
+        # Parse out tool calls
         if output.startswith("<tool_call>"):
             raise NotImplementedError("TODO: Implement tool call parsing")
-        return AssistantMessage(content=output)
+
+        return _Granite3Point2ChatCompletionResult(
+            next_message=AssistantMessage(content=output), reasoning_content=cot
+        )
