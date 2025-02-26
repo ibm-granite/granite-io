@@ -8,7 +8,7 @@ Granite IO Processing is a framework which enables you to transform how a user c
 
 ### Requirements
 
-* Python 3.10 to Python 3.11
+* Python 3.10+
 
 ### Installation
 

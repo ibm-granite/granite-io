@@ -14,7 +14,7 @@ authors = [
 ]
 description = "Input and output processing for IBM Granite models"
 readme = "README.md"
-requires-python = ">=3.10,<3.12"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
@@ -24,6 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dynamic = ["version"]
