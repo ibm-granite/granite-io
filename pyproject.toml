@@ -38,6 +38,9 @@ transformers = [
     "torch",
     "transformers",
 ]
+vllm= [
+    "vllm"
+]
 dev = [
     "isort==5.11.5",
     "pre-commit>=3.0.4,<5.0",
@@ -61,6 +64,8 @@ notebook = [
 all = [
     "granite-io[dev]",
     "granite-io[notebook]",
+    "granite-io[transformers]",
+    "granite-io[vllm]"
 ]
 
 [project.urls]
