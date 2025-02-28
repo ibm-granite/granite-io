@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Third Party
-from openai import OpenAI
+from openai import AsyncOpenAI
 import aconfig
 
 # Local
@@ -20,7 +20,7 @@ from granite_io.types import ChatCompletionInputs, GenerateResult
 )
 class OpenAIBackend(Backend, ChatCompletionBackend):
     _model_str: str
-    _openai_client: OpenAI
+    _openai_client: AsyncOpenAI
 
     def __init__(self, config: aconfig.Config):
         self._model_str = config.model_name
@@ -32,13 +32,13 @@ class OpenAIBackend(Backend, ChatCompletionBackend):
 
         api_key = os.environ.get("OPENAI_API_KEY", "ollama")
         base_url = os.environ.get("OPENAI_BASE_URL", "http://localhost:11434/v1")
-        self.openai_client = OpenAI(base_url=base_url, api_key=api_key)
+        self.openai_client = AsyncOpenAI(base_url=base_url, api_key=api_key)
         # TODO: cleanup this W-I-P
 
-    def create_chat_completion(self, input_chat: ChatCompletionInputs) -> str:
+    async def create_chat_completion(self, input_chat: ChatCompletionInputs) -> str:
         messages = [{"role": x.role, "content": x.content} for x in input_chat.messages]
 
-        result = self.openai_client.chat.completions.create(
+        result = await self.openai_client.chat.completions.create(
             model=self._model_str,
             messages=messages,
             store=True,
@@ -64,10 +64,10 @@ class OpenAIBackend(Backend, ChatCompletionBackend):
 
         return raw_message.content
 
-    def generate(self, input_str: str) -> GenerateResult:
+    async def generate(self, input_str: str) -> GenerateResult:
         """Run a direct /completions call"""
 
-        result = self.openai_client.completions.create(
+        result = await self.openai_client.completions.create(
             model=self._model_str,
             prompt=input_str,
         )

@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Standard
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+import asyncio
+import concurrent.futures
 import dataclasses
 
 # Third Party
 import aconfig
+import torch
 
 # Local
 from granite_io.backend.base import Backend
@@ -43,6 +46,8 @@ class TransformersBackend(Backend):
     _model_str: str
     _model: "transformers.AutoModelForCausalLM"
     _tokenizer: "transformers.AutoTokenizer"
+    _executor: concurrent.futures.ThreadPoolExecutor
+    """Single background thread, wrapped in an executor for queueing"""
 
     def __init__(self, config: aconfig.Config):
         """
@@ -64,16 +69,17 @@ class TransformersBackend(Backend):
             config.model_name
         ).to(config.device)
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(config.model_name)
+        self._executor = concurrent.futures.ThreadPoolExecutor()
 
-    def generate(self, input_str: str) -> GenerateResult:
+    async def generate(self, input_str: str) -> GenerateResult:
         generation_inputs = self._prepare_for_generate(input_str)
 
-        model_output = self._model.generate(
-            **(generation_inputs.model_input),
-            generation_config=generation_inputs.generation_config,
-            # Re-enable to use constrained decoding
-            # prefix_allowed_tokens_fn=generation_inputs.prefix_allowed_tokens_fn
+        # Wrap the call to the non-async Transformers library in a thread pool
+        concurrent_futures_future = self._executor.submit(
+            self._generate_callback, generation_inputs
         )
+        async_future = asyncio.wrap_future(concurrent_futures_future)
+        model_output = await async_future
 
         # The result of generate() is of course the prompt concatenated with the
         # additional tokens generated. Strip off the prompt.
@@ -110,8 +116,6 @@ class TransformersBackend(Backend):
             # Third Party
             import torch
             import transformers
-
-        # Call model.generate(). This is much harder than it should be.
 
         # Turn the conversation prefix into tokens for input to the model.
         model_input = self._tokenizer(
@@ -211,3 +215,23 @@ class TransformersBackend(Backend):
             model_input=model_input,
             # prefix_allowed_tokens_fn=prefix_allowed_tokens_fn
         )
+
+    def _generate_callback(self, generation_inputs: _GenerationInputs) -> Any:
+        """
+        :param generation_inputs: Wrapper for the required inputs to a Transformers
+            :func:`generate()` call, prepared in the event loop thread.
+
+        :returns: Whatever type this model's `generate()` method happens to return on
+            this day of the week, which changes without warning from one version to the
+            next of the library.
+        """
+        # Make sure computations for this thread will happen in a separate CUDA context.
+        stream = torch.cuda.Stream()
+
+        with torch.cuda.stream(stream):
+            return self._model.generate(
+                **(generation_inputs.model_input),
+                generation_config=generation_inputs.generation_config,
+                # Re-enable to use constrained decoding
+                # prefix_allowed_tokens_fn=generation_inputs.prefix_allowed_tokens_fn
+            )

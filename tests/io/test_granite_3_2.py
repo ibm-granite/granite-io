@@ -198,25 +198,29 @@ def test_basic_inputs_to_string():
     assert chatRequest.endswith("")
 
 
-def test_run_transformers(
+# Session scope for asyncio because the tests in this class all share the same vLLM
+# backend
+@pytest.mark.asyncio(loop_scope="session")
+async def test_run_transformers(
     io_processor_transformers: Granite3Point2InputOutputProcessor, input_json_str: str
 ):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    _ = io_processor_transformers.create_chat_completion(inputs)
+    _ = await io_processor_transformers.create_chat_completion(inputs)
 
     # TODO: Once the prerelease model has settled down and we have implemented
     # temperature controls, verify outputs
 
 
+@pytest.mark.asyncio(loop_scope="session")
 @pytest.mark.xfail(
     reason="APIConnectionError, but OpenAI tests are optional.",
     raises=APIConnectionError,
 )
-def test_run_openai(
+async def test_run_openai(
     io_processor_openai: Granite3Point2InputOutputProcessor, input_json_str: str
 ):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    _ = io_processor_openai._backend.create_chat_completion(inputs)
+    _ = await io_processor_openai._backend.create_chat_completion(inputs)
 
     # TODO: Once the prerelease model has settled down and we have implemented
     # temperature controls, verify outputs
