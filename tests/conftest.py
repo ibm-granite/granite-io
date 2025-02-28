@@ -10,8 +10,8 @@
 # Use `huggingface-cli download` to get local models.
 #
 # GRANITE_3_2_MODEL_STR = "ibm-granite/granite-3.2-8b-instruct"
-# GRANITE_3_2_MODEL_STR = "ibm-granite/granite-3.2-2b-instruct"
-GRANITE_3_2_MODEL_STR = "ibm-granite/granite-3.2-8b-instruct-preview"
+GRANITE_3_2_MODEL_STR = "ibm-granite/granite-3.2-2b-instruct"
+# GRANITE_3_2_MODEL_STR = "ibm-granite/granite-3.2-8b-instruct-preview"
 
 
 def pytest_addoption(parser):
