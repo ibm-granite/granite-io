@@ -73,6 +73,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh>=1.2
 
-      - name: Run unit test with tox (disable openai tests for now)
+      - name: Run unit test with tox (xfail openai and litellm tests for now)
         run: |
           tox
+
+      - name: Run notebooks to see if they still run
+        run: |
+          tox -e notebooks
