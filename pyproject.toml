@@ -54,7 +54,7 @@ dev = [
     "pytest-asyncio",
     "pytest-cov",
     "pytest-html",
-    "ruff==0.9.8",
+    "ruff==0.9.9",
     "tox",
     "granite-io[transformers]",
     "granite-io[openai]",
