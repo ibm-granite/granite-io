@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: Apache-2.0
+
+name: Testing examples
+on:
+  push:
+    branches:
+      - "main"
+      - "release-**"
+    paths:
+      - '.github/workflows/test_examples.*' # This workflow
+  pull_request:
+    branches:
+      - "main"
+      - "release-**"
+    paths:
+      - '.github/workflows/test_examples.*' # This workflow
+
+env:
+  LC_ALL: en_US.UTF-8
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+jobs:
+  test_examples:
+    name: "test-examples: ${{ matrix.example }} using ${{ matrix.python }} on ${{ matrix.platform }}"
+    runs-on: "${{ matrix.platform }}"
+    strategy:
+      matrix:
+        example:
+          - "./examples/model_chat.py"
+          - "./examples/model_chat_with_thinking.py"
+          - "./examples/watsonx_litellm.py"
+        python:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+        platform:
+          - "ubuntu-latest"
+
+    steps:
+      - name: "Harden Runner"
+        uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # https://github.com/actions/checkout/issues/249
+          fetch-depth: 0
+
+      - name: Setup Python ${{ matrix.python }}
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: |
+            **/pyproject.toml
+
+      - name: Setup Ollama server
+        uses: ./.github/actions/ollama-setup
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[openai]"
+          python -m pip install -e ".[litellm]"
+
+      - name: "Test example"
+        run: |
+          echo "Test ${{ matrix.example }}"
+          python ${{ matrix.example }}
