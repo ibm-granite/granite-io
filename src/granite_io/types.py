@@ -133,6 +133,10 @@ class ChatCompletionResult(pydantic.BaseModel):
             return None
 
 
+class ChatCompletionResults(pydantic.BaseModel):
+    results: list[ChatCompletionResult]
+
+
 class GenerateResult(pydantic.BaseModel):
     """
     All the things that our internal :func:`generate()` methods return,
@@ -146,3 +150,7 @@ class GenerateResult(pydantic.BaseModel):
     completion_tokens: list[int]
 
     stop_reason: str
+
+
+class GenerateResults(pydantic.BaseModel):
+    results: list[GenerateResult]

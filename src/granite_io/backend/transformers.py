@@ -11,10 +11,11 @@ import aconfig
 from granite_io.backend.base import Backend
 from granite_io.backend.registry import backend
 from granite_io.optional import import_optional
-from granite_io.types import GenerateResult
+from granite_io.types import GenerateResult, GenerateResults
 
 if TYPE_CHECKING:
     # Third Party
+    import torch  # noqa: F401
     import transformers
 
 
@@ -37,7 +38,6 @@ class _GenerationInputs:
             "device": {"type": "string"},
         }
     },
-    config_defaults={"device": "cuda"},
 )
 class TransformersBackend(Backend):
     _model_str: str
@@ -53,20 +53,41 @@ class TransformersBackend(Backend):
         :param device: Optional Pytorch device string, usually "cpu" or "cuda"
         """
 
-        # Import packages from extras "transformers"
         with import_optional("transformers"):
             # Third Party
+            import torch  # noqa: F401
             import transformers
 
         self._model_str = config.model_name
         self._torch_device_name = config.device
-        self._model = transformers.AutoModelForCausalLM.from_pretrained(
-            config.model_name
-        ).to(config.device)
-        self._tokenizer = transformers.AutoTokenizer.from_pretrained(config.model_name)
 
-    def generate(self, input_str: str) -> GenerateResult:
-        generation_inputs = self._prepare_for_generate(input_str)
+        if not self._torch_device_name:
+            if torch.cuda.is_available():
+                self._torch_device_name = "cuda"
+            # Re-enable once we have a smaller model that can run in a laptop GPU
+            elif torch.backends.mps.is_available():
+                self._torch_device_name = "mps"
+            else:
+                self._torch_device_name = "cpu"
+                # CPU mode; prevent thrashing
+                torch.set_num_threads(4)
+
+        self._model = transformers.AutoModelForCausalLM.from_pretrained(
+            self._model_str
+        ).to(self._torch_device_name)
+        self._tokenizer = transformers.AutoTokenizer.from_pretrained(self._model_str)
+
+    def generate(
+        self, input_str: str, num_return_sequences: int = 1
+    ) -> GenerateResults:
+        if num_return_sequences < 1:
+            raise ValueError(
+                f"Invalid value for num_return_sequences ({num_return_sequences})"
+            )
+
+        generation_inputs = self._prepare_for_generate(
+            input_str, num_return_sequences=num_return_sequences
+        )
 
         model_output = self._model.generate(
             **(generation_inputs.model_input),
@@ -77,38 +98,47 @@ class TransformersBackend(Backend):
 
         # The result of generate() is of course the prompt concatenated with the
         # additional tokens generated. Strip off the prompt.
-        full_token_sequence = model_output.sequences[0].cpu().tolist()
-        generated_tokens = full_token_sequence[
-            len(generation_inputs.model_input["input_ids"][0]) :
-        ]
+        generated_results = []
 
-        # The generate() method doesn't explicitly tell us why it stopped
-        # generating. We are supposed to infer that from the output.
-        if generated_tokens[-1] == self._tokenizer.eos_token_id:
-            stop_reason = "end_of_turn"
-            # We're also supposed to strip off the end-of-turn tokens ourselves.
-            generated_tokens = generated_tokens[:-1]
-        else:
-            stop_reason = "out_of_tokens"
+        # for i, sequence in enumerate(model_output.sequences):
+        for sequence in model_output.sequences:
+            full_token_sequence = sequence.cpu().tolist()
+            generated_tokens = full_token_sequence[
+                len(generation_inputs.model_input["input_ids"][0]) :
+            ]
 
-        # Of course, the model does not have a pointer to its tokenizer, so
-        # we need to post-process the model's output to get a usable string.
-        completion_string = self._tokenizer.decode(generated_tokens)
+            # The generate() method doesn't explicitly tell us why it stopped
+            # generating. We are supposed to infer that from the output.
+            if generated_tokens[-1] == self._tokenizer.eos_token_id:
+                stop_reason = "end_of_turn"
+                # We're also supposed to strip off the end-of-turn tokens ourselves.
+                generated_tokens = generated_tokens[:-1]
+            else:
+                stop_reason = "out_of_tokens"
 
-        return GenerateResult(
-            completion_string=completion_string,
-            completion_tokens=generated_tokens,
-            stop_reason=stop_reason,
-        )
+            # Of course, the model does not have a pointer to its tokenizer, so
+            # we need to post-process the model's output to get a usable string.
+            completion_string = self._tokenizer.decode(generated_tokens)
+            generated_results.append(
+                GenerateResult(
+                    completion_string=completion_string,
+                    completion_tokens=generated_tokens,
+                    stop_reason=stop_reason,
+                )
+            )
 
-    def _prepare_for_generate(self, prompt: str) -> _GenerationInputs:
+        return GenerateResults(results=generated_results)
+
+    def _prepare_for_generate(
+        self, prompt: str, num_return_sequences: int = 1
+    ) -> _GenerationInputs:
         """Subroutine that encapsulates all the prerequisites
         that are necessary to call ``AutoModelForCausalLM.generate()``."""
 
         # Import packages from extras "transformers"
         with import_optional("transformers"):
             # Third Party
-            import torch
+            import torch  # noqa: F401
             import transformers
 
         # Call model.generate(). This is much harder than it should be.
@@ -166,8 +196,8 @@ class TransformersBackend(Backend):
             # max_new_tokens=(None if sampling_params.max_tokens == 0
             #                 else sampling_params.max_tokens),
             # Transformers generate() will return multiple sequences by default
-            num_return_sequences=1,
-            num_beams=1,
+            num_return_sequences=num_return_sequences,
+            num_beams=num_return_sequences,
             # Scores are wrong anyhow, so don't bother
             output_scores=False,
             # If you don't set this flag, you'll get a string back instead of

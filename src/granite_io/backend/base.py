@@ -9,7 +9,7 @@ import abc
 
 # Local
 from granite_io.factory import FactoryConstructible
-from granite_io.types import ChatCompletionInputs, GenerateResult
+from granite_io.types import ChatCompletionInputs, GenerateResults
 
 
 # We put this base class here to avoid circular imports
@@ -24,7 +24,9 @@ class Backend(FactoryConstructible):
     """
 
     @abc.abstractmethod
-    def generate(self, input_str: str) -> GenerateResult:
+    def generate(
+        self, input_str: str, num_return_sequences: int = 1
+    ) -> GenerateResults:
         """
         Callback to invoke the model to generate a response.
         """

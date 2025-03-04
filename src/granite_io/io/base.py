@@ -13,7 +13,12 @@ import aconfig
 # Local
 from granite_io.backend.base import Backend, ChatCompletionBackend
 from granite_io.factory import FactoryConstructible
-from granite_io.types import ChatCompletionInputs, ChatCompletionResult
+from granite_io.types import (
+    ChatCompletionInputs,
+    ChatCompletionResult,
+    ChatCompletionResults,
+    GenerateResults,
+)
 
 
 class InputOutputProcessor(FactoryConstructible):
@@ -65,15 +70,15 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
 
     def create_chat_completion(
         self, inputs: ChatCompletionInputs
-    ) -> ChatCompletionResult:
+    ) -> ChatCompletionResults:
         if self._backend is None:
             raise ValueError(
                 "Attempted to call create_chat_completion() without "
                 "configuring an inference backend."
             )
         input_string = self.inputs_to_string(inputs)
-        generation_output = self._backend.generate(input_string)
-        return self.output_to_result(generation_output.completion_string, inputs)
+        generation_results = self._backend.generate(input_string)
+        return self.output_to_result(generation_results, inputs)
 
     @abc.abstractmethod
     def inputs_to_string(
@@ -96,8 +101,8 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
 
     @abc.abstractmethod
     def output_to_result(
-        self, output: str, inputs: ChatCompletionInputs | None = None
-    ) -> ChatCompletionResult:
+        self, output: GenerateResults, inputs: ChatCompletionInputs | None = None
+    ) -> ChatCompletionResults:
         """
         Convert the structured representation of the inputs to a completion request into
         the string representation of the tokens that should be sent to the model to

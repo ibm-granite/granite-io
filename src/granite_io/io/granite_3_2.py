@@ -16,7 +16,9 @@ from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
     ChatCompletionResult,
+    ChatCompletionResults,
     FunctionDefinition,
+    GenerateResults,
     SystemMessage,
     ToolResultMessage,
     UserMessage,
@@ -552,36 +554,53 @@ class Granite3Point2InputOutputProcessor(ModelDirectInputOutputProcessor):
 
     def output_to_result(
         self,
-        output: str,
+        output: GenerateResults,
         inputs: ChatCompletionInputs | None = None,
-    ) -> ChatCompletionResult:
-        # Parse out CoT reasoning
-        cot = None
-        original_output = output
-        if inputs.thinking:
-            cot_start_span = None
-            cot_end_span = None
-            for cot_start_str in _COT_START_ALTERNATIVES:
-                if (cot_start_pos := output.find(cot_start_str)) != -1:
-                    cot_start_span = (cot_start_pos, cot_start_pos + len(cot_start_str))
-                    break
-            for cot_end_str in _COT_END_ALTERNATIVES:
-                if (cot_end_pos := output.find(cot_end_str)) != -1:
-                    cot_end_span = (cot_end_pos, cot_end_pos + len(cot_end_str))
-                    break
+    ) -> ChatCompletionResults:
+        results = []
+        for result in output.results:
+            output = result.completion_string
+            original_output = output
 
-            if cot_start_span and cot_end_span and cot_end_span[0] > cot_start_span[1]:
-                cot = output[cot_start_span[1] : cot_end_span[0]].strip()
-                output = output[: cot_start_span[0]] + output[cot_end_span[1] :].strip()
+            # Parse out CoT reasoning
+            cot = None
+            if inputs.thinking:
+                cot_start_span = None
+                cot_end_span = None
+                for cot_start_str in _COT_START_ALTERNATIVES:
+                    if (cot_start_pos := output.find(cot_start_str)) != -1:
+                        cot_start_span = (
+                            cot_start_pos,
+                            cot_start_pos + len(cot_start_str),
+                        )
+                        break
+                for cot_end_str in _COT_END_ALTERNATIVES:
+                    if (cot_end_pos := output.find(cot_end_str)) != -1:
+                        cot_end_span = (cot_end_pos, cot_end_pos + len(cot_end_str))
+                        break
 
-        # Parse out tool calls
-        if output.startswith("<tool_call>"):
-            raise NotImplementedError("TODO: Implement tool call parsing")
+                if (
+                    cot_start_span
+                    and cot_end_span
+                    and cot_end_span[0] > cot_start_span[1]
+                ):
+                    cot = output[cot_start_span[1] : cot_end_span[0]].strip()
+                    output = (
+                        output[: cot_start_span[0]] + output[cot_end_span[1] :].strip()
+                    )
 
-        return ChatCompletionResult(
-            next_message=AssistantMessage(
-                content=output,
-                reasoning_content=cot,
-                raw=original_output,
+            # Parse out tool calls
+            if output.startswith("<tool_call>"):
+                raise NotImplementedError("TODO: Implement tool call parsing")
+
+            results.append(
+                ChatCompletionResult(
+                    next_message=AssistantMessage(
+                        content=output,
+                        reasoning_content=cot,
+                        raw=original_output,
+                    )
+                )
             )
-        )
+
+        return ChatCompletionResults(results=results)

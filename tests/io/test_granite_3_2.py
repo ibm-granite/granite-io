@@ -10,7 +10,6 @@ import json
 from litellm import APIConnectionError as ACE
 from openai import APIConnectionError
 import pytest
-import torch
 import transformers
 
 # Local
@@ -25,7 +24,13 @@ from granite_io.io.granite_3_2 import (
     Granite3Point2InputOutputProcessor,
     _Granite3Point2Inputs,
 )
-from granite_io.types import AssistantMessage, ChatCompletionInputs, UserMessage
+from granite_io.types import (
+    AssistantMessage,
+    ChatCompletionInputs,
+    GenerateResult,
+    GenerateResults,
+    UserMessage,
+)
 
 ## Helpers #####################################################################
 
@@ -78,19 +83,10 @@ def tokenizer() -> transformers.PreTrainedTokenizerBase:
 def io_processor_transformers() -> Granite3Point2InputOutputProcessor:
     model_path = GRANITE_3_2_2B_HF
 
-    if torch.cuda.is_available():
-        device_name = "cuda"
-    # Re-enable once we have a smaller model that can run in a laptop GPU
-    elif torch.backends.mps.is_available():
-        device_name = "mps"
-    else:
-        device_name = "cpu"
-        # CPU mode; prevent thrashing
-        torch.set_num_threads(4)
     try:
         backend = make_backend(
             "transformers",
-            {"model_name": model_path, "device": device_name},
+            {"model_name": model_path},
         )
     except Exception as e:
         pytest.skip(f"No transformers backend for '{model_path}': {e}")
@@ -302,7 +298,14 @@ def test_run_litellm(
 def test_cot_parsing(inputs, output, exp_thought, exp_resp):
     """Test the parsing logic for CoT reasoning output"""
     proc = Granite3Point2InputOutputProcessor()
-    result = proc.output_to_result(output, inputs).next_message
+    generated = GenerateResults(
+        results=[
+            GenerateResult(
+                completion_string=output, completion_tokens=[], stop_reason="?"
+            )
+        ]
+    )
+    result = proc.output_to_result(generated, inputs).results[0].next_message
     assert result.reasoning_content == exp_thought
     assert result.content == exp_resp
     assert result.raw == output
