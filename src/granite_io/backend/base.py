@@ -24,9 +24,7 @@ class Backend(FactoryConstructible):
     """
 
     @abc.abstractmethod
-    async def generate(
-        self, input_str: str, num_return_sequences: int = 1
-    ) -> GenerateResults:
+    async def generate(self, **kwargs) -> GenerateResults:
         """
         Callback to invoke the model to generate a response.
         """

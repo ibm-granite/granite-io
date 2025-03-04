@@ -39,20 +39,20 @@ interactions:
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-401","object":"text_completion","created":1741212666,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"I''m
-      here and ready to assist you! As an artificial intelligence, I don''t have feelings
-      or experiences, but I''m functioning as programmed for our interaction. How
-      can I help you today? Is there a topic or question you''d like to discuss or
-      explore?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":47,"completion_tokens":59,"total_tokens":106}}
+    content: '{"id":"cmpl-272","object":"text_completion","created":1741222541,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"As
+      an artificial intelligence, I don''t have feelings or emotions, so there''s
+      nothing \"up\" or \"down\" in the traditional sense. I''m here to provide information,
+      answer questions, and assist you with tasks as best I can. How can I help you
+      today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":47,"completion_tokens":61,"total_tokens":108}}
 
       '
     headers:
       Content-Length:
-      - '497'
+      - '498'
       Content-Type:
       - application/json
       Date:
-      - Wed, 05 Mar 2025 22:11:06 GMT
+      - Thu, 06 Mar 2025 00:55:41 GMT
     http_version: HTTP/1.1
     status_code: 200
 version: 1

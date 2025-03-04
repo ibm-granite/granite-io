@@ -89,16 +89,36 @@ class TransformersBackend(Backend):
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(config.model_name)
         self._executor = concurrent.futures.ThreadPoolExecutor()
 
-    async def generate(
-        self, input_str: str, num_return_sequences: int = 1
-    ) -> GenerateResults:
-        if num_return_sequences < 1:
-            raise ValueError(
-                f"Invalid value for num_return_sequences ({num_return_sequences})"
-            )
-        generation_inputs = self._prepare_for_generate(
-            input_str, num_return_sequences=num_return_sequences
-        )
+    async def generate(self, **kwargs) -> GenerateResults:
+
+        # model is required
+        if not kwargs.get("model"):
+            kwargs["model"] = self._model_str
+
+        # Normalize num_return_sequences a.k.a "n"
+        n = kwargs.get("n")
+        num_return_sequences = kwargs.get("num_return_sequences")
+
+        # "num_return_sequences" gets priority for transformers
+        # "n" needs to be removed/renamed
+        if n is not None:
+            del kwargs["n"]
+            if not num_return_sequences:
+                kwargs["num_return_sequences"] = n
+
+        # n (a.k.a. num_return_sequences) validation
+        n = kwargs.get("num_return_sequences")
+
+        if n is not None:
+            if not isinstance(n, int) or n < 1:  # Check like the others for invalid
+                raise ValueError(f"Invalid value for num_return_sequences ({n})")
+            elif n > 1:
+                # num_beams must be >= n
+                num_beams = kwargs.get("num_beams")
+                if not isinstance(num_beams, int) or num_beams < n:
+                    kwargs["num_beams"] = n
+
+        generation_inputs = self._prepare_for_generate(**kwargs)
 
         # Wrap the call to the non-async Transformers library in a thread pool
         concurrent_futures_future = self._executor.submit(
@@ -140,11 +160,15 @@ class TransformersBackend(Backend):
 
         return GenerateResults(results=generated_results)
 
-    def _prepare_for_generate(
-        self, prompt: str, num_return_sequences: int = 1
-    ) -> _GenerationInputs:
+    def _prepare_for_generate(self, **kwargs) -> _GenerationInputs:
         """Subroutine that encapsulates all the prerequisites
         that are necessary to call ``AutoModelForCausalLM.generate()``."""
+
+        prompt = kwargs.get("prompt")
+        num_return_sequences = kwargs.get("num_return_sequences", 1)
+        num_beams = kwargs.get("num_beams", 1)
+
+        # stop_strings (`str or List[str]`, *optional*): A string or a list of strings that should terminate generation if the model outputs them.
 
         # Import packages from extras "transformers"
         with import_optional("transformers"):
@@ -201,12 +225,9 @@ class TransformersBackend(Backend):
         # to pass them to the constructor for another class, then pass the
         # resulting object to model.generate().
         generation_config = transformers.GenerationConfig(
-            max_new_tokens=1024,  # TEMPORARY
-            # max_new_tokens=(None if sampling_params.max_tokens == 0
-            #                 else sampling_params.max_tokens),
-            # Transformers generate() will return multiple sequences by default
+            max_new_tokens=kwargs.get("max_new_tokens", 1024),  # TEMPORARY
             num_return_sequences=num_return_sequences,
-            num_beams=num_return_sequences,
+            num_beams=num_beams,
             # Scores are wrong anyhow, so don't bother
             output_scores=False,
             # If you don't set this flag, you'll get a string back instead of
@@ -217,17 +238,10 @@ class TransformersBackend(Backend):
             # Wrong values (often including the default) will produce very bad output.
             # LOWER values result in MORE penalty for repetition, because of course they
             # do.
-            # TODO: Re-enable
-            # repetition_penalty = sampling_params.repetition_penalty,
-            # TODO: Re-enable
-            # top_p=(sampling_params.top_p
-            #        if sampling_params.strategy is SamplingStrategy.top_p
-            #        else 1.0),
-            # top_k=(sampling_params.top_k
-            #        if sampling_params.strategy is SamplingStrategy.top_k
-            #        else None),
-            # TODO: Re-enable
-            # temperature=sampling_params.temperature,
+            repetition_penalty=kwargs.get("repetition_penalty", 1.0),
+            top_p=kwargs.get("top_p", 1.0),
+            top_k=kwargs.get("top_k", 50),
+            temperature=kwargs.get("temperature", 1.0),
             # See long note above.
             pad_token_id=pad_token_id,
             # Make sure you specify this token explicitly, or you will have

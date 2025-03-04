@@ -5,7 +5,7 @@ interactions:
       by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
       how are you?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>I''m doing
       great. How can I help you today?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I''d
-      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":1,"n":1}'
+      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
     headers:
       accept:
       - application/json
@@ -14,7 +14,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '556'
+      - '538'
       content-type:
       - application/json
       host:
@@ -44,39 +44,28 @@ interactions:
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-990\",\"object\":\"text_completion\",\"created\":1741212583,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Absolutely,
-      let's dive into that! Chat templates allow us to create dynamic messages or
-      responses using variables within a conversation thread. They're incredibly useful
-      for streamlining customer support interactions, creating custom queries, or
-      even generating personalized content for marketing campaigns. Here's how we
-      can illustrate it:\\n\\nFirstly, let's agree on some variables:\\n1. User Input:
-      'Hello, how's the weather today?'\\n2. Answer Template: The answer to the user\u2019s
-      question about current weather, which will use another variable.\\n3. Variable
-      for Weather Criterion: This can be 'sunny', 'rainy', or any other weather description
-      we want to categorize based on input from a server or database.\\n\\nNow, here's
-      how our chat template would look in code (using Python-like pseudocode):\\n\\n```python\\nuser_input
-      = \\\"Hello, how's the weather today?\\\"\\nvariable_weather_type = \\\"sunny\\\"
-      \ // This could come from e.g., a weather service API\\n\\n# Our answer template
-      string with placeholder '{weather}'\\nanswer_template = f\\\"Today is {variable_weather_type}.\\\"\\n\\n#
-      Using the fill-in operation, we insert value for 'weather' into our template\\nfinal_message
-      = answer_template.format(weather=variable_weather_type)\\n\\nprint(final_message)
-      // Outputs: \\\"Today is sunny.\\\"\\n```\\n\\nIn English conversation, let's
-      use this example of a weather bot:\\n\\u003e User (me): Hello, how\u2019s the
-      weather today?\\n\\u003e Bot: Today is sunny.\\n\\nHere you can see the user
-      input, 'Hello, how\u2019s the weather today?', prompted the answer template
-      with the variable `variable_weather_type = \\\"sunny\\\"`, and our bot responded
-      with \\\"Today is sunny.\\\" The placeholders in our template (like `{weather}`)
-      were replaced by actual values during runtime.\\n\\nThis illustrates how chat
-      templates help us create dynamic responses, improving both the efficiency of
-      interactions and the personalization of user experiences. Would you like to
-      explore another aspect of this functionality?\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":142,\"completion_tokens\":455,\"total_tokens\":597}}\n"
+    content: "{\"id\":\"cmpl-502\",\"object\":\"text_completion\",\"created\":1741222493,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Absolutely,
+      let's have some fun with chat templates! Let's say we're creating a template
+      for responding to requests about \\\"dog breeds.\\\" Here it is:\\n\\n**Template
+      for Dog Breeds:** \\n\\n1. **Greeting**\\n   - \\\"Hello! Today, I can share
+      information about various dog breeds with you. What breed are you interested
+      in?\\\"\\n\\n2. **Information Provision**\\n   - *When the user mentions a specific
+      breed:*\\n     - \\\"[Breed Name] is known for its [key traits]. For instance,
+      dogs of this breed often have a coat that can be [type]. They're also recognized
+      for their [unique characteristic], like exceptional agility in activities such
+      as [specific activity].\\\"\\n\\n3. **Closing**\\n   - \\\"Is there any other
+      topic or breed you'd be interested to discuss?\\\"\\n\\nNow, if I mention a
+      dog breed within our conversation, the chat template will generate responses
+      based on what we've set up here about that breed! Let's move forward with an
+      example using one of these predefined templates. Which breed like to know more
+      about? \U0001F31F\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":142,\"completion_tokens\":248,\"total_tokens\":390}}\n"
     headers:
+      Content-Length:
+      - '1268'
       Content-Type:
       - application/json
       Date:
-      - Wed, 05 Mar 2025 22:09:43 GMT
-      Transfer-Encoding:
-      - chunked
+      - Thu, 06 Mar 2025 00:54:53 GMT
     http_version: HTTP/1.1
     status_code: 200
 version: 1

@@ -74,7 +74,7 @@ class InputOutputProcessor(FactoryConstructible):
         """
 
     def create_chat_completion(
-        self, inputs: ChatCompletionInputs
+        self, **kwargs
     ) -> ChatCompletionResult:
         """
         Non-async version of :func:`acreate_chat_completion()`
@@ -130,7 +130,7 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
                 "configuring an inference backend."
             )
         input_string = self.inputs_to_string(inputs)
-        generation_results = await self._backend.generate(input_string)
+        generation_results = await self._backend.generate(prompt=input_string)
         return self.output_to_result(generation_results, inputs)
 
     @abc.abstractmethod

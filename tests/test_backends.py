@@ -16,7 +16,7 @@ from granite_io.types import GenerateResults
 @pytest.mark.vcr
 @pytest.mark.block_network
 async def test_simple(backend_x):
-    ret = await backend_x.generate("hello")
+    ret = await backend_x.generate(prompt="hello")
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
@@ -25,7 +25,7 @@ async def test_simple(backend_x):
 @pytest.mark.vcr
 @pytest.mark.block_network
 async def test_num_return_sequences_1(backend_x):
-    ret = await backend_x.generate("hello", num_return_sequences=1)
+    ret = await backend_x.generate(prompt="hello", num_return_sequences=1)
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
@@ -35,22 +35,18 @@ async def test_num_return_sequences_1(backend_x):
 @pytest.mark.block_network
 async def test_num_return_sequences_3(backend_x):
     try:
-        ret = await backend_x.generate("what is up?", num_return_sequences=3)
+        ret = await backend_x.generate(prompt="what is up?", num_return_sequences=3)
     except UnsupportedParamsError:
         # Specific exception from LiteLLMBackend
         # xfail because LiteLLM is telling us that ollama does not support
         # num_return_sequences > 1, but we can use LiteLLM with watsonx FTW
-        pytest.xfail(
-            "LiteLLMBackend support for num_return_sequences > 1 varies by provider"
-        )
+        pytest.xfail("LiteLLMBackend support for n > 1 varies by provider")
 
     num_returned = len(ret.results)
 
     if num_returned == 1 and isinstance(backend_x, OpenAIBackend):
         # ollama with OpenAI will just return 1, other OpenAI backends can return 3
-        pytest.xfail(
-            "OpenAIBackend support for num_return_sequences > 1 varies by provider"
-        )
+        pytest.xfail("OpenAIBackend support for n > 1 varies by provider")
 
     assert isinstance(ret, GenerateResults)
     assert num_returned == 3
@@ -63,6 +59,7 @@ async def test_num_return_sequences_3(backend_x):
 @pytest.mark.parametrize("n", [-1, 0])
 async def test_num_return_sequences_invalid(backend_x, n):
     with pytest.raises(
-        ValueError, match=re.escape(f"Invalid value for num_return_sequences ({n})")
+            ValueError,
+            match=(f"Invalid value for (n|num_return_sequences) \({n}\)")
     ):
-        _ = await backend_x.generate("hello", num_return_sequences=n)
+        _ = await backend_x.generate(prompt="hello", num_return_sequences=n)

@@ -8,6 +8,7 @@ import json
 
 # Third Party
 import pytest
+import torch
 import transformers
 
 # Local
