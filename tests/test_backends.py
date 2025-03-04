@@ -12,18 +12,21 @@ from granite_io.backend.openai import OpenAIBackend
 from granite_io.types import GenerateResults
 
 
+@pytest.mark.vcr
 def test_simple(backend_x):
     ret = backend_x.generate("hello")
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
 
+@pytest.mark.vcr
 def test_num_return_sequences_1(backend_x):
     ret = backend_x.generate("hello", num_return_sequences=1)
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
 
+@pytest.mark.vcr
 def test_num_return_sequences_3(backend_x):
     try:
         ret = backend_x.generate("what is up?", num_return_sequences=3)
@@ -47,6 +50,7 @@ def test_num_return_sequences_3(backend_x):
     assert len(ret.results) == 3
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("n", [-1, 0])
 def test_num_return_sequences_invalid(backend_x, n):
     with pytest.raises(

@@ -54,6 +54,7 @@ dev = [
     "pytest-asyncio",
     "pytest-cov",
     "pytest-html",
+    "pytest-recording~=0.13.2",
     "ruff==0.9.9",
     "tox",
     "granite-io[transformers]",
