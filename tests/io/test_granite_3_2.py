@@ -7,8 +7,6 @@
 import json
 
 # Third Party
-from litellm import APIConnectionError as ACE
-from openai import APIConnectionError
 import pytest
 import transformers
 
