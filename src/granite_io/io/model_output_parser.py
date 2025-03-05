@@ -193,7 +193,6 @@ def add_citation_context_spans(citation_info: object, docs: object):
     """
     augmented_citation_info = copy.deepcopy(citation_info)
     docs_by_docid = create_dict(docs, "doc_id")
-
     for citation in augmented_citation_info:
         matches = find_substring_in_text(citation["context_text"], docs_by_docid[citation["doc_id"]]["text"])
         if len(matches) == 0:
@@ -268,6 +267,32 @@ def add_citation_response_spans(citation_info, response_text_with_citations, res
             raise Exception("Error in extracting the response sentence of a citation: Citation ID does not appear in the response text")
     
     return augmented_citation_info
+
+def convert_doc_strs_to_dicts(docs: str) -> list[dict]:
+    """
+    Given a multi-line string with document information per line, extract
+    and add to dictionary list with "doc_id" and "text" fields
+    """
+    doc_dicts = []
+    start_citation = "<co>"
+    end_citation = "</co>"
+    colon = ":"
+    if not docs or docs.isspace():
+        return doc_dicts
+    for line in docs.splitlines():
+        if not line or line.isspace():
+            continue
+        if start_citation not in line \
+           or end_citation not in line \
+           or colon not in line:
+            continue
+        id = line[line.find(start_citation)+len(start_citation):line.rfind(end_citation)].strip()
+        line_separated = line.split(colon, 1)
+        if len(line_separated) <= 1:
+            continue
+        text = line_separated[1].strip().strip('"')
+        doc_dicts.append({"doc_id": id, "text": text})
+    return doc_dicts
 
 def create_dict(input_array: object, key_attrib_name: str):
     """
@@ -357,6 +382,12 @@ def parse_output(model_output: str, docs: object, validate_spans = False):
     Main parsing function
     """
 
+    # Covert docs str to dictionary as required for parsing
+    if isinstance(docs, str):
+        doc_dicts = convert_doc_strs_to_dicts(docs)
+    else:
+        doc_dicts = docs
+
     # Split model output into its parts: response, citation, and hallucination section
     response_text, citations_text, hallucinations_text = split_model_output_into_parts(model_output)
 
@@ -381,7 +412,7 @@ def parse_output(model_output: str, docs: object, validate_spans = False):
     # Parse citations text
     if len(citations_text) > 0:
         citation_info = parse_citations_text(citations_text)
-        citation_info_with_context_spans = add_citation_context_spans(citation_info, docs)
+        citation_info_with_context_spans = add_citation_context_spans(citation_info, doc_dicts)
         citation_info_with_context_response_spans = add_citation_response_spans(citation_info_with_context_spans, response_text, response_text_without_citations)
         validate_response(response_text, citation_info)
     else:
@@ -391,7 +422,7 @@ def parse_output(model_output: str, docs: object, validate_spans = False):
     
     # Join all objects into single output
     result = {
-        "docs": docs,
+        "docs": doc_dicts,
         "response": response_text_without_citations,
         "citations": citation_info_with_context_response_spans,
         "hallucinations": augmented_hallucination_info
