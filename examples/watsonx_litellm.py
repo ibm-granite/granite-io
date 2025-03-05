@@ -47,7 +47,7 @@ question = "Find the fastest way for a seller to visit all the cities in their r
 messages = [UserMessage(content=question)]
 outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
 print("------ WITHOUT THINKING ------")
-print(outputs.next_message.content)
+print(outputs.results[0].next_message.content)
 
 # With Thinking
 outputs = io_processor.create_chat_completion(
@@ -55,6 +55,6 @@ outputs = io_processor.create_chat_completion(
 )
 print("------ WITH THINKING ------")
 print(">> Thoughts:")
-print(outputs.reasoning_content)
+print(outputs.results[0].reasoning_content)
 print(">> Response:")
-print(outputs.next_message.content)
+print(outputs.results[0].next_message.content)

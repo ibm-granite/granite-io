@@ -71,7 +71,7 @@ def tokenizer() -> transformers.PreTrainedTokenizerBase:
     model_path = GRANITE_3_2_2B_HF
     try:
         ret = transformers.AutoTokenizer.from_pretrained(
-            model_path, local_files_only=True
+            model_path, local_files_only=False
         )
     except Exception as e:
         pytest.skip(f"No tokenizer for {model_path}: {e}")

@@ -64,15 +64,22 @@ jobs:
           cache-dependency-path: |
             **/pyproject.toml
 
-      - name: Setup Ollama server
-        uses: ./.github/actions/ollama-setup
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[openai]"
-          python -m pip install -e ".[litellm]"
+          python -m pip install tox tox-gh>=1.2
+
+      - name: Setup Ollama server
+        uses: ./.github/actions/ollama-setup
 
       - name: "Test examples"
         run: |
-          bash -c "for i in examples/*.py; do python $i; done"
+          tox -e examples
+        env:
+          TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
+
+      - name: "Test notebooks"
+        run: |
+          tox -e notebooks
+        env:
+          TOX_GH_MAJOR_MINOR: ${{ matrix.python }}

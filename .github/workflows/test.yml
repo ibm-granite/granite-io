@@ -75,6 +75,3 @@ jobs:
         run: |
           tox
 
-      - name: Run notebooks to see if they still run
-        run: |
-          tox -e notebooks

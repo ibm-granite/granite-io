@@ -24,6 +24,6 @@ outputs = io_processor.create_chat_completion(
 )
 print("------ WITH THINKING ------")
 print(">> Thoughts:")
-print(outputs.next_message.reasoning_content)
+print(outputs.results[0].next_message.reasoning_content)
 print(">> Response:")
-print(outputs.next_message.content)
+print(outputs.results[0].next_message.content)
