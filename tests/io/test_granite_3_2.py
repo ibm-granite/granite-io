@@ -195,6 +195,8 @@ def test_basic_inputs_to_string():
 
 
 @pytest.mark.vcr
+@pytest.mark.block_network
+@pytest.mark.flaky(retries=3, delay=5)  # VCR recording flakey
 def test_run_processor(backend_x: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)

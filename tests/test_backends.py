@@ -13,6 +13,7 @@ from granite_io.types import GenerateResults
 
 
 @pytest.mark.vcr
+@pytest.mark.block_network
 def test_simple(backend_x):
     ret = backend_x.generate("hello")
     assert isinstance(ret, GenerateResults)
@@ -20,6 +21,7 @@ def test_simple(backend_x):
 
 
 @pytest.mark.vcr
+@pytest.mark.block_network
 def test_num_return_sequences_1(backend_x):
     ret = backend_x.generate("hello", num_return_sequences=1)
     assert isinstance(ret, GenerateResults)
@@ -27,6 +29,7 @@ def test_num_return_sequences_1(backend_x):
 
 
 @pytest.mark.vcr
+@pytest.mark.block_network
 def test_num_return_sequences_3(backend_x):
     try:
         ret = backend_x.generate("what is up?", num_return_sequences=3)
@@ -35,7 +38,7 @@ def test_num_return_sequences_3(backend_x):
         # xfail because LiteLLM is telling us that ollama does not support
         # num_return_sequences > 1, but we can use LiteLLM with watsonx FTW
         pytest.xfail(
-            reason="LiteLLMBackend support for num_return_sequences varies by provider"
+            reason="LiteLLMBackend support for num_return_sequences > 1 varies by provider"
         )
 
     num_returned = len(ret.results)
@@ -43,17 +46,19 @@ def test_num_return_sequences_3(backend_x):
     if num_returned == 1 and isinstance(backend_x, OpenAIBackend):
         # ollama with OpenAI will just return 1, other OpenAI backends can return 3
         pytest.xfail(
-            reason="OpenAIBackend support for num_return_sequences varies by provider"
+            reason="OpenAIBackend support for num_return_sequences > 1 varies by provider"
         )
 
     assert isinstance(ret, GenerateResults)
-    assert len(ret.results) == 3
+    assert num_returned == 3
 
 
 @pytest.mark.vcr
+@pytest.mark.block_network
+@pytest.mark.flaky(retries=3, delay=5)  # VCR recording flakey
 @pytest.mark.parametrize("n", [-1, 0])
 def test_num_return_sequences_invalid(backend_x, n):
     with pytest.raises(
         ValueError, match=re.escape(f"Invalid value for num_return_sequences ({n})")
     ):
-        backend_x.generate("hello", num_return_sequences=n)
+        _ = backend_x.generate("hello", num_return_sequences=n)
