@@ -19,13 +19,19 @@ question = "What is RAG?"
 messages = [UserMessage(content=question)]
 
 documents = [
-    {"text": "Dynamic Data: Automatically generate and refine graphs to best fit your domain and ontology needs."}, 
-    {"text": "RAG, retrieval-augmented generation, is a technique that grants generative artificial intelligence models information retrieval capabilities."},
+    {
+        "text": "Dynamic Data: Automatically generate and refine graphs to best fit your domain and ontology needs."  # noqa: E501
+    },
+    {
+        "text": "RAG, retrieval-augmented generation, is a technique that grants generative artificial intelligence models information retrieval capabilities."  # noqa: E501
+    },
 ]
 
 # With RAG and citations
 outputs = io_processor.create_chat_completion(
-    ChatCompletionInputs(messages=messages, documents=documents, controls={"citations": True})
+    ChatCompletionInputs(
+        messages=messages, documents=documents, controls={"citations": True}
+    )
 )
 print(">> Response:")
 response = outputs.next_message.content
@@ -36,4 +42,5 @@ response_separated_by_citation = outputs.next_message.content.split("# Citations
 if len(response_separated_by_citation) == 2:
     parse_output(response, response_separated_by_citation[1])
 else:
-    raise RuntimeError(f"Unable to separate reponse by citation: {response_separated_by_citation}")
+    raise RuntimeError(f"""Unable to separate reponse by citation:
+                       {response_separated_by_citation}""")
