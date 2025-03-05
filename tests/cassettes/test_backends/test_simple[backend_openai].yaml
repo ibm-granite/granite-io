@@ -109,4 +109,59 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"hello","best_of":1,"n":1}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '60'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - OpenAI/Python 1.65.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.65.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-803","object":"text_completion","created":1741138702,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Hello!
+        It''s a pleasure to meet you. How can I assist you today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":44,"completion_tokens":19,"total_tokens":63}}
+
+        '
+    headers:
+      Content-Length:
+      - '313'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Mar 2025 01:38:22 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

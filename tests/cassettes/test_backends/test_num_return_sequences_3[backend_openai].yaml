@@ -56,4 +56,60 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"what is up?","best_of":3,"n":3}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '66'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - OpenAI/Python 1.65.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.65.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    body:
+      string: "{\"id\":\"cmpl-982\",\"object\":\"text_completion\",\"created\":1741138703,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"As
+        an artificial intelligence, I don't experience things in the same way humans
+        do \u2013 I don't have feelings or personal experiences that change throughout
+        the day like humans do. However, I'm here and ready to assist you with any
+        information or tasks you need help with. How can I make your day more productive?\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":47,\"completion_tokens\":68,\"total_tokens\":115}}\n"
+    headers:
+      Content-Length:
+      - '563'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Mar 2025 01:38:23 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

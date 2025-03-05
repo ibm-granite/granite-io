@@ -11,7 +11,8 @@ import pytest
 import transformers
 
 # Local
-from granite_io import make_backend, make_io_processor
+from granite_io import make_io_processor
+from granite_io.backend import Backend
 from granite_io.io.granite_3_2 import (
     _COT_END,
     _COT_END_ALTERNATIVES,
@@ -75,52 +76,6 @@ def tokenizer() -> transformers.PreTrainedTokenizerBase:
     except Exception as e:
         pytest.skip(f"No tokenizer for {model_path}: {e}")
     return ret
-
-
-@pytest.fixture(scope="session")
-def io_processor_transformers() -> Granite3Point2InputOutputProcessor:
-    model_path = GRANITE_3_2_2B_HF
-
-    try:
-        backend = make_backend(
-            "transformers",
-            {"model_name": model_path},
-        )
-    except Exception as e:
-        pytest.skip(f"No transformers backend for '{model_path}': {e}")
-    return make_io_processor(_MODEL_NAME, backend=backend)
-
-
-@pytest.fixture
-def io_processor_openai() -> Granite3Point2InputOutputProcessor:
-    # The backend factory requires a known backend name
-    # You can override config with env vars, but only known config vars
-    backend = make_backend(
-        "openai",
-        {
-            "model_name": "granite3.2:2b",
-            "openai_api_key": "ollama",
-            "openai_base_url": "http://localhost:11434/v1",
-        },
-    )
-    # The io factory requires a known model name
-    return make_io_processor(_MODEL_NAME, backend=backend)
-
-
-@pytest.fixture
-def io_processor_litellm() -> Granite3Point2InputOutputProcessor:
-    # The backend factory requires a known backend name
-    # You can override config with env vars, but only known config vars
-    backend = make_backend(
-        "litellm",
-        {
-            "model_name": "ollama/granite3.2:2b",
-            "openai_api_key": "ollama",
-            "openai_base_url": "http://localhost:11434/v1",
-        },
-    )
-    # The io factory requires a known model name
-    return make_io_processor(_MODEL_NAME, backend=backend)
 
 
 msg = UserMessage(content="Hello")
@@ -239,33 +194,11 @@ def test_basic_inputs_to_string():
     assert chatRequest.endswith("")
 
 
-def test_run_transformers(
-    io_processor_transformers: Granite3Point2InputOutputProcessor, input_json_str: str
-):
-    inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    _ = io_processor_transformers.create_chat_completion(inputs)
-
-    # TODO: Once the prerelease model has settled down and we have implemented
-    # temperature controls, verify outputs
-
-
 @pytest.mark.vcr
-def test_run_openai(
-    io_processor_openai: Granite3Point2InputOutputProcessor, input_json_str: str
-):
+def test_run_processor(backend_x: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    _ = io_processor_openai.create_chat_completion(inputs)
-
-    # TODO: Once the prerelease model has settled down and we have implemented
-    # temperature controls, verify outputs
-
-
-@pytest.mark.vcr
-def test_run_litellm(
-    io_processor_litellm: Granite3Point2InputOutputProcessor, input_json_str: str
-):
-    inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    _ = io_processor_litellm.create_chat_completion(inputs)
+    io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
+    _ = io_processor.create_chat_completion(inputs)
 
     # TODO: Once the prerelease model has settled down and we have implemented
     # temperature controls, verify outputs

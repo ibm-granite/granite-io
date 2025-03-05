@@ -1,0 +1,91 @@
+interactions:
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: March 04, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
+      how are you?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>I''m doing
+      great. How can I help you today?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I''d
+      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":1,"n":1}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '556'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - OpenAI/Python 1.65.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.65.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    body:
+      string: "{\"id\":\"cmpl-1\",\"object\":\"text_completion\",\"created\":1741138625,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Sure
+        thing! I can demonstrate how we use templated responses here at the Granite
+        AI system. This feature allows me to generate contextually relevant, coherent
+        responses based on a given template and input text. Let's say you asked \\\"What
+        would it be like if the capital of France were to suddenly transition its
+        power from Parisian politicians to penguins?\\\"\\n\\nHere's an example of
+        how I could use chat templating for this:\\n\\n**Template:**\\n\\n- Start
+        with a brief introduction.\\n- Discuss the scenario as if it were happening
+        in real life, including possible actions and challenges.\\n- End with an observation
+        about the absurdity or unlikelihood of the situation.\\n\\n**Input Text:**
+        \\\"Consider what would become of French politics if penguins took over...\\\"\\n\\n**Templated
+        Response:**\\n\\n\\\"If penguins were to take over from Parisian politicians
+        in our discussion, they'd need to adapt their style and habits to fit the
+        demands of a bureaucratic role in France. Here's how it might play out:\\n\\n1.
+        **Decision-Making:** In stark contrast to the eagle-like cacophony of Parisian
+        Square Michel, our 'Polar Council' would meet under the icy blanket of the
+        Eiffel Tower, using chalkboards (or possibly a freeze-proof LED flip chart)
+        instead of paper and pens.\\n\\n2. **Debates:** The most vocal penguin representatives
+        might do this not by calling out in unison as they're wont to do but through
+        sophistically modulated icy peeps - likely using digital translation systems
+        for the other species attending.\\n\\n3. **Voting and Laws:** To maintain
+        consistency over freezing conditions, votes could be recorded through a touchscreen
+        system embedded in their nests, while laws could be communicated silently
+        to the ground staff who translate them into actionable directives on warmth
+        control thermostats.\\n\\n**Finally, this hypothetical scenario is as fantastical
+        as it gets. The very nature of their physical existence\u2014cold-bloodedness
+        versus human blood flow\u2014predisposes penguins to inactivity and stasis
+        rather than the energetic debates our current politicians engage in daily.
+        Not only do they face a major challenge in generating enough heat for prolonged
+        decision-making, but changing clothes amidst legislative hours would be impractical,
+        as would keeping ice floes stocked around Capitol Paris.\\\"\\n\\nNow, feel
+        free to ask another question or we can continue using this template for different
+        scenarios if you choose!\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":142,\"completion_tokens\":581,\"total_tokens\":723}}\n"
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Mar 2025 01:37:05 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1
