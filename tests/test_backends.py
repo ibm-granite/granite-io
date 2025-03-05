@@ -38,7 +38,7 @@ def test_num_return_sequences_3(backend_x):
         # xfail because LiteLLM is telling us that ollama does not support
         # num_return_sequences > 1, but we can use LiteLLM with watsonx FTW
         pytest.xfail(
-            reason="LiteLLMBackend support for num_return_sequences > 1 varies by provider"
+            "LiteLLMBackend support for num_return_sequences > 1 varies by provider"
         )
 
     num_returned = len(ret.results)
@@ -46,7 +46,7 @@ def test_num_return_sequences_3(backend_x):
     if num_returned == 1 and isinstance(backend_x, OpenAIBackend):
         # ollama with OpenAI will just return 1, other OpenAI backends can return 3
         pytest.xfail(
-            reason="OpenAIBackend support for num_return_sequences > 1 varies by provider"
+            "OpenAIBackend support for num_return_sequences > 1 varies by provider"
         )
 
     assert isinstance(ret, GenerateResults)
