@@ -73,6 +73,7 @@ jobs:
           python -m pip install -e ".[openai]"
           python -m pip install -e ".[litellm]"
           python -m pip install notebook
+          python -m pip install transformers[torch]
 
       - name: "Test examples"
         run: |
