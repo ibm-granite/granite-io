@@ -251,10 +251,7 @@ def test_run_transformers(
     # temperature controls, verify outputs
 
 
-@pytest.mark.xfail(
-    reason="will xfail if APIConnectionError because OpenAI tests are optional",
-    raises=APIConnectionError,
-)
+@pytest.mark.vcr
 def test_run_openai(
     io_processor_openai: Granite3Point2InputOutputProcessor, input_json_str: str
 ):
@@ -265,10 +262,7 @@ def test_run_openai(
     # temperature controls, verify outputs
 
 
-@pytest.mark.xfail(
-    reason="will xfail if APIConnectionError because LiteLLM tests are optional",
-    raises=ACE,
-)
+@pytest.mark.vcr
 def test_run_litellm(
     io_processor_litellm: Granite3Point2InputOutputProcessor, input_json_str: str
 ):

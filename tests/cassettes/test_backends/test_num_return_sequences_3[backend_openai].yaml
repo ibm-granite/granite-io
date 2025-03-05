@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"what is up?","best_of":3,"n":3}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '66'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - OpenAI/Python 1.65.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.65.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-924","object":"text_completion","created":1741133420,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"As
+        an artificial intelligence, I don''t have feelings or emotions, so there''s
+        nothing \"up\" in the human sense. Instead, I''m here to provide information
+        and assist you with any questions or tasks you have. How can I help you today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":47,"completion_tokens":56,"total_tokens":103}}
+
+        '
+    headers:
+      Content-Length:
+      - '482'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Mar 2025 00:10:20 GMT
+    status:
+      code: 200
+      message: OK
+version: 1
