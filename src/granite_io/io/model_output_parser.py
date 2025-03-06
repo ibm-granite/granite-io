@@ -315,10 +315,11 @@ def add_citation_response_spans(
             citation_id = match.group(1)
             if citation_id not in response_sents_by_citation_id:
                 sent_without_citations = remove_citations_from_response_text(sent)
-                if len(sent_without_citations) == 0:
-                    # Fix for sentence splitting issue: If the found sentence is empty
-                    # after removing citations, use previous sentence (if it exists)
-                    # instead
+                # Fixes for sentence splitting issue: Associate citation with previous
+                # sentence if either of the following holds:
+                # - The citation ID appears at the beginning of a sentence
+                # - The found sentence is empty after removing citations
+                if (match.start() == 0) or (len(sent_without_citations) == 0):
                     if sent_idx > 0:
                         sent_without_citations = remove_citations_from_response_text(
                             response_sentences[sent_idx - 1]
@@ -346,12 +347,54 @@ def add_citation_response_spans(
                                 citation: Unexpected error""")
 
             if len(matches) > 1:
-                # TODO: Improve
-                print("""WARNING: Response sentence of citation found multiple \
-                        times in response: Selecting first match""")
-            citation["response_text"] = response_text
-            citation["response_begin"] = matches[0]["begin_idx"]
-            citation["response_end"] = matches[0]["end_idx"]
+                # Find the citation ID and the text preceding it
+                citation_id_matches_iter = re.finditer(
+                    "<co>" + citation["citation_id"] + "</co>",
+                    response_text_with_citations,
+                )
+                citation_id_matches = tuple(citation_id_matches_iter)
+                assert (
+                    len(citation_id_matches) > 0
+                ), """Error in extracting the response sentence of a citation: \
+                    Citation ID does not appear in the response text"""
+                citation_id_match_begin = citation_id_matches[0].start()
+
+                text_before_citation_id = response_text_with_citations[
+                    :citation_id_match_begin
+                ]
+                text_before_citation_id_without_citations = (
+                    remove_citations_from_response_text(text_before_citation_id)
+                )
+
+                # Find citation response text as the last match in the response text
+                # preceding the citation ID. To do that, first remove the punctuation
+                # from the end of the response text, since that would appear after the
+                # citation ID
+                search_str = re.sub(r"[\.\?\:\;]+$", "", response_text)
+                response_text_matches = find_substring_in_text(
+                    search_str, text_before_citation_id_without_citations
+                )
+                assert len(citation_id_matches) > 0, (
+                    "Error in extracting the response sentence of a citation"
+                )  # noqa: E501
+                last_response_text_match = response_text_matches[-1]
+
+                citation["response_text"] = response_text
+                citation["response_begin"] = last_response_text_match["begin_idx"]
+                citation["response_end"] = last_response_text_match["begin_idx"] + len(
+                    response_text
+                )
+
+                assert (
+                    citation["response_text"]
+                    == response_text_without_citations[
+                        citation["response_begin"] : citation["response_end"]
+                    ]
+                ), "Error in extracting the response sentence of a citation"  # noqa: E501
+            else:
+                citation["response_text"] = response_text
+                citation["response_begin"] = matches[0]["begin_idx"]
+                citation["response_end"] = matches[0]["end_idx"]
         else:
             raise ValueError("""Error in extracting the response sentence of a \
                             citation: Citation ID does not appear in the response \
