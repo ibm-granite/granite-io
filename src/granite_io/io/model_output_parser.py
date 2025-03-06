@@ -1,6 +1,6 @@
 # Standard
 import copy
-import pprint
+import logging
 import re
 
 # Third Party
@@ -141,8 +141,8 @@ def _add_hallucination_response_spans(
                             Hallucination text not found in response""")
 
         if len(matches) > 1:
-            print("""WARNING: Hallucination text found multiple times in response: \
-                    Selecting first match""")
+            logging.warning("""Hallucination text found multiple times in \
+                            response: Selecting first match""")
         hallucination["response_text"] = hallucination_response_text_without_citations
         hallucination["response_begin"] = matches[0]["begin_idx"]
         hallucination["response_end"] = matches[0]["end_idx"]
@@ -207,8 +207,8 @@ def _parse_citations_text(citations_text: str) -> list[dict]:
             # output format
             else:
                 context_text = match.group(3)
-                print("WARNING: Last character of citation is not a double quote")
-                print(context_text + "\n")
+                logging.warning(f"""Last character of citation is not a double \
+                                quote: {context_text}""")
             cur_citation = {
                 "citation_id": match.group(1),
                 "doc_id": match.group(2),
@@ -218,8 +218,8 @@ def _parse_citations_text(citations_text: str) -> list[dict]:
 
             # If the citation contains a nested Document x mention, then show a warning
             if re.search(r"\nDocument (\d+)", cur_citation["context_text"]):
-                print("WARNING: Citation text contains another document mention:")
-                print(cur_citation["context_text"] + "\n")
+                logging.warning(f"""Citation text contains another document mention: \
+                                {cur_citation["context_text"]}""")
 
             idx += 1
 
@@ -268,8 +268,8 @@ def _add_citation_context_spans(
                             Cited text not found in corresponding document""")
 
         if len(matches) > 1:
-            print("""WARNING: Cited text found multiple times in \
-                    corresponding document: Selecting first match""")
+            logging.warning("""Cited text found multiple times in corresponding \
+                            document: Selecting first match""")
         citation["context_begin"] = matches[0]["begin_idx"]
         citation["context_end"] = matches[0]["end_idx"]
 
@@ -467,20 +467,18 @@ def _validate_response(response_text: str, citation_info: object):
     if re.search(
         r"<co>(?:(?!(<co>|</co>)).)*<co>(?:(?!(<co>|</co>)).)*</co>", response_text
     ):
-        print("WARNING: Response contains nested <co> tags:")
-        print(response_text + "\n")
+        logging.warning(f"Response contains nested <co> tags: {response_text}")
 
     opening_tag_count = response_text.count("<co>")
     closing_tag_count = response_text.count("</co>")
 
     if opening_tag_count != closing_tag_count:
-        print("WARNING: Response contains different number of <co> and </co> tags:")
-        print(response_text + "\n")
+        logging.warning(f"""Response contains different number of <co> and </co> \
+                        tags: {response_text}""")
 
     if opening_tag_count != len(citation_info):
-        print("""WARNING: Response contains different number of citations than those \
-              mentioned under '# Citations':""")
-        print(response_text + "\n")
+        logging.warning(f"""Response contains different number of citations than those \
+                        mentioned under '# Citations': {response_text}""")
 
 
 def _split_model_output_into_parts(model_output: str) -> tuple[str, str, str]:
@@ -583,15 +581,13 @@ def parse_model_output(model_output: str) -> dict[str, dict]:
     )
 
     # Model output
-    print("\n\nModel output:\n\n")
-    print(model_output)
+    logging.info(f"Model output:\n\n{model_output}\n")
 
     # Parsed response text
     response_text_without_citations = _remove_citations_from_response_text(
         response_text
     ).strip()
-    print("\n\nParsed response text:\n\n")
-    print(response_text_without_citations)
+    logging.info(f"Parsed response text:\n\n{response_text_without_citations}\n")
 
     # Parse hallucinations text
     if len(hallucinations_text) > 0:
@@ -601,8 +597,7 @@ def parse_model_output(model_output: str) -> dict[str, dict]:
         )
     else:
         augmented_hallucination_info = []
-    print("\n\nParsed hallucination info:\n\n")
-    pprint.pprint(augmented_hallucination_info, sort_dicts=False)
+    logging.info(f"Parsed hallucination info:\n\n{augmented_hallucination_info}\n")
 
     # Parse citations text
     if len(citations_text) > 0:
@@ -618,8 +613,8 @@ def parse_model_output(model_output: str) -> dict[str, dict]:
         _validate_response(response_text, citation_info)
     else:
         citation_info_with_context_response_spans = []
-    print("\n\nParsed citation info:\n\n")
-    pprint.pprint(citation_info_with_context_response_spans, sort_dicts=False)
+    logging.info(f"""Parsed citation info:\n\n\
+                 {citation_info_with_context_response_spans}\n""")
 
     # Join all objects into single output
     result = {
@@ -628,8 +623,7 @@ def parse_model_output(model_output: str) -> dict[str, dict]:
         "citations": citation_info_with_context_response_spans,
         "hallucinations": augmented_hallucination_info,
     }
-    print("\n\nCombined parser output:\n\n")
-    pprint.pprint(result, sort_dicts=False)
+    logging.info(f"Combined parser output:\n\n{result}\n")
 
     # Validate spans in parser output by checking if the citation/response text
     # matches the begin/end spans

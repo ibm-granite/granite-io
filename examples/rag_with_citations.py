@@ -6,6 +6,9 @@ and an Ollama backend to serve the model.
 In this scenario, it is a simple RAG use case where citations are enabled.
 """
 
+# Standard
+import pprint
+
 # Local
 from granite_io import make_backend, make_io_processor
 from granite_io.io.model_output_parser import parse_model_output
@@ -33,9 +36,10 @@ outputs = io_processor.create_chat_completion(
         messages=messages, documents=documents, controls={"citations": True}
     )
 )
-print(">> Response:")
-response = outputs.next_message.content
+print(">> Response:\n\n")
+response = outputs.results[0].next_message.content
 print(response)
 
-print("\n\n>> Extract response into text and citation categories:")
-parse_model_output(response)
+print("\n\n>> Extract response into text, citation and hallucination constiuents:\n\n")
+parsed_output = parse_model_output(response)
+pprint.pprint(parsed_output, sort_dicts=False)
