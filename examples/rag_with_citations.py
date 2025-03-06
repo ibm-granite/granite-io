@@ -8,7 +8,7 @@ In this scenario, it is a simple RAG use case where citations are enabled.
 
 # Local
 from granite_io import make_backend, make_io_processor
-from granite_io.io.model_output_parser import parse_output
+from granite_io.io.model_output_parser import parse_model_output
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 model_name = "granite3.2:8b"
@@ -37,10 +37,5 @@ print(">> Response:")
 response = outputs.next_message.content
 print(response)
 
-print(">> Extract response into text and citation categories:")
-response_separated_by_citation = outputs.next_message.content.split("# Citations:")
-if len(response_separated_by_citation) == 2:
-    parse_output(response, response_separated_by_citation[1])
-else:
-    raise RuntimeError(f"""Unable to separate reponse by citation:
-                       {response_separated_by_citation}""")
+print("\n\n>> Extract response into text and citation categories:")
+parse_model_output(response)
