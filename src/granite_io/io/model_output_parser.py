@@ -41,7 +41,7 @@ def _parse_hallucinations_text(hallucinations_text: str) -> list[dict]:
 
     # Find begin spans of all hallucinations
     matches_iter = re.finditer(
-        "(\d+)\.\s*Risk (low|high|unanswerable):",  # pylint: disable=anomalous-backslash-in-string # noqa: E501
+        "(\\d+)\\.\\s*Risk (low|high|unanswerable):",
         hallucinations_text,
     )
     matches = []
@@ -71,7 +71,7 @@ def _parse_hallucinations_text(hallucinations_text: str) -> list[dict]:
         # (hallucination ID, risk, response text)
         # Use ?s flag to include newlines in match
         matches_iter = re.finditer(
-            "(?s)(\d+)\.\s*Risk (low|high|unanswerable): (.+)$",  # pylint: disable=anomalous-backslash-in-string
+            "(?s)(\\d+)\\.\\s*Risk (low|high|unanswerable): (.+)$",
             hallucination_str,
         )
         idx = 0
@@ -168,7 +168,7 @@ def _parse_citations_text(citations_text: str) -> list[dict]:
     citations = []
 
     # Find begin spans of all citations
-    matches_iter = re.finditer("<co>(\d+)</co>", citations_text)  # pylint: disable=anomalous-backslash-in-string
+    matches_iter = re.finditer("<co>(\\d+)</co>", citations_text)
     matches = []
     for match in matches_iter:
         matches.append({"match_begin": match.start()})
@@ -194,7 +194,7 @@ def _parse_citations_text(citations_text: str) -> list[dict]:
         # (citation ID, doc ID, context text)
         # Use ?s flag to include newlines in match
         matches_iter = re.finditer(
-            '(?s)<co>(\d+)</co>\s*Document (\d+): "(.+)$',  # pylint: disable=anomalous-backslash-in-string # noqa: E501
+            '(?s)<co>(\\d+)</co>\\s*Document (\\d+): "(.+)$',
             citation_str,
         )
         idx = 0
@@ -314,7 +314,7 @@ def _add_citation_response_spans(
     # to each citation ID
     response_sents_by_citation_id = {}
     for sent_idx, sent in enumerate(response_sentences):
-        matches_iter = re.finditer("<co>(\d+)</co>", sent)  # pylint: disable=anomalous-backslash-in-string
+        matches_iter = re.finditer("<co>(\\d+)</co>", sent)
         for match in matches_iter:
             citation_id = match.group(1)
             if citation_id not in response_sents_by_citation_id:
@@ -506,17 +506,24 @@ def _split_model_output_into_parts(model_output: str) -> tuple[str, str, str]:
     citations_text = ""
     hallucinations_text = ""
 
-    if "# Hallucinations:" in model_output:
-        response_citations_text, hallucinations_text = model_output.split(
-            "# Hallucinations:"
-        )
+    if "# Hallucinations:" in model_output and "# Citations:" not in model_output:
+        response_text, hallucinations_text = model_output.split("# Hallucinations:")
+    elif "# Citations:" in model_output and "# Hallucinations:" not in model_output:
+        response_text, citations_text = model_output.split("# Citations:")
+    elif "# Citations:" in model_output and "# Hallucinations:" in model_output:
+        pre_citation_split, post_citation_split = model_output.split("# Citations:")
+        if "# Hallucinations:" in pre_citation_split:
+            response_text, hallucinations_text = pre_citation_split.split(
+                "# Hallucinations:"
+            )
+            citations_text = post_citation_split
+        else:
+            citations_text, hallucinations_text = post_citation_split.split(
+                "# Hallucinations:"
+            )
+            response_text = pre_citation_split
     else:
-        response_citations_text = model_output
-
-    if "# Citations:" in model_output:
-        response_text, citations_text = response_citations_text.split("# Citations:")
-    else:
-        response_text = response_citations_text
+        response_text = model_output
 
     return response_text.strip(), citations_text.strip(), hallucinations_text.strip()
 
@@ -565,20 +572,13 @@ def parse_model_output(model_output: str) -> dict[str, dict]:
     }
     """
 
-    doc_dicts = {}
-    citations = model_output.split("# Citations:")
-    if len(citations) == 2:
-        docs = citations[1]
-        # Covert docs str to dictionary for parsing
-        doc_dicts = _convert_doc_strs_to_dicts(docs)
-    else:
-        raise RuntimeError(f"""Unable to separate reponse by citation:
-                        {citations}""")
-
     # Split model output into its parts: response, citation, and hallucination section
     response_text, citations_text, hallucinations_text = _split_model_output_into_parts(
         model_output
     )
+
+    # Covert docs str to dictionary for parsing
+    doc_dicts = _convert_doc_strs_to_dicts(citations_text)
 
     # Model output
     logging.info(f"Model output:\n\n{model_output}\n")
