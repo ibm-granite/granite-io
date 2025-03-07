@@ -11,6 +11,7 @@ import pydantic
 # Local
 from granite_io.backend.base import Backend
 from granite_io.io.base import ModelDirectInputOutputProcessor
+from granite_io.io.granite_output_parser import parse_model_output
 from granite_io.io.registry import io_processor
 from granite_io.types import (
     AssistantMessage,
@@ -593,10 +594,22 @@ class Granite3Point2InputOutputProcessor(ModelDirectInputOutputProcessor):
             if output.startswith("<tool_call>"):
                 raise NotImplementedError("TODO: Implement tool call parsing")
 
+            # Parse out citations, documents and hallucinations
+            try:
+                parsed_output = parse_model_output(output)
+            except Exception as err:
+                raise ValueError(
+                    "Failed to parse citations, documents and hallucinations "
+                    "from model ouput."
+                ) from err
+
             results.append(
                 ChatCompletionResult(
                     next_message=AssistantMessage(
+                        citations=parsed_output["citations"],
                         content=output,
+                        documents=parsed_output["docs"],
+                        hallucinations=parsed_output["hallucinations"],
                         reasoning_content=cot,
                         raw=original_output,
                     )

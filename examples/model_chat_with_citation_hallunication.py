@@ -11,7 +11,6 @@ import pprint
 
 # Local
 from granite_io import make_backend, make_io_processor
-from granite_io.io.model_output_parser import parse_model_output
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 model_name = "granite3.2:8b"
@@ -33,13 +32,20 @@ documents = [
 # With RAG and citations
 outputs = io_processor.create_chat_completion(
     ChatCompletionInputs(
-        messages=messages, documents=documents, controls={"citations": True}
+        messages=messages,
+        documents=documents,
+        controls={"citations": True, "hallucinations": True},
     )
 )
-print(">> Response:\n\n")
+print("\n\n>> Response:\n")
 response = outputs.results[0].next_message.content
 print(response)
 
-print("\n\n>> Extract response into text, citation and hallucination constiuents:\n\n")
-parsed_output = parse_model_output(response)
-pprint.pprint(parsed_output, sort_dicts=False)
+print("\n\n>> Get documents:\n")
+pprint.pprint(outputs.results[0].next_message.documents, sort_dicts=False)
+
+print("\n\n>> Get citations:\n")
+pprint.pprint(outputs.results[0].next_message.citations, sort_dicts=False)
+
+print("\n\n>> Get hallucinations:\n")
+pprint.pprint(outputs.results[0].next_message.hallucinations, sort_dicts=False)

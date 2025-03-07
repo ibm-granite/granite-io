@@ -13,7 +13,7 @@ import re
 import pytest
 
 # Local
-from granite_io.io.model_output_parser import parse_model_output
+from granite_io.io.granite_output_parser import parse_model_output
 
 TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "testdata")
 

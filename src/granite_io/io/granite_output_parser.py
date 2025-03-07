@@ -1,3 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+Parser which receives Granite model output and returns the constituents of the output.
+
+The input to the parser is assumed to be as follows:
+
+    response_text
+
+    # Citations:
+    citations_text
+
+    # Hallucinations:
+    hallucinations_text
+
+The output from the parser returns a dictionary as follows:
+
+    "citations": List of citations
+    "docs": List of document references
+    "hallucinations": List of hallucinations
+    "response": Model reponse text without the above constituents
+
+"""
+
 # Standard
 import copy
 import logging
