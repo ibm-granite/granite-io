@@ -607,7 +607,7 @@ class Granite3Point2InputOutputProcessor(ModelDirectInputOutputProcessor):
                 ChatCompletionResult(
                     next_message=AssistantMessage(
                         citations=parsed_output["citations"],
-                        content=output,
+                        content=parsed_output["response"],
                         documents=parsed_output["docs"],
                         hallucinations=parsed_output["hallucinations"],
                         reasoning_content=cot,

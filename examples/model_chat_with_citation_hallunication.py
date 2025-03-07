@@ -37,15 +37,19 @@ outputs = io_processor.create_chat_completion(
         controls={"citations": True, "hallucinations": True},
     )
 )
+print("\n\n>> Model raw output:\n")
+response = outputs.results[0].next_message.raw
+print(response)
+
 print("\n\n>> Response:\n")
 response = outputs.results[0].next_message.content
 print(response)
 
-print("\n\n>> Get documents:\n")
-pprint.pprint(outputs.results[0].next_message.documents, sort_dicts=False)
-
-print("\n\n>> Get citations:\n")
+print("\n\n>> Citations:\n")
 pprint.pprint(outputs.results[0].next_message.citations, sort_dicts=False)
 
-print("\n\n>> Get hallucinations:\n")
+print("\n\n>> Documents:\n")
+pprint.pprint(outputs.results[0].next_message.documents, sort_dicts=False)
+
+print("\n\n>> Hallucinations:\n")
 pprint.pprint(outputs.results[0].next_message.hallucinations, sort_dicts=False)

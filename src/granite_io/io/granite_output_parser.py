@@ -30,6 +30,9 @@ import re
 # Third Party
 from nltk import sent_tokenize  # pylint: disable=import-error
 
+_CITATION_START = "# Citations:"
+_HALLUCINATION_START = "# Hallucinations:"
+
 
 def _find_substring_in_text(substring: str, text: str) -> list[int]:
     """
@@ -530,20 +533,20 @@ def _split_model_output_into_parts(model_output: str) -> tuple[str, str, str]:
     citations_text = ""
     hallucinations_text = ""
 
-    if "# Hallucinations:" in model_output and "# Citations:" not in model_output:
-        response_text, hallucinations_text = model_output.split("# Hallucinations:")
-    elif "# Citations:" in model_output and "# Hallucinations:" not in model_output:
-        response_text, citations_text = model_output.split("# Citations:")
-    elif "# Citations:" in model_output and "# Hallucinations:" in model_output:
-        pre_citation_split, post_citation_split = model_output.split("# Citations:")
-        if "# Hallucinations:" in pre_citation_split:
+    if _HALLUCINATION_START in model_output and _CITATION_START not in model_output:
+        response_text, hallucinations_text = model_output.split(_HALLUCINATION_START)
+    elif _CITATION_START in model_output and _HALLUCINATION_START not in model_output:
+        response_text, citations_text = model_output.split(_CITATION_START)
+    elif _CITATION_START in model_output and _HALLUCINATION_START in model_output:
+        pre_citation_split, post_citation_split = model_output.split(_CITATION_START)
+        if _HALLUCINATION_START in pre_citation_split:
             response_text, hallucinations_text = pre_citation_split.split(
-                "# Hallucinations:"
+                _HALLUCINATION_START
             )
             citations_text = post_citation_split
         else:
             citations_text, hallucinations_text = post_citation_split.split(
-                "# Hallucinations:"
+                _HALLUCINATION_START
             )
             response_text = pre_citation_split
     else:
