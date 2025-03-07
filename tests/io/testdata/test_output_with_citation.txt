@@ -1,0 +1,4 @@
+RAG stands for Retrieval-Augmented Generation <co>1</co>. It's a technique that combines the strengths of generative AI models and information retrieval systems. Essentially, it enables generative AI models to access and utilize data from external sources during the generation process, thereby enhancing their knowledge base beyond what was initially programmed or learned by them. This allows for more accurate, diverse, and contextually appropriate outputs.
+
+# Citations:
+<co>1</co> Document 1: "RAG, retrieval-augmented generation, is a technique that grants generative artificial intelligence models information retrieval capabilities."
