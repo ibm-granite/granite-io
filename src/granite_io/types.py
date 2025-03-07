@@ -21,6 +21,36 @@ class FunctionCall(pydantic.BaseModel):
     arguments: dict[str, Any] | None
 
 
+class Hallucination(pydantic.BaseModel):
+    """Hallucination data as returned by the model output parser"""
+
+    hallucination_id: str
+    risk: str
+    response_text: str
+    response_begin: int
+    response_end: int
+
+
+class Citation(pydantic.BaseModel):
+    """Citation data as returned by the model output parser"""
+
+    citation_id: str
+    doc_id: str
+    context_text: str
+    context_begin: int
+    context_end: int
+    response_text: str
+    response_begin: int
+    response_end: int
+
+
+class Document(pydantic.BaseModel):
+    """Document data as returned by the model output parser"""
+
+    doc_id: str
+    text: str
+
+
 class _ChatMessageBase(pydantic.BaseModel):
     """Base class for all message types.
 
@@ -48,6 +78,9 @@ class AssistantMessage(_ChatMessageBase):
     reasoning_content: str | None = None
     # Raw response content without any parsing for re-serialization
     _raw: str | None = None
+    citations: list[Citation] = []
+    documents: list[Document] = []
+    hallucinations: list[Hallucination] = []
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

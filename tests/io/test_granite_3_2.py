@@ -23,11 +23,18 @@ from granite_io.io.granite_3_2 import (
     Granite3Point2InputOutputProcessor,
     _Granite3Point2Inputs,
 )
+from granite_io.io.granite_output_parser import (
+    _CITATION_START,
+    _HALLUCINATION_START,
+)
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    Citation,
+    Document,
     GenerateResult,
     GenerateResults,
+    Hallucination,
     UserMessage,
 )
 
@@ -97,6 +104,33 @@ cot_pre_output = (
     f"{pre_thought} {_COT_START} {thought} {_COT_END_ALTERNATIVES[-1]} {response}"
 )
 
+no_constituent_output = "Mad about dog!"
+citation_example = '<co>1</co> Document 1: "Dog info"'
+citation_output = (
+    f"{no_constituent_output}<co>1</co>\n\n{_CITATION_START}\n\n{citation_example}\n\n"
+)
+hallucination_example = "1. Risk low: Mad about dog"
+citation_hallucination_output = (
+    f"{citation_output}{_HALLUCINATION_START}\n\n{hallucination_example}\n\n"
+)
+expected_citation = Citation(
+    citation_id="1",
+    doc_id="1",
+    context_text="Dog info",
+    context_begin=0,
+    context_end=8,
+    response_text="Mad about dog!",
+    response_begin=0,
+    response_end=14,
+)
+expected_document = Document(doc_id="1", text="Dog info")
+expected_hallucination = Hallucination(
+    hallucination_id="1",
+    risk="low",
+    response_text="Mad about dog",
+    response_begin=0,
+    response_end=13,
+)
 ## Tests #######################################################################
 
 
@@ -236,3 +270,54 @@ def test_cot_parsing(inputs, output, exp_thought, exp_resp):
     assert result.reasoning_content == exp_thought
     assert result.content == exp_resp
     assert result.raw == output
+
+
+@pytest.mark.parametrize(
+    [
+        "inputs",
+        "output",
+        "exp_document",
+        "exp_citation",
+        "exp_hallucination",
+        "exp_resp",
+    ],
+    [
+        # No constituents
+        (no_thinking_input, no_constituent_output, [], [], [], no_constituent_output),
+        # Citation
+        (
+            no_thinking_input,
+            citation_output,
+            [expected_document],
+            [expected_citation],
+            [],
+            no_constituent_output,
+        ),
+        # Citation and hallucination
+        (
+            no_thinking_input,
+            citation_hallucination_output,
+            [expected_document],
+            [expected_citation],
+            [expected_hallucination],
+            no_constituent_output,
+        ),
+    ],
+)
+def test_citation_hallucination_parsing(
+    inputs, output, exp_document, exp_citation, exp_hallucination, exp_resp
+):
+    """Test the parsing logic for Rag and hallucinations output"""
+    proc = Granite3Point2InputOutputProcessor()
+    generated = GenerateResults(
+        results=[
+            GenerateResult(
+                completion_string=output, completion_tokens=[], stop_reason="?"
+            )
+        ]
+    )
+    result = proc.output_to_result(generated, inputs).results[0].next_message
+    assert result.content == exp_resp
+    assert result.citations == exp_citation
+    assert result.documents == exp_document
+    assert result.hallucinations == exp_hallucination
