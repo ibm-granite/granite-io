@@ -58,7 +58,7 @@ dev = [
     "pytest-retry~=1.7",
     "ruff==0.9.9",
     "tox",
-    "vcrpy==5.1.0",  # pin to avoid flakey newer
+    "vcrpy==7.0.0",  # pin to avoid flakey newer
     "granite-io[transformers]",
     "granite-io[openai]",
     "granite-io[litellm]",
