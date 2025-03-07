@@ -26,6 +26,7 @@ from granite_io.io.granite_3_2 import (
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    ChatCompletionResults,
     GenerateResult,
     GenerateResults,
     UserMessage,
@@ -200,10 +201,11 @@ def test_basic_inputs_to_string():
 def test_run_processor(backend_x: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
-    _ = io_processor.create_chat_completion(inputs)
+    results: ChatCompletionResults = io_processor.create_chat_completion(inputs)
 
-    # TODO: Once the prerelease model has settled down and we have implemented
-    # temperature controls, verify outputs
+    assert isinstance(results, ChatCompletionResults)
+    assert len(results.results) == 1
+    # TODO: Verify outputs in greater detail
 
 
 @pytest.mark.parametrize(

@@ -29,26 +29,23 @@ if TYPE_CHECKING:
 )
 class OpenAIBackend(Backend):
     _model_str: str
-    _openai_client: "openai.OpenAI"
+    _openai_client: "openai.AsyncOpenAI"
 
     def __init__(self, config: aconfig.Config):
-        self._model_str = config.model_name
-        api_key = config.get("openai_api_key", "ollama")
-        base_url = config.get("openai_base_url", "http://localhost:11434/v1")
-
-        default_headers = {"RITS_API_KEY": api_key} if api_key else None
-
         with import_optional("openai"):
             # Third Party
             import openai
 
-        self.openai_client = openai.OpenAI(
-            base_url=base_url,
-            api_key=api_key,
-            default_headers=default_headers,
+        self._model_str = config.model_name
+        api_key = config.get("openai_api_key", "ollama")
+        base_url = config.get("openai_base_url", "http://localhost:11434/v1")
+        default_headers = {"RITS_API_KEY": api_key} if api_key else None
+
+        self._openai_client = openai.AsyncOpenAI(
+            base_url=base_url, api_key=api_key, default_headers=default_headers
         )
 
-    def generate(
+    async def generate(
         self, input_str: str, num_return_sequences: int = 1
     ) -> GenerateResults:
         """Run a direct /completions call"""
@@ -58,7 +55,7 @@ class OpenAIBackend(Backend):
                 f"Invalid value for num_return_sequences ({num_return_sequences})"
             )
 
-        result = self.openai_client.completions.create(
+        result = await self._openai_client.completions.create(
             model=self._model_str,
             prompt=input_str,
             best_of=num_return_sequences,

@@ -6,6 +6,8 @@ Base classes for Input/Output processors
 
 # Standard
 import abc
+import asyncio
+import threading
 
 # Third Party
 import aconfig
@@ -21,6 +23,32 @@ from granite_io.types import (
 )
 
 
+def _workaround_for_horrible_design_flaw_in_asyncio(coroutine_to_run):
+    """
+    Horrible hack that seems to be the only way to call a coroutine from a non-async
+    function that is being called from an async function.
+
+    Creates a background thread with its own event loop. The background thread then
+    runs a single task in that event loop.
+    """
+    result_holder = []
+
+    def _callback():
+        # Python's thread library requires you to write your own code to return results
+        # or raise exceptions from a background thread.
+        try:
+            result_holder.append(asyncio.run(coroutine_to_run))
+        except Exception as e:  # pylint: disable=W0718
+            result_holder.append(e)
+
+    thread = threading.Thread(target=_callback)
+    thread.start()
+    thread.join()
+    if isinstance(result_holder[0], Exception):
+        raise result_holder[0]
+    return result_holder[0]
+
+
 class InputOutputProcessor(FactoryConstructible):
     """
     Interface for generic input-output processors. An input-output processor exposes an
@@ -33,7 +61,7 @@ class InputOutputProcessor(FactoryConstructible):
         """By default an IO processor doesn't require config"""
 
     @abc.abstractmethod
-    def create_chat_completion(
+    async def acreate_chat_completion(
         self, inputs: ChatCompletionInputs
     ) -> ChatCompletionResult:
         """
@@ -44,6 +72,31 @@ class InputOutputProcessor(FactoryConstructible):
         :returns: The next message that the model produces when fed the specified
             inputs, plus additional information about the low-level request.
         """
+
+    def create_chat_completion(
+        self, inputs: ChatCompletionInputs
+    ) -> ChatCompletionResult:
+        """
+        Non-async version of :func:`acreate_chat_completion()`
+
+        :param inputs: Structured representation of the inputs to a chat completion
+            request, possibly including additional fields that only this input-output
+            processor can consume
+
+        :returns: The next message that the model produces when fed the specified
+            inputs, plus additional information about the low-level request.
+        """
+        # Fall back on async version of this method by default.  Subclasses may override
+        # this method if they have a more efficient way of doing non-async operation.
+        coroutine_to_run = self.acreate_chat_completion(inputs)
+        try:  # Exceptions as control flow. Sorry, asyncio forces this design on us.
+            asyncio.get_running_loop()
+        except RuntimeError:
+            # If we get here, this code is not running inside an async function.
+            return asyncio.run(coroutine_to_run)
+
+        # If we get here, this code is running inside an async function.
+        return _workaround_for_horrible_design_flaw_in_asyncio(coroutine_to_run)
 
 
 class ModelDirectInputOutputProcessor(InputOutputProcessor):
@@ -68,7 +121,7 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
         super().__init__(config)
         self._backend = backend
 
-    def create_chat_completion(
+    async def acreate_chat_completion(
         self, inputs: ChatCompletionInputs
     ) -> ChatCompletionResults:
         if self._backend is None:
@@ -77,7 +130,7 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
                 "configuring an inference backend."
             )
         input_string = self.inputs_to_string(inputs)
-        generation_results = self._backend.generate(input_string)
+        generation_results = await self._backend.generate(input_string)
         return self.output_to_result(generation_results, inputs)
 
     @abc.abstractmethod
