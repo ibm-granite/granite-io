@@ -208,6 +208,19 @@ def test_run_processor(backend_x: Backend, input_json_str: str):
     # TODO: Verify outputs in greater detail
 
 
+@pytest.mark.vcr
+@pytest.mark.block_network
+def test_multiple_return(backend_x: Backend, input_json_str: str):
+    inputs = ChatCompletionInputs.model_validate_json(input_json_str)
+    inputs = inputs.model_copy(update={"num_return_sequences": 3})
+    io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
+    results: ChatCompletionResults = io_processor.create_chat_completion(inputs)
+
+    assert isinstance(results, ChatCompletionResults)
+    assert len(results.results) == 3
+    # TODO: Verify outputs in greater detail
+
+
 @pytest.mark.parametrize(
     ["inputs", "output", "exp_thought", "exp_resp"],
     [
