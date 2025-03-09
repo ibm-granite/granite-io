@@ -24,7 +24,7 @@ class Backend(FactoryConstructible):
     """
 
     @abc.abstractmethod
-    def generate(
+    async def generate(
         self, input_str: str, num_return_sequences: int = 1
     ) -> GenerateResults:
         """
@@ -43,7 +43,7 @@ class ChatCompletionBackend(FactoryConstructible):
     """
 
     @abc.abstractmethod
-    def create_chat_completion(self, input_chat: ChatCompletionInputs) -> str:
+    async def create_chat_completion(self, input_chat: ChatCompletionInputs) -> str:
         """
         Callback to invoke the model to generate a response.
         """

@@ -45,6 +45,9 @@ litellm = [
     "litellm",
     "python-dotenv==1.0.1",
 ]
+voting = [
+    "pandas"
+]
 dev = [
     "isort==6.0.1",
     "pre-commit>=3.0.4,<5.0",
@@ -62,6 +65,7 @@ dev = [
     "granite-io[transformers]",
     "granite-io[openai]",
     "granite-io[litellm]",
+    "granite-io[voting]",
 ]
 notebook = [
     "ipywidgets",
