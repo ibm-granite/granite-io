@@ -2,7 +2,7 @@
 
 
 # Standard
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict
 
 # Third Party
 import aconfig
@@ -34,63 +34,47 @@ class LiteLLMBackend(Backend):
     def __init__(self, config: aconfig.Config):
         self._model_str = config.model_name
 
-    async def generate(self, **kwargs) -> GenerateResults:
-        """Run a direct /completions call"""
+    def process_input(self, **kwargs: Any) -> Dict[str, Any]:
+        # TODO prompt: is required.  Want args/kwargs? (model, prompt, **kwargs)
 
-        # model is required
+        # Add required model, if missing
         if not kwargs.get("model"):
             kwargs["model"] = self._model_str
 
-        # Normalize num_return_sequences a.k.a "n"
-        n = kwargs.get("n")
-        num_return_sequences = kwargs.get("num_return_sequences")
-
-        # "n" gets priority because that is the LiteLLM kwarg
-        # "num_return_sequences" needs to be removed/renamed
-        if num_return_sequences is not None:
-            del kwargs["num_return_sequences"]
-            if not n:
-                kwargs["n"] = num_return_sequences
+        # Migrate alias kwargs to this flavor of backend
+        self.kwarg_alias(kwargs, "stop", "stop_strings")
+        self.kwarg_alias(kwargs, "n", "num_return_sequences")
 
         #
-        # Questionable validity checking -- this could be left up to the model
+        # Note: Questionable validity checking -- this could be left up to the model
         #
 
-        # TODO prompt: is required
-
-        # "Optional" model strings start with provider/
-        #    model="watsonx/ibm/granite-3-2-8b-instruct"
-        #    model="ollama/llama3.1:latest"
-
-        # n (a.k.a. num_return_sequences) validation
-        n = kwargs.get("n")
-
-        if n is not None:
-            if not isinstance(n, int) or n < 1:  # Check like the others for invalid
+        # n (a.k.a. num_return_sequences) validation (n >= 1)
+        # Setting n requires setting best_of >= n
+        n = kwargs.get("n")  # Allow default for missing/None
+        if n is not None:  # noqa SIM102
+            if not isinstance(n, int) or n < 1:
                 raise ValueError(f"Invalid value for n ({n})")
-            elif n > 1:
+            if n > 1:
                 # best_of must be >= n
                 best_of = kwargs.get("best_of")
                 if not isinstance(best_of, int) or best_of < n:
                     kwargs["best_of"] = n
 
-        # temperature: Optional[float] = None,  # Optional: Sampling temperature to use.
-        # presence_penalty: Optional[  -- is this repetition_penalty?
-            # float
-        # ] = None,  # Optional: Penalize new tokens based on whether they appear in the text so far.
-        # stop strings
-        # stop: Optional[
-            # Union[str, List[str]]
-        # ] = None,
+        return kwargs
+
+    async def generate(self, **kwargs) -> GenerateResults:
+        """Run a direct /completions call"""
 
         with import_optional("litellm"):
             # Third Party
             import litellm
 
-        result = await litellm.text_completion(**kwargs)
+        return await litellm.text_completion(**kwargs)
 
+    def process_output(self, output, **kwargs):
         results = []
-        for choice in result.choices:
+        for choice in output.choices:
             results.append(
                 GenerateResult(
                     completion_string=choice.text,

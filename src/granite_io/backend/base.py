@@ -5,6 +5,7 @@ Base class for backends
 """
 
 # Standard
+from typing import Any, Dict
 import abc
 
 # Local
@@ -23,12 +24,55 @@ class Backend(FactoryConstructible):
     be optional dependencies of this Python package.
     """
 
+    # TODO: decide between __call__ and pipeline. Don't expand kwargs 2x
+    def __call__(self, **kwargs: Any) -> GenerateResults:
+        return self.pipeline(**kwargs)
+
+    def pipeline(self, **kwargs: Any) -> GenerateResults:
+        """
+        Process input, call completion (generate), process and return output
+        """
+        return self.process_output(self.generate(**self.process_input(**kwargs)))
+
+    @abc.abstractmethod
+    def process_input(self, **kwargs) -> Dict[str, Any]:
+        """
+        Process kwargs to prepare them for completion.create() (or generate())
+
+        Args:
+            kwargs (dict): This is not just the kwargs for this function, but is
+             intended to be the inputs which are being processed (modified)
+             to be used in target backend call.
+        """
+        raise NotImplementedError()
+
     @abc.abstractmethod
     async def generate(self, **kwargs) -> GenerateResults:
         """
         Callback to invoke the model to generate a response.
         """
         raise NotImplementedError()
+
+    @abc.abstractmethod
+    def process_output(self, output, **kwargs):
+        """
+        Process output from completion.create() (or generate())
+        """
+        raise NotImplementedError()
+
+    @staticmethod
+    def kwarg_alias(kw_dict, preferred_key, alias_key):
+        """Migrate kwarg k,v from alias key to preferred key"""
+        if alias_key in kw_dict:
+            alias_value = kw_dict.get(alias_key)
+            # Alias is removed
+            del kw_dict[alias_key]
+            # Preferred key/value gets priority if both are specified
+            # TODO: optionally error on redundant kwargs(?)
+            if preferred_key not in kw_dict:
+                # Alias value is set to preferred key (iff not already set)
+                kw_dict[preferred_key] = alias_value
+        return kw_dict  # return reference for convenience
 
 
 class ChatCompletionBackend(FactoryConstructible):

@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
-# Standard
-import re
-
 # Third Party
 from litellm import UnsupportedParamsError
 import pytest
@@ -16,7 +13,7 @@ from granite_io.types import GenerateResults
 @pytest.mark.vcr
 @pytest.mark.block_network
 async def test_simple(backend_x):
-    ret = await backend_x.generate(prompt="hello")
+    ret = await backend_x(prompt="hello")
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
@@ -25,7 +22,7 @@ async def test_simple(backend_x):
 @pytest.mark.vcr
 @pytest.mark.block_network
 async def test_num_return_sequences_1(backend_x):
-    ret = await backend_x.generate(prompt="hello", num_return_sequences=1)
+    ret = await backend_x(prompt="hello", num_return_sequences=1)
     assert isinstance(ret, GenerateResults)
     assert len(ret.results) == 1
 
@@ -35,7 +32,7 @@ async def test_num_return_sequences_1(backend_x):
 @pytest.mark.block_network
 async def test_num_return_sequences_3(backend_x):
     try:
-        ret = await backend_x.generate(prompt="what is up?", num_return_sequences=3)
+        ret = await backend_x(prompt="what is up?", num_return_sequences=3)
     except UnsupportedParamsError:
         # Specific exception from LiteLLMBackend
         # xfail because LiteLLM is telling us that ollama does not support
@@ -55,11 +52,9 @@ async def test_num_return_sequences_3(backend_x):
 @pytest.mark.asyncio
 @pytest.mark.vcr
 @pytest.mark.block_network
-@pytest.mark.flaky(retries=3, delay=5)  # VCR recording flaky
 @pytest.mark.parametrize("n", [-1, 0])
 async def test_num_return_sequences_invalid(backend_x, n):
     with pytest.raises(
-            ValueError,
-            match=(f"Invalid value for (n|num_return_sequences) \({n}\)")
+        ValueError, match=(f"Invalid value for (n|num_return_sequences) \({n}\)")
     ):
-        _ = await backend_x.generate(prompt="hello", num_return_sequences=n)
+        _ = await backend_x(prompt="hello", num_return_sequences=n)

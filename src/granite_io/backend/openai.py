@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Standard
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict
 
 # Third Party
 import aconfig
@@ -45,50 +45,40 @@ class OpenAIBackend(Backend):
             base_url=base_url, api_key=api_key, default_headers=default_headers
         )
 
-    async def generate(self, **kwargs) -> GenerateResults:
-        """Run a direct /completions call"""
-
+    def process_input(self, **kwargs: Any) -> Dict[str, Any]:
         # model is required
         if not kwargs.get("model"):
             kwargs["model"] = self._model_str
 
-        # Normalize num_return_sequences a.k.a "n"
-        n = kwargs.get("n")
-        num_return_sequences = kwargs.get("num_return_sequences")
-
-        # "n" gets priority because that is the OpenAI kwarg
-        # "num_return_sequences" needs to be removed/renamed
-        if num_return_sequences is not None:
-            del kwargs["num_return_sequences"]
-            if not n:
-                kwargs["n"] = num_return_sequences
+        # Migrate alias kwargs to this flavor of backend
+        self.kwarg_alias(kwargs, "stop", "stop_strings")
+        self.kwarg_alias(kwargs, "n", "num_return_sequences")
 
         #
         # Questionable validity checking -- this could be left up to the model
         #
 
-        # TODO:
-        # frequency_penalty: Optional[float] | NotGiven = NOT_GIVEN,
-        # presence_penalty: Optional[float] | NotGiven = NOT_GIVEN,
-        # stop: Union[Optional[str], List[str], None] | NotGiven = NOT_GIVEN,
-        # temperature: Optional[float] | NotGiven = NOT_GIVEN,
-
         # n (a.k.a. num_return_sequences) validation
         n = kwargs.get("n")
 
-        if n is not None:
-            if not isinstance(n, int) or n < 1:  # Check like the others for invalid
+        if n is not None:  # noqa SIM102
+            if not isinstance(n, int) or n < 1:
                 raise ValueError(f"Invalid value for n ({n})")
-            elif n > 1:
+            if n > 1:
                 # best_of must be >= n
                 best_of = kwargs.get("best_of")
                 if not isinstance(best_of, int) or best_of < n:
                     kwargs["best_of"] = n
 
-        result = await self.openai_client.completions.create(**kwargs)
+        return kwargs
 
+    async def generate(self, **kwargs):
+        """Run a direct /completions call"""
+        return await self._openai_client.completions.create(**kwargs)
+
+    def process_output(self, output, **kwargs):
         results = []
-        for choice in result.choices:
+        for choice in output.choices:
             results.append(
                 GenerateResult(
                     completion_string=choice.text,
