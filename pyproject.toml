@@ -56,7 +56,7 @@ dev = [
     "pytest-html",
     "pytest-recording~=0.13.2",
     "pytest-retry~=1.7",
-    "ruff==0.9.9",
+    "ruff==0.9.10",
     "tox",
     "vcrpy==5.1.0",  # pin to avoid flakey newer
     "granite-io[transformers]",
