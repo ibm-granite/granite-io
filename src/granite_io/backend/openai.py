@@ -60,6 +60,7 @@ class OpenAIBackend(Backend):
             prompt=input_str,
             best_of=num_return_sequences,
             n=num_return_sequences,
+            max_tokens=1024,  # TODO: make this configurable
         )
         results = []
         for choice in result.choices:

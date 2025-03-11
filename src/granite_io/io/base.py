@@ -17,7 +17,6 @@ from granite_io.backend.base import Backend, ChatCompletionBackend
 from granite_io.factory import FactoryConstructible
 from granite_io.types import (
     ChatCompletionInputs,
-    ChatCompletionResult,
     ChatCompletionResults,
     GenerateResults,
 )
@@ -63,7 +62,7 @@ class InputOutputProcessor(FactoryConstructible):
     @abc.abstractmethod
     async def acreate_chat_completion(
         self, inputs: ChatCompletionInputs
-    ) -> ChatCompletionResult:
+    ) -> ChatCompletionResults:
         """
         :param inputs: Structured representation of the inputs to a chat completion
             request, possibly including additional fields that only this input-output
@@ -75,7 +74,7 @@ class InputOutputProcessor(FactoryConstructible):
 
     def create_chat_completion(
         self, inputs: ChatCompletionInputs
-    ) -> ChatCompletionResult:
+    ) -> ChatCompletionResults:
         """
         Non-async version of :func:`acreate_chat_completion()`
 
@@ -130,7 +129,9 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
                 "configuring an inference backend."
             )
         input_string = self.inputs_to_string(inputs)
-        generation_results = await self._backend.generate(input_string)
+        generation_results = await self._backend.generate(
+            input_string, num_return_sequences=inputs.num_return_sequences
+        )
         return self.output_to_result(generation_results, inputs)
 
     @abc.abstractmethod
