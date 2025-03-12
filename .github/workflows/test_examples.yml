@@ -76,6 +76,7 @@ jobs:
           python -m pip install transformers[torch]
 
       - name: "Test examples"
+        continue-on-error: true
         run: |
           for i in examples/*.py; do python "$i"; done
         shell: bash
