@@ -77,7 +77,7 @@ jobs:
 
       - name: "Test examples"
         run: |
-          for i in examples/*.py; do python $i; done
+          for i in examples/*.py; do python "$i"; done
         shell: bash
 
       - name: "Test notebooks"
