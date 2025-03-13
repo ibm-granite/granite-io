@@ -76,13 +76,13 @@ jobs:
         run: |
           tox -e examples
 
-      # Disabling for now as notebook is causing different
-      # unexplained issues in CI. TDO: Re-enable when working
-      # again consistenly.
-      #- name: "Test notebooks"
-      #  id: testnotebooks
-      #  run: |
-      #    tox -e notebooks
+      # TODO: Get working with tox target
+      - name: "Test notebooks"
+        id: testnotebooks
+        run: |
+          pip install nltk
+          python -m nltk.downloader punkt punkt_tab  # Download punkt tokenizers
+          jupyter execute notebooks/io.ipynb  # --output='{notebook_name}_test_output'
 
       - name: "Test README code snippet"
         run: |
