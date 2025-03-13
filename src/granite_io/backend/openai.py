@@ -46,6 +46,11 @@ class OpenAIBackend(Backend):
         )
 
     def process_input(self, **kwargs: Any) -> Dict[str, Any]:
+        # From ChatCompletionInputs we have extra stuff that is not model input
+        kwargs.pop("messages", None)
+        kwargs.pop("tools", None)
+        kwargs.pop("thinking", None)
+
         # model is required
         if not kwargs.get("model"):
             kwargs["model"] = self._model_str
@@ -74,6 +79,7 @@ class OpenAIBackend(Backend):
 
     async def generate(self, **kwargs):
         """Run a direct /completions call"""
+        # pylint: disable-next=missing-kwoa
         return await self._openai_client.completions.create(**kwargs)
 
     def process_output(self, output, **kwargs):

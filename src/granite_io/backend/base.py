@@ -25,14 +25,16 @@ class Backend(FactoryConstructible):
     """
 
     # TODO: decide between __call__ and pipeline. Don't expand kwargs 2x
-    def __call__(self, **kwargs: Any) -> GenerateResults:
-        return self.pipeline(**kwargs)
+    async def __call__(self, **kwargs: Any) -> GenerateResults:
+        return await self.pipeline(**kwargs)
 
-    def pipeline(self, **kwargs: Any) -> GenerateResults:
+    async def pipeline(self, **kwargs: Any) -> GenerateResults:
         """
         Process input, call completion (generate), process and return output
         """
-        return self.process_output(self.generate(**self.process_input(**kwargs)))
+        inputs = self.process_input(**kwargs)
+        output = await self.generate(**inputs)
+        return self.process_output(output)
 
     @abc.abstractmethod
     def process_input(self, **kwargs) -> Dict[str, Any]:

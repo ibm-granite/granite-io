@@ -89,28 +89,22 @@ class TransformersBackend(Backend):
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(config.model_name)
         self._executor = concurrent.futures.ThreadPoolExecutor()
 
-    def pipeline(self, **kwargs: Any) -> GenerateResults:
+    async def pipeline(self, **kwargs: Any) -> GenerateResults:
         """
         Process input, call completion (generate), process and return output
 
         Override to pass inputs for prefix tokens trimming.
         """
         inputs = self.process_input(**kwargs)
-        return self.process_output(self.generate(**inputs), inputs=inputs)
+        return self.process_output(await self.generate(**inputs), inputs=inputs)
 
     async def generate(self, **kwargs):
-
-        # TODO: rebase merge generation_inputs?
-        # return self._model.generate(
-            # **kwargs["model_input"],
-            # generation_config=kwargs["generation_config"],
-
-        # TODO: rebase merge generation_inputs?
-        generation_inputs = self._prepare_for_generate(**kwargs)
+        generation_inputs = _GenerationInputs(**kwargs)
 
         # Wrap the call to the non-async Transformers library in a thread pool
         concurrent_futures_future = self._executor.submit(
-            self._generate_callback, generation_inputs
+            self._generate_callback,
+            generation_inputs,
         )
         async_future = asyncio.wrap_future(concurrent_futures_future)
         return await async_future
@@ -118,6 +112,7 @@ class TransformersBackend(Backend):
     def process_input(self, **kwargs: Any) -> Dict[str, Any]:
         """Subroutine that encapsulates all the prerequisites
         that are necessary to call ``AutoModelForCausalLM.generate()``."""
+
         # model is required
         if not kwargs.get("model"):
             kwargs["model"] = self._model_str

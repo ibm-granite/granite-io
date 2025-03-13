@@ -41,6 +41,11 @@ class LiteLLMBackend(Backend):
         if not kwargs.get("model"):
             kwargs["model"] = self._model_str
 
+        # From ChatCompletionInputs we have extra stuff that is not model input
+        kwargs.pop("messages", None)
+        kwargs.pop("tools", None)
+        kwargs.pop("thinking", None)
+
         # Migrate alias kwargs to this flavor of backend
         self.kwarg_alias(kwargs, "stop", "stop_strings")
         self.kwarg_alias(kwargs, "n", "num_return_sequences")
@@ -63,14 +68,14 @@ class LiteLLMBackend(Backend):
 
         return kwargs
 
-    async def generate(self, **kwargs) -> GenerateResults:
+    async def generate(self, **kwargs):
         """Run a direct /completions call"""
 
         with import_optional("litellm"):
             # Third Party
             import litellm
 
-        return await litellm.text_completion(**kwargs)
+        return await litellm.atext_completion(**kwargs)
 
     def process_output(self, output, **kwargs):
         results = []
