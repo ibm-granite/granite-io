@@ -166,6 +166,10 @@ class TransformersBackend(Backend):
             for k, v in model_input.items()
         }
 
+        # transformers needs the tokenizer when stop_strings are given
+        if kwargs.get("stop_strings"):
+            model_input["tokenizer"] = self._tokenizer
+
         # The generate() method sometimes needs to know what is the integer ID
         # of the padding token, and for some reason this critical piece of information
         # isn't included in the serialized model. We get it from the tokenizer.
@@ -209,6 +213,7 @@ class TransformersBackend(Backend):
             # Make sure you specify this token explicitly, or you will have
             # a bad time.
             eos_token_id=self._tokenizer.eos_token_id,
+            stop_strings=kwargs.get("stop_strings"),
         )
 
         # Parameters for constrained generation are **not** passed to generate()
@@ -240,7 +245,7 @@ class TransformersBackend(Backend):
         # for i, sequence in enumerate(model_output.sequences):
         for sequence in output.sequences:
             full_token_sequence = sequence.cpu().tolist()
-            generated_tokens = full_token_sequence[input_len:] if inputs else []
+            generated_tokens = full_token_sequence[input_len:]
 
             # The generate() method doesn't explicitly tell us why it stopped
             # generating. We are supposed to infer that from the output.
@@ -255,6 +260,17 @@ class TransformersBackend(Backend):
             # Of course, the model does not have a pointer to its tokenizer, so
             # we need to post-process the model's output to get a usable string.
             completion_string = self._tokenizer.decode(generated_tokens)
+
+            # Now we can see if the stop reason was actually a stop string.
+            if stop_strings := inputs["generation_config"].stop_strings:
+                if isinstance(stop_strings, str):
+                    stop_strings = [stop_strings]
+                for s in stop_strings:
+                    if completion_string.endswith(s):
+                        completion_string = completion_string.removesuffix(s)
+                        stop_reason = "stop"
+                        break
+
             generated_results.append(
                 GenerateResult(
                     completion_string=completion_string,

@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: March 13, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","stop":"chuck"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '373'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - AsyncOpenAI/Python 1.66.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.66.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    content: '{"id":"cmpl-148","object":"text_completion","created":1741906703,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"The
+      phrase \"how much wood a wood","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":113,"completion_tokens":10,"total_tokens":123}}
+
+      '
+    headers:
+      Content-Length:
+      - '285'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 13 Mar 2025 22:58:23 GMT
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

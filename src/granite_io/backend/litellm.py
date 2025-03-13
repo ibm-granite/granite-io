@@ -54,6 +54,10 @@ class LiteLLMBackend(Backend):
         # Note: Questionable validity checking -- this could be left up to the model
         #
 
+        # LiteLLM throws an error if stop is str and not array
+        if isinstance(kwargs.get("stop"), str):
+            kwargs["stop"] = [kwargs["stop"]]
+
         # n (a.k.a. num_return_sequences) validation (n >= 1)
         # Setting n requires setting best_of >= n
         n = kwargs.get("n")  # Allow default for missing/None

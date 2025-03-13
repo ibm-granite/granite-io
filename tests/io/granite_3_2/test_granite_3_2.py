@@ -64,6 +64,15 @@ INPUT_JSON_STRS = {
     "thinking": true
 }
 """,
+    "stop_strings": """
+{
+    "messages":
+        [
+            {"role": "user", "content": "How much wood could a wood chuck chuck?"}
+        ],
+    "stop": "woodchuck"
+}
+""",
 }
 
 
@@ -237,10 +246,22 @@ def test_basic_inputs_to_string():
 def test_run_processor(backend_x: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
-    results: ChatCompletionResults = io_processor.create_chat_completion(inputs)
+    outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
 
-    assert isinstance(results, ChatCompletionResults)
-    assert len(results.results) == 1
+    assert isinstance(outputs, ChatCompletionResults)
+    assert len(outputs.results) == 1
+
+    content = outputs.results[0].next_message.content
+    assert content  # Make sure we don't get empty result (I had a bug)
+
+    # Test for stop reason
+    if inputs.stop:
+        stop = inputs.stop
+        # Note: currently transformers includes the stop tokens,
+        # but OpenAI does not. So, either endswith or not-in.
+        assert stop not in content
+        assert outputs.results[0].next_message.stop_reason == "stop"
+
     # TODO: Verify outputs in greater detail
 
 

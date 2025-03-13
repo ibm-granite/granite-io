@@ -134,9 +134,7 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
         kwargs = inputs.model_dump()
         kwargs["prompt"] = prompt
 
-        model_inputs = self._backend.process_input(**kwargs)
-        generation_results = await self._backend.generate(**model_inputs)
-        model_output = self._backend.process_output(generation_results)
+        model_output = await self._backend(**kwargs)
 
         return self.output_to_result(output=model_output, inputs=inputs)
 
