@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"model":"granite3.2:2b","prompt":"hello","best_of":1,"n":1}'
+    body: '{"model":"granite3.2:2b","prompt":"hello"}'
     headers:
       accept:
       - application/json
@@ -9,7 +9,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '60'
+      - '42'
       content-type:
       - application/json
       host:
@@ -39,7 +39,7 @@ interactions:
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-714","object":"text_completion","created":1741212665,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Hello!
+    content: '{"id":"cmpl-411","object":"text_completion","created":1741222540,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Hello!
       How can I assist you today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":44,"completion_tokens":10,"total_tokens":54}}
 
       '
@@ -49,7 +49,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 05 Mar 2025 22:11:05 GMT
+      - Thu, 06 Mar 2025 00:55:40 GMT
     http_version: HTTP/1.1
     status_code: 200
 version: 1

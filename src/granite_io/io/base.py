@@ -129,9 +129,14 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
                 "Attempted to call create_chat_completion() without "
                 "configuring an inference backend."
             )
-        input_string = self.inputs_to_string(inputs)
-        generation_results = await self._backend.generate(input_string)
-        return self.output_to_result(generation_results, inputs)
+
+        prompt = self.inputs_to_string(inputs)
+        kwargs = inputs.model_dump()
+        kwargs["prompt"] = prompt
+
+        model_output = await self._backend(**kwargs)
+
+        return self.output_to_result(output=model_output, inputs=inputs)
 
     @abc.abstractmethod
     def inputs_to_string(

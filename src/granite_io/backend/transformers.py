@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Standard
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Dict
 import asyncio
 import concurrent.futures
 import dataclasses
@@ -89,62 +89,48 @@ class TransformersBackend(Backend):
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(config.model_name)
         self._executor = concurrent.futures.ThreadPoolExecutor()
 
-    async def generate(
-        self, input_str: str, num_return_sequences: int = 1
-    ) -> GenerateResults:
-        if num_return_sequences < 1:
-            raise ValueError(
-                f"Invalid value for num_return_sequences ({num_return_sequences})"
-            )
-        generation_inputs = self._prepare_for_generate(
-            input_str, num_return_sequences=num_return_sequences
-        )
+    async def pipeline(self, **kwargs: Any) -> GenerateResults:
+        """
+        Process input, call completion (generate), process and return output
+
+        Override to pass inputs for prefix tokens trimming.
+        """
+        inputs = self.process_input(**kwargs)
+        return self.process_output(await self.generate(**inputs), inputs=inputs)
+
+    async def generate(self, **kwargs):
+        generation_inputs = _GenerationInputs(**kwargs)
 
         # Wrap the call to the non-async Transformers library in a thread pool
         concurrent_futures_future = self._executor.submit(
-            self._generate_callback, generation_inputs
+            self._generate_callback,
+            generation_inputs,
         )
         async_future = asyncio.wrap_future(concurrent_futures_future)
-        model_output = await async_future
+        return await async_future
 
-        # The result of generate() is of course the prompt concatenated with the
-        # additional tokens generated. Strip off the prompt.
-        generated_results = []
-
-        # for i, sequence in enumerate(model_output.sequences):
-        for sequence in model_output.sequences:
-            full_token_sequence = sequence.cpu().tolist()
-            generated_tokens = full_token_sequence[
-                len(generation_inputs.model_input["input_ids"][0]) :
-            ]
-
-            # The generate() method doesn't explicitly tell us why it stopped
-            # generating. We are supposed to infer that from the output.
-            if generated_tokens[-1] == self._tokenizer.eos_token_id:
-                stop_reason = "end_of_turn"
-                # We're also supposed to strip off the end-of-turn tokens ourselves.
-                generated_tokens = generated_tokens[:-1]
-            else:
-                stop_reason = "out_of_tokens"
-
-            # Of course, the model does not have a pointer to its tokenizer, so
-            # we need to post-process the model's output to get a usable string.
-            completion_string = self._tokenizer.decode(generated_tokens)
-            generated_results.append(
-                GenerateResult(
-                    completion_string=completion_string,
-                    completion_tokens=generated_tokens,
-                    stop_reason=stop_reason,
-                )
-            )
-
-        return GenerateResults(results=generated_results)
-
-    def _prepare_for_generate(
-        self, prompt: str, num_return_sequences: int = 1
-    ) -> _GenerationInputs:
+    def process_input(self, **kwargs: Any) -> Dict[str, Any]:
         """Subroutine that encapsulates all the prerequisites
         that are necessary to call ``AutoModelForCausalLM.generate()``."""
+
+        # model is required
+        if not kwargs.get("model"):
+            kwargs["model"] = self._model_str
+
+        # Migrate alias kwargs to this flavor of backend
+        self.kwarg_alias(kwargs, "stop_strings", "stop")
+        self.kwarg_alias(kwargs, "num_return_sequences", "n")
+
+        # Validation
+
+        n = kwargs.get("num_return_sequences", 1)
+        num_beams = kwargs.get("num_beams", 1)
+
+        if n is not None:  # noqa SIM102
+            if not isinstance(n, int) or n < 1:
+                raise ValueError(f"Invalid value for num_return_sequences ({n})")
+            if n > 1 and (not isinstance(num_beams, int) or num_beams < n):
+                num_beams = n
 
         # Import packages from extras "transformers"
         with import_optional("transformers"):
@@ -155,7 +141,7 @@ class TransformersBackend(Backend):
         # Turn the conversation prefix into tokens for input to the model.
         model_input = self._tokenizer(
             # The conversation up to this point
-            prompt,
+            kwargs.get("prompt"),
             # Tell the tokenizer to return a tensor instead of a Python list.
             # The model expects to receive tensors as input, so you almost always
             # need to set this.
@@ -180,6 +166,10 @@ class TransformersBackend(Backend):
             for k, v in model_input.items()
         }
 
+        # transformers needs the tokenizer when stop_strings are given
+        if kwargs.get("stop_strings"):
+            model_input["tokenizer"] = self._tokenizer
+
         # The generate() method sometimes needs to know what is the integer ID
         # of the padding token, and for some reason this critical piece of information
         # isn't included in the serialized model. We get it from the tokenizer.
@@ -201,12 +191,9 @@ class TransformersBackend(Backend):
         # to pass them to the constructor for another class, then pass the
         # resulting object to model.generate().
         generation_config = transformers.GenerationConfig(
-            max_new_tokens=1024,  # TEMPORARY
-            # max_new_tokens=(None if sampling_params.max_tokens == 0
-            #                 else sampling_params.max_tokens),
-            # Transformers generate() will return multiple sequences by default
-            num_return_sequences=num_return_sequences,
-            num_beams=num_return_sequences,
+            max_new_tokens=kwargs.get("max_new_tokens", 1024),  # TEMPORARY
+            num_return_sequences=n,
+            num_beams=num_beams,
             # Scores are wrong anyhow, so don't bother
             output_scores=False,
             # If you don't set this flag, you'll get a string back instead of
@@ -217,22 +204,16 @@ class TransformersBackend(Backend):
             # Wrong values (often including the default) will produce very bad output.
             # LOWER values result in MORE penalty for repetition, because of course they
             # do.
-            # TODO: Re-enable
-            # repetition_penalty = sampling_params.repetition_penalty,
-            # TODO: Re-enable
-            # top_p=(sampling_params.top_p
-            #        if sampling_params.strategy is SamplingStrategy.top_p
-            #        else 1.0),
-            # top_k=(sampling_params.top_k
-            #        if sampling_params.strategy is SamplingStrategy.top_k
-            #        else None),
-            # TODO: Re-enable
-            # temperature=sampling_params.temperature,
+            repetition_penalty=kwargs.get("repetition_penalty", 1.0),
+            top_p=kwargs.get("top_p", 1.0),
+            top_k=kwargs.get("top_k", 50),
+            temperature=kwargs.get("temperature", 1.0),
             # See long note above.
             pad_token_id=pad_token_id,
             # Make sure you specify this token explicitly, or you will have
             # a bad time.
             eos_token_id=self._tokenizer.eos_token_id,
+            stop_strings=kwargs.get("stop_strings"),
         )
 
         # Parameters for constrained generation are **not** passed to generate()
@@ -245,11 +226,60 @@ class TransformersBackend(Backend):
         #     tokenizer, response_format
         # )
 
-        return _GenerationInputs(
-            generation_config=generation_config,
-            model_input=model_input,
-            # prefix_allowed_tokens_fn=prefix_allowed_tokens_fn
+        return dataclasses.asdict(
+            _GenerationInputs(
+                generation_config=generation_config,
+                model_input=model_input,
+                # prefix_allowed_tokens_fn=prefix_allowed_tokens_fn
+            )
         )
+
+    def process_output(self, output, *, inputs=None, **kwargs):
+        # The result of generate() is of course the prompt concatenated with the
+        # additional tokens generated. Strip off the prompt.
+        generated_results = []
+
+        # Generation inputs are needed for special processing below
+        input_len = len(inputs["model_input"]["input_ids"][0]) if inputs else 0
+
+        # for i, sequence in enumerate(model_output.sequences):
+        for sequence in output.sequences:
+            full_token_sequence = sequence.cpu().tolist()
+            generated_tokens = full_token_sequence[input_len:]
+
+            # The generate() method doesn't explicitly tell us why it stopped
+            # generating. We are supposed to infer that from the output.
+            if full_token_sequence[-1] == self._tokenizer.eos_token_id:
+                stop_reason = "end_of_turn"
+                # We're also supposed to strip off the end-of-turn tokens ourselves.
+                if generated_tokens:
+                    generated_tokens = generated_tokens[:-1]
+            else:
+                stop_reason = "out_of_tokens"
+
+            # Of course, the model does not have a pointer to its tokenizer, so
+            # we need to post-process the model's output to get a usable string.
+            completion_string = self._tokenizer.decode(generated_tokens)
+
+            # Now we can see if the stop reason was actually a stop string.
+            if stop_strings := inputs["generation_config"].stop_strings:
+                if isinstance(stop_strings, str):
+                    stop_strings = [stop_strings]
+                for s in stop_strings:
+                    if completion_string.endswith(s):
+                        completion_string = completion_string.removesuffix(s)
+                        stop_reason = "stop"
+                        break
+
+            generated_results.append(
+                GenerateResult(
+                    completion_string=completion_string,
+                    completion_tokens=generated_tokens,
+                    stop_reason=stop_reason,
+                )
+            )
+
+        return GenerateResults(results=generated_results)
 
     def _generate_callback(self, generation_inputs: _GenerationInputs) -> Any:
         """

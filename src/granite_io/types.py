@@ -81,6 +81,7 @@ class AssistantMessage(_ChatMessageBase):
     citations: list[Citation] | None = None
     documents: list[Document] | None = None
     hallucinations: list[Hallucination] | None = None
+    stop_reason: str | None = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
