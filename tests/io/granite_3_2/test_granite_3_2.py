@@ -7,12 +7,14 @@
 import json
 
 # Third Party
+from litellm.exceptions import UnsupportedParamsError
 import pytest
 import transformers
 
 # Local
 from granite_io import make_io_processor
 from granite_io.backend import Backend
+from granite_io.backend.openai import OpenAIBackend
 from granite_io.io.granite_3_2.granite_3_2 import (
     _COT_END,
     _COT_END_ALTERNATIVES,
@@ -239,6 +241,62 @@ def test_basic_inputs_to_string():
     assert chatReqBody in chatRequest
 
     assert chatRequest.endswith("")
+
+
+@pytest.mark.vcr
+@pytest.mark.block_network
+def test_completion_repetition_param(backend_x: Backend):
+    messages = [
+        {
+            "role": "user",
+            "content": "Can you answer my question?",
+        }
+    ]
+
+    # What a client might be sending to a backend
+    kwargs = {
+        "prompt": "Just give me an example of what you can do",
+        "temperature": 0.5,
+        "repetition_penalty": 0.5,
+    }
+    inputs = ChatCompletionInputs(messages=messages, **kwargs)
+
+    io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
+    try:
+        outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
+    except TypeError as te:
+        if isinstance(backend_x, OpenAIBackend):
+            pytest.xfail(str(te))
+        raise te
+
+    assert isinstance(outputs, ChatCompletionResults)
+
+
+@pytest.mark.vcr
+@pytest.mark.block_network
+def test_completion_presence_param(backend_x: Backend):
+    messages = [
+        {
+            "role": "user",
+            "content": "Can you answer my question?",
+        }
+    ]
+    kwargs = {
+        "prompt": "Just give me an example of what you can do",
+        "temperature": 0.5,
+        "presence_penalty": 0.5,
+        "frequency_penalty": 0.5,
+    }
+    inputs = ChatCompletionInputs(messages=messages, **kwargs)
+
+    io_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
+    try:
+        outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
+    except UnsupportedParamsError as upe:
+        # Specific exception from LiteLLMBackend
+        pytest.xfail(upe.message)
+
+    assert isinstance(outputs, ChatCompletionResults)
 
 
 @pytest.mark.vcr
