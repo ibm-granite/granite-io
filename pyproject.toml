@@ -83,6 +83,9 @@ issues = "https://github.com/ibm-granite/granite-io/issues"
 [tool.setuptools]
 package-dir = { "" = "src" }
 
+[tool.setuptools.package-data]
+granite_io = ["io/sequential_scaling.pdl"]
+
 [tool.setuptools_scm]
 version_file = "src/granite_io/_version.py"
 # do not include +gREV local version, required for Test PyPI upload
