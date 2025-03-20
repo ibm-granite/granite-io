@@ -9,7 +9,7 @@ from litellm import UnsupportedParamsError
 import pytest
 
 # Local
-from granite_io import get_io_processor
+from granite_io import make_io_processor
 from granite_io.backend import Backend
 from granite_io.backend.litellm import LiteLLMBackend
 from granite_io.backend.transformers import TransformersBackend
@@ -30,7 +30,7 @@ def test_numeric_voting(backend_x: Backend):
     # number of samples to keep the cassette file size small.
     SAMPLES_PER_COMPLETION = 3
 
-    base_processor = get_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
+    base_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     voting_processor = MajorityVotingProcessor(
         base_processor,
         integer_normalizer,

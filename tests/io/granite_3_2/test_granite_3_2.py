@@ -12,7 +12,7 @@ import pytest
 import transformers
 
 # Local
-from granite_io import get_io_processor
+from granite_io import make_io_processor
 from granite_io.backend import Backend
 from granite_io.backend.litellm import LiteLLMBackend
 from granite_io.backend.openai import OpenAIBackend
@@ -272,7 +272,7 @@ def test_completion_repetition_param(backend_x: Backend):
     }
     inputs = ChatCompletionInputs(messages=messages, generate_inputs=generate_inputs)
 
-    io_processor = get_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
+    io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     try:
         outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
     except TypeError as te:
@@ -303,7 +303,7 @@ def test_completion_presence_param(backend_x: Backend):
     }
     inputs = ChatCompletionInputs(messages=messages, generate_inputs=generate_inputs)
 
-    io_processor = get_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
+    io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     try:
         outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
     except UnsupportedParamsError as upe:
@@ -320,7 +320,7 @@ def test_completion_presence_param(backend_x: Backend):
 @pytest.mark.vcr
 def test_run_processor(backend_x: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
-    io_processor = get_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
+    io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
 
     assert isinstance(outputs, ChatCompletionResults)
@@ -437,7 +437,7 @@ def test_multiple_return(backend_x: Backend, input_json_str: str):
     inputs = inputs.model_copy(
         update={"generate_inputs": GenerateInputs(max_tokens=1024, n=3)}
     )
-    io_processor = get_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
+    io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     try:
         results: ChatCompletionResults = io_processor.create_chat_completion(inputs)
     except UnsupportedParamsError:

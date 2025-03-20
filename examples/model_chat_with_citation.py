@@ -11,11 +11,11 @@ citations are enabled.
 import pprint
 
 # Local
-from granite_io import get_io_processor, make_backend
+from granite_io import make_backend, make_io_processor
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 model_name = "granite3.2:8b"
-io_processor = get_io_processor(
+io_processor = make_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )
 question = "What team is the most successful hurling team in the last 10 years?"
