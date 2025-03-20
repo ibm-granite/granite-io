@@ -6,11 +6,11 @@ and an Ollama backend to serve the model.
 """
 
 # Local
-from granite_io import make_backend, make_io_processor
+from granite_io import get_io_processor, make_backend
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 model_name = "granite3.2:8b"
-io_processor = make_io_processor(
+io_processor = get_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )
 question = "Find the fastest way for a seller to visit all the cities in their region"

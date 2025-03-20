@@ -9,7 +9,7 @@ and a watsonx or ollama backend with the LiteLLM client.
 from dotenv import load_dotenv
 
 # Local
-from granite_io import make_backend, make_io_processor
+from granite_io import get_io_processor, make_backend
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 load_dotenv()
@@ -34,7 +34,7 @@ load_dotenv()
 # OPENAI_API_KEY="ollama"
 
 model_name = "Granite 3.2"
-io_processor = make_io_processor(
+io_processor = get_io_processor(
     model_name,
     backend=make_backend(
         "litellm",

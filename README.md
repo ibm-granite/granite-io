@@ -59,11 +59,11 @@ python3 sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt punkt
 Sample code snippet showing how to use the framework:
 
 ```py
-from granite_io import make_backend, make_io_processor
+from granite_io import make_backend, get_io_processor
 from granite_io.types import ChatCompletionInputs, UserMessage
 
 model_name = "granite3.2:8b"
-io_processor = make_io_processor(
+io_processor = get_io_processor(
     model_name, backend=make_backend("openai", {"model_name": model_name})
 )
 messages=[
