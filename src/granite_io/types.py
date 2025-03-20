@@ -169,6 +169,7 @@ class GenerateInputs(pydantic.BaseModel):
     top_p: Optional[float] = None
     user: Optional[str] = None
     timeout: Optional[Union[float, str, httpx.Timeout]] = None
+    extra_headers: Optional[Mapping[str, str]] = None
 
     model_config = pydantic.ConfigDict(
         # Pass through arbitrary additional keyword arguments for handling by model- or
