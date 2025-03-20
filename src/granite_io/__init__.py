@@ -15,3 +15,4 @@ from granite_io.io import (  # noqa: F401
     make_io_processor,
     output_processor,
 )
+from granite_io.io.base import make_new_io_processor  # noqa: F401

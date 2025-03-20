@@ -240,3 +240,69 @@ class OutputProcessor(FactoryConstructible):
 
         :returns: The parsed output so far
         """
+
+
+def make_new_io_processor(
+    input_processor: InputProcessor,
+    output_processor: OutputProcessor,
+    config: aconfig.Config = None,
+    backend: Backend | None = None,
+) -> ModelDirectInputOutputProcessor:
+    """
+    Creates an instance of an InputOutputProcessor based on the InputProcessor
+    and OutputProcessor passed in the function call.
+
+    :param input_processor: Processor that performs processing of input to model
+    :param input_processor: Processor that performs processing of output from the model
+    :param config: Setup config for this IO processor
+    :param backend: Handle on inference engine, required if this io processor's
+        :func:`create_chat_completion()` method is going to be used
+    """
+
+    class NewInputOutputProcessor(ModelDirectInputOutputProcessor):
+        """
+        InputOutputProcessor template.
+
+        This InputOutputProcessor is based on the input and the output processors
+        passed during creation.
+        """
+
+        def __init__(
+            self,
+            input_processor: InputProcessor,
+            output_processor: OutputProcessor,
+            config: aconfig.Config = None,
+            backend: Backend | None = None,
+        ):
+            """
+            :param input_processor: Processor that performs processing of input to
+                model
+            :param input_processor: Processor that performs processing of output from
+                the model
+            :param config: Setup config for this IO processor
+            :param backend: Handle on inference engine, required if this io processor's
+                :func:`create_chat_completion()` method is going to be used
+            """
+            super().__init__(config=config, backend=backend)
+
+            self.input_processor = input_processor
+            self.output_processor = output_processor
+
+        def inputs_to_string(
+            self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+        ) -> str:
+            return self.input_processor.transform(inputs, add_generation_prompt)
+
+        def output_to_result(
+            self,
+            output: GenerateResults,
+            inputs: ChatCompletionInputs | None = None,
+        ) -> ChatCompletionResults:
+            return self.output_processor.transform(output, inputs)
+
+    return NewInputOutputProcessor(
+        input_processor=input_processor,
+        output_processor=output_processor,
+        config=config,
+        backend=backend,
+    )
