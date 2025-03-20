@@ -257,6 +257,10 @@ def make_new_io_processor(
     :param config: Setup config for this IO processor
     :param backend: Handle on inference engine, required if this io processor's
         :func:`create_chat_completion()` method is going to be used
+
+    :returns: The IO processor
+
+    :raise: ValueError - If input or output processor is None
     """
 
     class NewInputOutputProcessor(ModelDirectInputOutputProcessor):
@@ -282,23 +286,36 @@ def make_new_io_processor(
             :param config: Setup config for this IO processor
             :param backend: Handle on inference engine, required if this io processor's
                 :func:`create_chat_completion()` method is going to be used
+
+            :raise: ValueError - If input or output processor is None
             """
             super().__init__(config=config, backend=backend)
 
-            self.input_processor = input_processor
-            self.output_processor = output_processor
+            self._input_processor = input_processor
+            self._output_processor = output_processor
+
+            if self._input_processor is None:
+                raise ValueError(
+                    "Attempted to create IO Processor without "
+                    "setting an Input Processor ."
+                )
+            if self._output_processor is None:
+                raise ValueError(
+                    "Attempted to create IO Processor without "
+                    "setting an Output Processor ."
+                )
 
         def inputs_to_string(
             self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
         ) -> str:
-            return self.input_processor.transform(inputs, add_generation_prompt)
+            return self._input_processor.transform(inputs, add_generation_prompt)
 
         def output_to_result(
             self,
             output: GenerateResults,
             inputs: ChatCompletionInputs | None = None,
         ) -> ChatCompletionResults:
-            return self.output_processor.transform(output, inputs)
+            return self._output_processor.transform(output, inputs)
 
     return NewInputOutputProcessor(
         input_processor=input_processor,

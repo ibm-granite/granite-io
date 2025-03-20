@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: March 20, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.\nRespond to every user query in a comprehensive
+      and detailed way. You can write down your thoughts and reasoning process before
+      responding. In the thought process, engage in a comprehensive cycle of analysis,
+      summarization, exploration, reassessment, reflection, backtracing, and iteration
+      to develop well-considered thinking process. In the response section, based
+      on various attempts, explorations, and reflections from the thoughts section,
+      systematically present the final solution that you deem correct. The response
+      should summarize the thought process. Write your thoughts after ''Here is my
+      thought process:'' and write your response after ''Here is my response:'' for
+      each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How much
+      wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1048'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      rits_api_key:
+      - ollama
+      user-agent:
+      - AsyncOpenAI/Python 1.66.3
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.66.3
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '1'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.5
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    content: "{\"id\":\"cmpl-476\",\"object\":\"text_completion\",\"created\":1742482872,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Here
+      is my thought process:\\n\\nThe question, \\\"How much wood could a woodchuck
+      chuck?\\\", is an idiomatic expression and its literal interpretation doesn't
+      apply to the weight of wood a woodchuck can actually move. However, it's often
+      used humorously in popular culture to express exaggeration or nonsensical reasoning.\\n\\nA
+      woodchuck, also known as a groundhog, is a burrowing mammal native to North
+      America. It's sometimes referred to as a \\\"chipmunk\\\" because of its cheek
+      pouches, but it\u2019s more closely related to squirrels.\\n\\nDespite the catchy
+      phrase and common belief that woodchucks can move substantial volumes of dirt
+      when digging burrows, actual evidence suggests they're not capable of moving
+      quantities resembling \\\"wood.\\\" \\n\\nHowever, due to their massive weight-bearing
+      paws and powerful forelimbs, woodchucks are considered the strongest members
+      of North America's rodent family. They can excavate large tunnel systems underground,
+      using approximately 30 pounds of burrowing force per push according to animal
+      studies.\\n\\nWhen asking about how much wood a woodchuck could chuck in an
+      idiomatic sense or from a fanciful point of view, we often playfully say many
+      tons, as the phrase suggests moving quantities far beyond normal activity for
+      this creature \u2013 although they'd likely never physically push enough dirt
+      to equal \\\"chucking\\\" that actual weight in the context of their behavior.\\n\\nHere
+      is my response:\\n\\nIn a fun, idiomatic, and fanciful sense, given by the phrase
+      \\\"How much wood a woodchuck could chuck,\\\" it's often humorously said that
+      these animals can move vast amounts\u2014possibly tens to hundreds of thousands
+      of pounds. This is not based on their actual physical capacities. \\n\\nWhile
+      realistically speaking, a well-fed and strong adult woodchuck might exert about
+      30 pounds of force when digging with its powerful back legs over an inch underground\u2014the
+      term \\\"wood\\\" here isn't literal soil or burrowed dirt. Instead, it's an
+      exaggeration symbolizing immense potential that the creature doesn\u2019t use
+      in its regular activities for creating tunnels or digging. This kind of response
+      reflects how the expression pokes fun at taking natural behaviors to absurd
+      extremes.\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":246,\"completion_tokens\":536,\"total_tokens\":782}}\n"
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 20 Mar 2025 15:01:12 GMT
+      Transfer-Encoding:
+      - chunked
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

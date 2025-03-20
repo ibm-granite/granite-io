@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: '{"model": "granite3.2:2b", "prompt": "### User:\n<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: March 20, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>\n\n",
+      "options": {"stop": "woodchuck"}, "stream": false, "images": []}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '441'
+      host:
+      - localhost:11434
+      user-agent:
+      - litellm/1.63.11
+    method: POST
+    uri: http://localhost:11434/api/generate
+  response:
+    content: '{"error":"option \"stop\" must be of type array"}'
+    headers:
+      Content-Length:
+      - '49'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 20 Mar 2025 15:01:20 GMT
+    http_version: HTTP/1.1
+    status_code: 500
+version: 1
