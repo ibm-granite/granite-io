@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Standard
+import os
 import re
 
 # Third Party
@@ -8,6 +9,7 @@ from litellm import UnsupportedParamsError
 import pytest
 
 # Local
+from granite_io import make_backend
 from granite_io.backend.openai import OpenAIBackend
 from granite_io.types import GenerateInputs, GenerateResults
 
@@ -47,6 +49,36 @@ async def test_num_return_sequences_3(backend_x):
 
     assert isinstance(ret, GenerateResults)
     assert num_returned == 3
+
+
+@pytest.mark.skipif(not os.environ.get("OPENAI_API_KEY"), reason="Needs OpenAI API key")
+async def test_extra_headers():
+    """Test extra_headers using manual test case against a server to verify.
+
+    Use environment variables suitable for an OpenAI backend:
+    OPENAI_BASE_URI - base URL to the provider
+    MODEL_NAME - model name override for the provider
+    OPENAI_API_KEY - api key used for the provider
+    Note:  For this specific test, we have a provider that needs
+           the API key to also be in an additional header.
+           It also passes the num_returned test (Ollama does not).
+    """
+    be = make_backend(
+        "openai",
+        {
+            "model_name": "ibm-granite/granite-8b-instruct-preview-4k",
+            "openai_api_key": "<your api key>",  # Use env var to set
+            "openai_base_url": "<your base url>",
+        },
+    )
+
+    extra_headers = {"RITS_API_KEY": os.environ.get("OPENAI_API_KEY")}
+    ret = await be(
+        GenerateInputs(prompt="what is up?", n=3, extra_headers=extra_headers)
+    )
+    num_returned = len(ret.results)
+    assert isinstance(ret, GenerateResults)
+    assert num_returned == 3  # Note: This would fail if you just hit Ollama
 
 
 @pytest.mark.asyncio

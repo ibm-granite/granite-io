@@ -38,11 +38,8 @@ class OpenAIBackend(Backend):
 
         api_key = config.get("openai_api_key", "ollama")
         base_url = config.get("openai_base_url", "http://localhost:11434/v1")
-        default_headers = {"RITS_API_KEY": api_key} if api_key else None
 
-        self._openai_client = openai.AsyncOpenAI(
-            base_url=base_url, api_key=api_key, default_headers=default_headers
-        )
+        self._openai_client = openai.AsyncOpenAI(base_url=base_url, api_key=api_key)
 
     async def generate(self, inputs: GenerateInputs):
         """Run a direct /completions call"""
