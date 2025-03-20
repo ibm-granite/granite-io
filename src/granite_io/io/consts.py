@@ -8,3 +8,7 @@ Common shared constants
 # responses.
 _GRANITE_3_2_COT_START = "Here is my thought process:"
 _GRANITE_3_2_COT_END = "Here is my response:"
+
+_GRANITE_3_2_2B_OLLAMA = "granite3.2:2b"
+_GRANITE_3_2_2B_HF = "ibm-granite/granite-3.2-2b-instruct"
+_GRANITE_3_2_MODEL_NAME = "Granite 3.2"

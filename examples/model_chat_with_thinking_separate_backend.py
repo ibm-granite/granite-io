@@ -26,14 +26,13 @@ from granite_io.types import (
 api_key = "ollama"
 base_url = "http://localhost:11434/v1"  # Ollama server hosting model
 ollama_model_name = "granite3.2:8b"
-general_model_name = "Granite 3.2"
 
 # Connect to Ollama server
 openai_client = openai.OpenAI(base_url=base_url, api_key=api_key)
 
 # Get input processor for the model type and version
 input_processor = get_input_processor(
-    general_model_name,
+    ollama_model_name,
 )
 
 # Construct the prompt for Granite 3.2 model so that it will provide reasoning or
@@ -77,7 +76,7 @@ for choice in result.choices:
 
 # Get output processor for the model type and version
 output_processor = get_output_processor(
-    general_model_name,
+    ollama_model_name,
 )
 
 # Process the output

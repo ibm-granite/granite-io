@@ -6,6 +6,11 @@ import aconfig
 # Local
 from granite_io.backend.base import Backend
 from granite_io.io.base import ModelDirectInputOutputProcessor
+from granite_io.io.consts import (
+    _GRANITE_3_2_2B_HF,
+    _GRANITE_3_2_2B_OLLAMA,
+    _GRANITE_3_2_MODEL_NAME,
+)
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     Granite3Point2InputProcessor,
 )
@@ -19,20 +24,16 @@ from granite_io.types import (
     GenerateResults,
 )
 
-GRANITE_3_2_2B_OLLAMA = "granite3.2:2b"
-GRANITE_3_2_2B_HF = "ibm-granite/granite-3.2-2b-instruct"
-_MODEL_NAME = "Granite 3.2"
-
 
 @io_processor(
-    _MODEL_NAME,
+    _GRANITE_3_2_MODEL_NAME,
     # Huggingface
-    GRANITE_3_2_2B_HF,
+    _GRANITE_3_2_2B_HF,
     "ibm-granite/granite-3.2-8b-instruct",
     # Ollama
     "granite3.2",
     "granite3.2:8b",
-    GRANITE_3_2_2B_OLLAMA,
+    _GRANITE_3_2_2B_OLLAMA,
     # RITS
     "ibm-granite/granite-8b-instruct-preview-4k",
 )

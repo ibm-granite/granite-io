@@ -23,12 +23,11 @@ from granite_io.types import (
 )
 
 ollama_model_name = "granite3.2:8b"
-general_model_name = "Granite 3.2"
 
 # Create IO processor using specified input and output processors
 io_processor = make_new_io_processor(
-    input_processor=get_input_processor(general_model_name),
-    output_processor=get_output_processor(general_model_name),
+    input_processor=get_input_processor(ollama_model_name),
+    output_processor=get_output_processor(ollama_model_name),
     backend=make_backend("openai", {"model_name": ollama_model_name}),
 )
 question = "Find the fastest way for a seller to visit all the cities in their region"
