@@ -10,8 +10,11 @@ import pydantic
 # Local
 from granite_io.io.base import OutputProcessor
 from granite_io.io.consts import (
+    _GRANITE_3_2_2B_HF,
+    _GRANITE_3_2_2B_OLLAMA,
     _GRANITE_3_2_COT_END,
     _GRANITE_3_2_COT_START,
+    _GRANITE_3_2_MODEL_NAME,
 )
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     _Granite3Point2Inputs,
@@ -49,7 +52,16 @@ def _random_uuid() -> str:
 
 
 @output_processor(
-    _MODEL_NAME,
+    _GRANITE_3_2_MODEL_NAME,
+    # Huggingface
+    _GRANITE_3_2_2B_HF,
+    "ibm-granite/granite-3.2-8b-instruct",
+    # Ollama
+    "granite3.2",
+    "granite3.2:8b",
+    _GRANITE_3_2_2B_OLLAMA,
+    # RITS
+    "ibm-granite/granite-8b-instruct-preview-4k",
 )
 class Granite3Point2OutputProcessor(OutputProcessor):
     """

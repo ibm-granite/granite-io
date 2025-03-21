@@ -10,8 +10,11 @@ import pydantic
 # Local
 from granite_io.io.base import InputProcessor
 from granite_io.io.consts import (
+    _GRANITE_3_2_2B_HF,
+    _GRANITE_3_2_2B_OLLAMA,
     _GRANITE_3_2_COT_END,
     _GRANITE_3_2_COT_START,
+    _GRANITE_3_2_MODEL_NAME,
 )
 from granite_io.io.registry import input_processor
 from granite_io.types import (
@@ -22,9 +25,6 @@ from granite_io.types import (
     ToolResultMessage,
     UserMessage,
 )
-
-_MODEL_NAME = "Granite 3.2"
-
 
 # String that comes at the beginning of the system message that a Granite 3.2 model must
 # receive at the beginning of the prompt for any completion request that does not
@@ -189,7 +189,16 @@ class _Granite3Point2Inputs(ChatCompletionInputs):
 
 
 @input_processor(
-    _MODEL_NAME,
+    _GRANITE_3_2_MODEL_NAME,
+    # Huggingface
+    _GRANITE_3_2_2B_HF,
+    "ibm-granite/granite-3.2-8b-instruct",
+    # Ollama
+    "granite3.2",
+    "granite3.2:8b",
+    _GRANITE_3_2_2B_OLLAMA,
+    # RITS
+    "ibm-granite/granite-8b-instruct-preview-4k",
 )
 class Granite3Point2InputProcessor(InputProcessor):
     """
@@ -327,13 +336,13 @@ class Granite3Point2InputProcessor(InputProcessor):
         if inputs.thinking and have_documents:
             raise ValueError(
                 f"'thinking' flag is set, but documents were provided. "
-                f"{_MODEL_NAME} only supports the 'thinking' flag when "
+                f"{_GRANITE_3_2_MODEL_NAME} only supports the 'thinking' flag when "
                 f"documents are not provided."
             )
         if inputs.thinking and have_tools:
             raise ValueError(
                 f"'thinking' flag is set, but tools were provided. "
-                f"{_MODEL_NAME} only supports the 'thinking' flag when "
+                f"{_GRANITE_3_2_MODEL_NAME} only supports the 'thinking' flag when "
                 f"tools are not provided."
             )
 
@@ -369,7 +378,7 @@ class Granite3Point2InputProcessor(InputProcessor):
             if not have_documents:
                 raise ValueError(
                     f"'hallucinations' flag is set, but the model input does not "
-                    f"include documents. {_MODEL_NAME} only supports the "
+                    f"include documents. {_GRANITE_3_2_MODEL_NAME} only supports the "
                     f"'hallucinations' flag when documents are provided."
                 )
             # if have_documents
@@ -442,26 +451,27 @@ class Granite3Point2InputProcessor(InputProcessor):
             if inputs.thinking:
                 raise ValueError(
                     f"'thinking' flag is set, but the model input includes a custom "
-                    f"system message. {_MODEL_NAME} only supports the 'thinking' flag "
-                    f"when the default system message is used."
+                    f"system message. {_GRANITE_3_2_MODEL_NAME} only supports the "
+                    f"'thinking' flag when the default system message is used."
                 )
             if len(inputs.documents) > 0:
                 raise ValueError(
                     f"The model input includes documents and a custom system message. "
-                    f"{_MODEL_NAME} only supports the documents list when the default "
-                    f"system message is used."
+                    f"{_GRANITE_3_2_MODEL_NAME} only supports the documents list when "
+                    f"the default system message is used."
                 )
             if inputs.controls.citations:
                 raise ValueError(
                     f"'citations' flag is set, but the model input includes a custom "
-                    f"system message. {_MODEL_NAME} only supports the 'citations' flag "
-                    f"when the default system message is used."
+                    f"system message. {_GRANITE_3_2_MODEL_NAME} only supports the "
+                    f"'citations' flag when the default system message is used."
                 )
             if inputs.controls.hallucinations:
                 raise ValueError(
                     f"'hallucinations' flag is set, but the model input includes a "
-                    f"custom system message. {_MODEL_NAME} only supports the "
-                    f"'hallucinations' flag when the default system message is used."
+                    f"custom system message. {_GRANITE_3_2_MODEL_NAME} only supports "
+                    f"the 'hallucinations' flag when the default system message is "
+                    f"used."
                 )
         else:  # if system_message is None:
             # No caller-provided system message.

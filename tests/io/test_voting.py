@@ -13,7 +13,7 @@ from granite_io import make_io_processor
 from granite_io.backend import Backend
 from granite_io.backend.litellm import LiteLLMBackend
 from granite_io.backend.transformers import TransformersBackend
-from granite_io.io.granite_3_2.granite_3_2 import _MODEL_NAME
+from granite_io.io.consts import _GRANITE_3_2_MODEL_NAME
 from granite_io.io.voting import MajorityVotingProcessor, integer_normalizer
 from granite_io.types import ChatCompletionInputs, ChatCompletionResults
 
@@ -30,7 +30,7 @@ def test_numeric_voting(backend_x: Backend):
     # number of samples to keep the cassette file size small.
     SAMPLES_PER_COMPLETION = 3
 
-    base_processor = make_io_processor(_MODEL_NAME, backend=backend_x)
+    base_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     voting_processor = MajorityVotingProcessor(
         base_processor,
         integer_normalizer,
