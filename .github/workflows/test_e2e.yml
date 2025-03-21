@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-name: Test examples, notebooks, readme...
+name: e2e Testing (transformers...)
 on:
   push:
     branches:
@@ -8,20 +8,20 @@ on:
       - "release-**"
     paths:
       - 'src/**.py'
-      - 'examples/**.py'
+      - 'tests/**.py'
       - 'pyproject.toml'
       - 'tox.ini'
-      - '.github/workflows/test_examples.*' # This workflow
+      - '.github/workflows/est_e2e.*' # This workflow
   pull_request:
     branches:
       - "main"
       - "release-**"
     paths:
       - 'src/**.py'
-      - 'examples/**.py'
+      - 'tests/**.py'
       - 'pyproject.toml'
       - 'tox.ini'
-      - '.github/workflows/test_examples.*' # This workflow
+      - '.github/workflows/test_e2e.*' # This workflow
 
 env:
   LC_ALL: en_US.UTF-8
@@ -34,8 +34,8 @@ permissions:
   contents: read
 
 jobs:
-  test_examples:
-    name: "test-examples: using ${{ matrix.python }} on ${{ matrix.platform }}"
+  test_e2e:
+    name: "test-e2e: using ${{ matrix.python }} on ${{ matrix.platform }}"
     runs-on: "${{ matrix.platform }}"
     strategy:
       matrix:
@@ -64,23 +64,11 @@ jobs:
           cache-dependency-path: |
             **/pyproject.toml
 
-      - name: Setup Ollama server
-        uses: ./.github/actions/ollama-setup
-
       - name: "Install tox"
         run: |
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh>=1.2
 
-      - name: "Test examples"
+      - name: "Run e2e tests (transformers)"
         run: |
-          tox -e examples
-
-      - name: "Test notebooks"
-        id: testnotebooks
-        run: |
-          tox -e notebooks
-
-      - name: "Test README code snippet"
-        run: |
-          tox -e readme
+          tox -- -k transformers tests

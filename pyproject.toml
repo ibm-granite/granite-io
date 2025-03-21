@@ -37,8 +37,7 @@ dependencies = [
 
 [project.optional-dependencies]
 transformers = [
-    "torch",
-    "transformers",
+    "transformers[torch]",
 ]
 openai = [
     "openai",
@@ -70,10 +69,7 @@ dev = [
     "granite-io[voting]"
 ]
 notebook = [
-    "ipywidgets",
-    "ipykernel",
-    "jupyter",
-    "graphviz",
+    "notebook"
 ]
 all = [
     "granite-io[dev]",

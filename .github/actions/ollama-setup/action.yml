@@ -14,12 +14,26 @@ runs:
         sleep 10
         time curl -i http://localhost:11434
 
+    - name: Download granite3.2:2b model
+      shell: bash
+      run: |
+        ollama pull granite3.2:2b
+
     - name: Download granite3.2:8b model
       shell: bash
       run: |
         ollama pull granite3.2:8b
 
-    - name: Wait for model download
+    - name: Wait for granite3.2:2b download
+      shell: bash
+      run: |
+        sleep 10
+        until ollama list granite3.2:2b
+        do
+          sleep 5
+        done
+
+    - name: Wait for granite3.2:8b download
       shell: bash
       run: |
         sleep 10
@@ -27,4 +41,3 @@ runs:
         do
           sleep 5
         done
- 

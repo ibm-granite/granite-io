@@ -16,7 +16,8 @@ on:
       - "main"
       - "release-**"
     paths:
-      - '**.py'
+      - 'src/**.py'
+      - 'tests/**.py'
       - 'pyproject.toml'
       - 'tox.ini'
       - '.github/workflows/test.yml' # This workflow
@@ -71,7 +72,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install tox tox-gh>=1.2
 
-      - name: Run unit test with tox (xfail openai and litellm tests for now)
+      - name: "Run unit tests (skipping e2e transformers)"
         run: |
-          tox
+          tox -- -k "not transformers" tests
 
