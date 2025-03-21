@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-
 # ruff: noqa: E501
 # pylint: disable=redefined-outer-name,broad-exception-caught
 
@@ -8,6 +7,7 @@ import json
 
 # Third Party
 from litellm import UnsupportedParamsError
+from pydantic import ValidationError
 import pytest
 import transformers
 
@@ -27,6 +27,7 @@ from granite_io.io.granite_3_2.granite_3_2 import (
     Granite3Point2InputOutputProcessor,
 )
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
+    _ControlsRecord,
     _Granite3Point2Inputs,
 )
 from granite_io.io.granite_3_2.output_processors.granite_3_2_output_parser import (
@@ -159,6 +160,30 @@ expected_hallucination = Hallucination(
     response_end=13,
 )
 ## Tests #######################################################################
+
+
+@pytest.mark.parametrize(
+    ["length", "originality", "error"],
+    [
+        (None, None, None),
+        ("short", None, None),
+        (None, "abstractive", None),
+        ("long", "extractive", None),
+        ("BAD_VAL", "abstractive", "input_value='BAD_VAL'"),
+        ("long", "BAD_VAL", "input_value='BAD_VAL'"),
+        ("BAD_VAL", "Another Bad Value", "input_value='BAD_VAL'"),
+        ("ShOrT", None, "input_value='ShOrT'"),
+        (None, "aBsTrAcTiVe", "input_value='aBsTrAcTiVe'"),
+        (1, None, "input_type=int"),
+        (None, 2, "input_type=int"),
+    ],
+)
+def test_controls_field_validators(length, originality, error):
+    if error:
+        with pytest.raises(ValidationError, match=error):
+            _ControlsRecord(length=length, originality=originality)
+    else:
+        _ControlsRecord(length=length, originality=originality)
 
 
 def test_read_inputs(input_json_str):

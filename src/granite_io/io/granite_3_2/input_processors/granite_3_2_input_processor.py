@@ -5,6 +5,7 @@ import datetime
 import json
 
 # Third Party
+from pydantic_core import PydanticCustomError
 import pydantic
 
 # Local
@@ -125,6 +126,28 @@ class _ControlsRecord(pydantic.BaseModel):
     hallucinations: bool | None = None
     length: str | None = None  # Length output control variable
     originality: str | None = None
+
+    @pydantic.field_validator("length", mode="after")
+    @classmethod
+    def _validate_length(cls, value: str | None) -> str | None:
+        if value is None or value == "short" or value == "long":
+            return value
+        raise PydanticCustomError(
+            "length field validator",
+            'length ({length}) must be "short" or "long" or None',
+            {"length": value},
+        )
+
+    @pydantic.field_validator("originality", mode="after")
+    @classmethod
+    def _validate_originality(cls, value: str | None) -> str | None:
+        if value is None or value == "extractive" or value == "abstractive":
+            return value
+        raise PydanticCustomError(
+            "originality field validator",
+            'originality ({originality}) must be "extractive" or "abstractive" or None',
+            {"originality": value},
+        )
 
 
 class _Granite3Point2Inputs(ChatCompletionInputs):
