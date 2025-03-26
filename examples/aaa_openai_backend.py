@@ -18,3 +18,8 @@ messages = [UserMessage(content=question)]
 outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
 print("------ WITHOUT THINKING ------")
 print(outputs.results[0].next_message.content)
+
+print("------ TRY AGAIN        ------")
+outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
+print("------ AGAIN RESULTS       ------")
+print(outputs.results[0].next_message.content)
