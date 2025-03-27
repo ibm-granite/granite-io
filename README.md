@@ -117,6 +117,10 @@ To help you get up and running as quickly as possible with the Granite IO Proces
 
    - [IO](./notebooks/io.ipynb)
 
+## Architecture
+
+For more information about architecture and design decisions, refer to [docs/design.md](docs/design.md).
+
 ## Contributing
 
 Check out our [contributing guide](CONTRIBUTING.md) to learn how to contribute.
