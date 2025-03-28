@@ -147,6 +147,7 @@ class GenerateInputs(pydantic.BaseModel):
     temperature: The temperature parameter for controlling the randomness of the output.
     top_p: The top-p parameter for nucleus sampling.
     user: A unique identifier representing your end-user.
+    timeout: The maximum execution time in seconds for the completion request.
     """
 
     prompt: Optional[Union[str, List[Union[str, List[Union[str, List[int]]]]]]] = None
@@ -166,6 +167,7 @@ class GenerateInputs(pydantic.BaseModel):
     temperature: Optional[float] = None
     top_p: Optional[float] = None
     user: Optional[str] = None
+    extra_headers: Optional[Mapping[str, str]] = None
 
     model_config = pydantic.ConfigDict(
         # Pass through arbitrary additional keyword arguments for handling by model- or
