@@ -2,11 +2,11 @@
 
 ## Abstract
 
-Framework which enables the transformation of inference requests to an [IBM Granite model](https://www.ibm.com/granite) and also the transformation of the output returned from the model.
+A framework which enables the transformation of inference requests to an [IBM Granite model](https://www.ibm.com/granite) and also the transformation of the output returned from the model.
 
 ## Motivation
 
-The IBM Granite model provides a number of additional capabilities baked into the model. Some of the capabilities supported are as follows:
+An IBM Granite model provides a number of additional capabilities baked into the model. Some of the capabilities supported are as follows:
 
 - [RAG](https://www.ibm.com/granite/docs/models/granite/#retrieval-augmented-generation-(rag)-with-annotations)
 - [Reasoning](https://www.ibm.com/granite/docs/models/granite/#reasoning)
@@ -16,7 +16,7 @@ As the chat template or prompt can be complex to create in order to use these ca
 
 ## Rationale
 
-If a user prompts the model and upon receiving the answer is a little unsure about its correctness. It would be helpful if the user can ask the model how it arrived at its answer - in other words its reasoning. Retrieval augmented generation (RAG) is an architecture for optimizing the performance of an artificial intelligence (AI) model by connecting it with external knowledge bases. If a user uses document(s) to deliver more relevant responses then it would be helpful to citate those document(s) or sources in the output. In other words, it would be beneficial to be able to turn on capabilities when prompting the model.
+If a user prompts the model and upon receiving the answer is a little unsure about its correctness, it would be helpful if the user can ask the model how it arrived at its answer -- in other words its reasoning. Retrieval augmented generation (RAG) is an architecture for optimizing the performance of an artificial intelligence (AI) model by connecting it with external knowledge bases. If a user uses document(s) to deliver more relevant responses then it would be helpful to cite those document(s) or sources in the output. In other words, it would be beneficial to be able to turn on capabilities when prompting the model.
 
 ## Specification
 
@@ -25,19 +25,19 @@ If a user prompts the model and upon receiving the answer is a little unsure abo
 The key architectural components are:
 
 - Backend: A shim that provides a thin abstraction to different runtime backends for serving models for inference.
-- Input Processor: It processes or transforms a chat request prior to sending it to the model.
-- Output Processor: It processes or transforms output of a chat request from the model.
-- Input Output (IO) Processor: A processor that contains both an input and output processor, and also a backend.
+- Input Processor: A processor that transforms a chat request prior to sending it to the model.
+- Output Processor: A processor that transforms output of a chat request from the model.
+- Input/Output (IO) Processor: A processor that contains both an input and output processor, and (optionally) a backend.
 
-The overall architecture is fairly straightforward. At the top level, there are _InputProcessors_ and _OutputProcessors_. The Input Processor transforms chat request into the format the model requires to perform its baked in additional cpability. The Output Processor transforms the output from the model into a format more easily parsed. The _InputOutputProcessor_ is a component that combines both an input processor and an output processor within a single entity. It also contains a _Backend_ so that it can perform the chat request with the model and then pipe the output to the output processor. The first diagram below shows the IO Processor integrates both processors and backend within a single component.
+The overall architecture is fairly straightforward. At the top level, there are _InputProcessors_ and _OutputProcessors_. The Input Processor transforms a chat request into the format the model requires to perform its baked-in additional capabilities. The Output Processor transforms the output from the model into a more usable format. The _InputOutputProcessor_ is a component that combines both an input processor and an output processor within a single entity. It also contains a _Backend_ so that it can perform the chat request with the model and then pipe the output to the output processor. The first diagram below shows an IO Processor that integrates both processors and backend within a single component.
 
 <img src="./images/granite-io-full-architecture.png" width="600">
 
-The IO processor architecture above represents more succiently a single turn chat request. In other words, you process the chat request input, inference the model, and finally process the output from the model. The IO processor architecture is howevere flexible and able to handle more multi-turn scenarios where there are multiple inference calls which feeds output from one call as input to the next. The diagram that follows demonstrates how the IO processor can be implemeted without specific input and output processors 
+The IO processor architecture above represents a single turn chat request. In other words, you process the chat request input, inference the model, and finally process the output from the model. The IO processor architecture is however flexible and able to handle more multi-turn scenarios where there are multiple inference calls which feed output from one call as input to the next. The diagram that follows demonstrates how the IO processor can be implemented without specific input and output processors 
 
 <img src="./images/granite-io-io-proc-architecture.png" width="600">
 
-The next diagram that follows below show how Input and Output Processors can be used independently with the user performing chat request directly with the model. In this instance the user is free to configure what input or output processor to use, or  if only an input or an output processor is required.
+The next diagram shows how Input and Output Processors can be used independently with the user performing chat request directly with the model. In this instance the user is free to configure what input and output processor to use -- perhaps using just one instead of both.
 
 <img src="./images/granite-io-input-output-architecture.png" width="600">
 
@@ -88,7 +88,7 @@ Output processors need to implement the `OutputProcessor` interface which is def
 ```Python
 class OutputProcessor(FactoryConstructible):
     """
-    Interface for generic output processors. An putput processor exposes an
+    Interface for generic output processors. An output processor exposes an
     API to transform model output into a structured representation of the
     information.
     """
@@ -104,7 +104,7 @@ class OutputProcessor(FactoryConstructible):
         Convert the model output generated into a structured representation of the
         information.
 
-        :param output: Output of the a generation request, potentially incomplete
+        :param output: Output of a generation request, potentially incomplete
            if it was a streaming request
         :param inputs: Optional reference to the inputs that caused the model to produce
            ``output``, for validating the correctness of the output. If no inputs are
@@ -125,7 +125,7 @@ The framework supports the following output processors out of the box:
 
 IO processors need to implement the `InputOutputProcessor` interface which is defined [here](https://github.com/ibm-granite/granite-io/blob/main/src/granite_io/io/base.py) (see below for interface snippet).
 
-As you can see from the interface, there is a lot of flexibility on how you want to implement your IO processor. There is no restriction on having to use an input and/or output processor. This flexibility is essential when having to implement multi-turn scenarios as described previously.
+As you can see from the interface, there is a lot of flexibility to implement your IO processor however you want. There is no restriction on having to use an input and/or output processor. This flexibility is essential when having to implement multi-turn scenarios as described previously.
 
 ```Python
 class InputOutputProcessor(FactoryConstructible):
@@ -189,7 +189,7 @@ The framework supports the following IO processors out of the box:
 
 ### Backend
 
-Backend need to implement the `Backend` interface which is defined [here](https://github.com/ibm-granite/granite-io/blob/main/src/granite_io/backend/base.py) (see below for interface snippet).
+Backends need to implement the `Backend` interface which is defined [here](https://github.com/ibm-granite/granite-io/blob/main/src/granite_io/backend/base.py) (see below for interface snippet).
 
 ```Python
 class Backend(FactoryConstructible):
@@ -197,7 +197,7 @@ class Backend(FactoryConstructible):
     Base class for classes that provide an interface to a string-based completions API
     for a model.
 
-    This base class exists for two reasons: It smoothes out the differences between
+    This base class exists for two reasons: It smooths out the differences between
     APIs, and it provides a level of indirection so that backend inference libraries can
     be optional dependencies of this Python package.
     """
@@ -292,8 +292,8 @@ The framework supports the following backends out of the box:
 
 ### Implementation
 
-The framework is implemeted as a Python library. There are examples of model chat requests using the framework in [examples](../examples/).
+The framework is implemented as a Python library. There are examples of model chat requests using the framework in [examples](../examples/).
 
 ## Extending Processor Capability
 
-Creating new input, output and IO processors are supported. The sections in [Specification](#specification) explain the interfaces that are required for each processor to implement. There are examples of creating new processors using the framework in [examples](../examples/).
+Creating new input, output and IO processors is supported. The sections in [Specification](#specification) explain the interfaces that are required for each processor to implement. There are examples of creating new processors using the framework in [examples](../examples/).
