@@ -32,7 +32,7 @@ dependencies = [
     "alchemy-config",
     "jsonschema",
     "nltk",
-    "pydantic",
+    "pydantic >= 2.0.0",  # LiteLLM requires >= 2
 ]
 
 [project.optional-dependencies]
@@ -40,10 +40,10 @@ transformers = [
     "transformers[torch]",
 ]
 openai = [
-    "openai",
+    "openai >= 1.0, <= 1.61.0",  # Later verions introduce LiteLLM logging bug
 ]
 litellm = [
-    "litellm",
+    "litellm > 1.40.14, <= 1.63.2",  # Later versions introduce LiteLLM logging bug
     "python-dotenv==1.1.0",
 ]
 voting = [

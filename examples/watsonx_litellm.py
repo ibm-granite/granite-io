@@ -50,11 +50,6 @@ io_processor = make_io_processor(
 question = "Find the fastest way for a seller to visit all the cities in their region"
 messages = [UserMessage(content=question)]
 
-# Without Thinking
-outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
-print("------ WITHOUT THINKING ------")
-print(outputs.results[0].next_message.content)
-
 # With Thinking
 outputs = io_processor.create_chat_completion(
     ChatCompletionInputs(messages=messages, thinking=True)
