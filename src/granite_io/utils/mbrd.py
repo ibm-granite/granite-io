@@ -5,7 +5,9 @@ Majority voting using Minimum Bayesian Risk Decoding (MBRD)
 """
 
 # Standard
+from collections.abc import Callable
 from functools import lru_cache
+from typing import Union
 
 # Third Party
 from rouge_score import rouge_scorer
@@ -13,7 +15,9 @@ from rouge_score import rouge_scorer
 scorer = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
 
 
-def minimum_bayesian_risk_decoding(answers, similarity):
+def minimum_bayesian_risk_decoding(
+    answers: list[str], similarity: Callable
+) -> Union[str, list[float]]:
     """Minimum Bayes Risk (MBR) decoding is a method for choosing the outputs of a
     machine learning system based not on the output with the highest probability, but
     the output with the lowest risk (expected error) among multiple candidates.
@@ -28,7 +32,7 @@ def minimum_bayesian_risk_decoding(answers, similarity):
     :returns: Similarity scores for all answers
     """
 
-    similarity_scores = []
+    similarity_scores: list[float] = []
     for _, x in enumerate(answers):
         # compute score for this answer
         score = 0
@@ -45,7 +49,7 @@ def minimum_bayesian_risk_decoding(answers, similarity):
 
 
 @lru_cache
-def rouge_similarity(hypotheis, reference):
+def rouge_similarity(hypotheis: str, reference: str) -> float:
     """ROUGE (Recall-Oriented Understudy for Gisting Evaluation) is used for
     evaluating the similarity between different model outputs.
 

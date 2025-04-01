@@ -33,6 +33,7 @@ dependencies = [
     "jsonschema",
     "nltk",
     "pydantic >= 2.0.0",  # LiteLLM requires >= 2
+    "rouge_score",
 ]
 
 [project.optional-dependencies]

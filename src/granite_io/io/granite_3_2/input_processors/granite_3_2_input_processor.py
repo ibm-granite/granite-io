@@ -11,6 +11,7 @@ import pydantic
 # Local
 from granite_io.io.base import InputProcessor
 from granite_io.io.consts import (
+    _FINAL_ANSWER,
     _GRANITE_3_2_2B_HF,
     _GRANITE_3_2_2B_OLLAMA,
     _GRANITE_3_2_COT_END,
@@ -116,6 +117,14 @@ _DOCS_AND_HALLUCINATIONS_SYSTEM_MESSAGE_PART = """\
 Finally, after the response is written, include a numbered list of sentences from the \
 response that are potentially hallucinated and not based in the documents."""
 
+_MAJORITY_VOTING_ONLY_SYSTEM_MESSAGE_PART = f"""\
+ You are a helpful AI assistant.
+Respond to every user query in a comprehensive and detailed way. The response should \
+summarize the thought process. Write your thoughts after '{_GRANITE_3_2_COT_START}' \
+and write your response after '{_GRANITE_3_2_COT_END}' and within \
+<'{_FINAL_ANSWER}'> and  </'{_FINAL_ANSWER}'>. Only give me a single \
+thought and a single final response, nothing else."""
+
 
 class _Document(pydantic.BaseModel):
     text: str
@@ -166,6 +175,8 @@ class _Granite3Point2Inputs(ChatCompletionInputs):
     controls: _ControlsRecord | None = None
 
     thinking: bool = False
+
+    majority_voting: bool = False
 
     @pydantic.field_validator("messages")
     @classmethod
@@ -369,6 +380,18 @@ class Granite3Point2InputProcessor(InputProcessor):
                 f"tools are not provided."
             )
 
+        # The system message needs to be tweaked to guide the model output to be
+        # normalized in a standarized fashion to enable extracting the answer for
+        # similarity checking. Providing additional reasoning, RAG and tooling would
+        # add additional complexity to the output and affect the similarity checking.
+        if inputs.majority_voting and (have_tools or have_documents or inputs.thinking):
+            raise ValueError(
+                f"'majority_voting' flag is set, but tools, documents and "
+                f"thinking are provided. {_GRANITE_3_2_MODEL_NAME} only supports the "
+                f"'majority_voting' flag when tools, documents and thinking are not "
+                f"provided."
+            )
+
         # The default system message starts with a header that includes the date and
         # knowledge cutoff.
         system_message = "<|start_of_role|>system<|end_of_role|>"
@@ -383,6 +406,8 @@ class Granite3Point2InputProcessor(InputProcessor):
             system_message += _TOOLS_AND_NO_DOCS_SYSTEM_MESSAGE_PART
         elif inputs.thinking:  # if not have_documents and not have_tools
             system_message += _NO_TOOLS_AND_NO_DOCS_AND_THINKING_SYSTEM_MESSAGE_PART
+        elif inputs.majority_voting:
+            system_message += _MAJORITY_VOTING_ONLY_SYSTEM_MESSAGE_PART
         else:  # if not inputs.thinking and not have_documents and not have_tools
             system_message += _NO_TOOLS_NO_DOCS_NO_THINKING_SYSTEM_MESSAGE_PART
 

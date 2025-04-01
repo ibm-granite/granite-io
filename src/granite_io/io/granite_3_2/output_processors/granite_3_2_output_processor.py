@@ -2,6 +2,7 @@
 
 # Standard
 import json
+import re
 import uuid
 
 # Third Party
@@ -10,6 +11,7 @@ import pydantic
 # Local
 from granite_io.io.base import OutputProcessor
 from granite_io.io.consts import (
+    _FINAL_ANSWER,
     _GRANITE_3_2_2B_HF,
     _GRANITE_3_2_2B_OLLAMA,
     _GRANITE_3_2_COT_END,
@@ -31,6 +33,7 @@ from granite_io.types import (
     FunctionCall,
     GenerateResults,
 )
+from granite_io.utils.mbrd import minimum_bayesian_risk_decoding, rouge_similarity
 
 # Some versions of the model are known to shorten "Here is" to "Here's", so we
 # provide alternate forms of these strings for those versions.
@@ -76,6 +79,16 @@ class Granite3Point2OutputProcessor(OutputProcessor):
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
         inputs = _Granite3Point2Inputs.model_validate(inputs.model_dump())
+
+        # Perform majority voting on sampled output
+        majority_response = None
+        if inputs.majority_voting:
+            normalized_responses = extract_normalized_responses(
+                output.results, _FINAL_ANSWER
+            )
+            majority_response, _ = minimum_bayesian_risk_decoding(
+                normalized_responses, rouge_similarity
+            )
 
         results = []
         for result in output.results:
@@ -145,7 +158,11 @@ class Granite3Point2OutputProcessor(OutputProcessor):
                 ChatCompletionResult(
                     next_message=AssistantMessage(
                         citations=parsed_output["citations"],
-                        content=parsed_output["response"],
+                        content=(
+                            majority_response
+                            if majority_response
+                            else parsed_output["response"]
+                        ),
                         documents=parsed_output["docs"],
                         hallucinations=parsed_output["hallucinations"],
                         reasoning_content=cot,
@@ -157,3 +174,24 @@ class Granite3Point2OutputProcessor(OutputProcessor):
             )
 
         return ChatCompletionResults(results=results)
+
+
+def extract_normalized_responses(results: GenerateResults, tag: str) -> list[str]:
+    """Extracts normalized responses which are output within tags.
+
+    :param results: Model output results
+
+    :returns: List of normalized responses
+    """
+    normalized_responses: list[str] = []
+
+    for result in results:
+        # regex to extract required strings
+        reg_str = "<" + tag + ">(.*?)</" + tag + ">"
+        normalized_response = re.findall(reg_str, result.completion_string)
+        if isinstance(normalized_response, list) and len(normalized_response) > 0:
+            normalized_responses.append(normalized_response[0])
+        else:
+            normalized_responses.append(result.completion_string)
+
+    return normalized_responses
