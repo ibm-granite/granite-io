@@ -43,7 +43,7 @@ openai = [
     "openai >= 1.0, <= 1.61.0",  # Later verions introduce LiteLLM logging bug
 ]
 litellm = [
-    "litellm > 1.40.14, <= 1.63.2",  # Later versions introduce LiteLLM logging bug
+    "litellm > 1.40.14, <= 1.65.1",  # Later versions introduce LiteLLM logging bug
     "python-dotenv==1.1.0",
 ]
 voting = [
