@@ -172,6 +172,10 @@ class Granite3Point2OutputProcessor(OutputProcessor):
                     )
                 )
             )
+            # With majority voting, you are taking one majority response
+            # and just return that
+            if inputs.majority_voting:
+                break
 
         return ChatCompletionResults(results=results)
 

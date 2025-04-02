@@ -122,7 +122,7 @@ _MAJORITY_VOTING_ONLY_SYSTEM_MESSAGE_PART = f"""\
 Respond to every user query in a comprehensive and detailed way. The response should \
 summarize the thought process. Write your thoughts after '{_GRANITE_3_2_COT_START}' \
 and write your response after '{_GRANITE_3_2_COT_END}' and within \
-<'{_FINAL_ANSWER}'> and  </'{_FINAL_ANSWER}'>. Only give me a single \
+'<{_FINAL_ANSWER}>' and  '</{_FINAL_ANSWER}>.' Only give me a single \
 thought and a single final response, nothing else."""
 
 
