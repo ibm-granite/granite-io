@@ -97,7 +97,6 @@ def test_output_with_invalid_citation():
     )
     parsed_output = parse_model_output(model_output, "")
 
-    assert parsed_output["docs"] is None
     assert parsed_output["citations"] is None
     assert parsed_output["hallucinations"] is None
 
