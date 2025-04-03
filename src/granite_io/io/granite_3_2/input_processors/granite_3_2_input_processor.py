@@ -54,22 +54,22 @@ in the documents, inform the user that the question cannot be answered based on 
 available data."""
 
 # String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
-# if there are tools in the current request but there are no documents in the current
-# request.
-_NO_TOOLS_AND_DOCS_SYSTEM_MESSAGE_PART = """\
- You are a helpful AI assistant with access to the following tools. When a tool is \
-required to answer the user's query, respond with <|tool_call|> followed by a JSON \
-list of tools used. If a tool does not exist in the provided list of tools, notify the \
-user that you do not have the ability to fulfill the request."""
-
-# String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
 # if there are documents in the current request but there are no tools in the current
 # request.
-_TOOLS_AND_NO_DOCS_SYSTEM_MESSAGE_PART = """\
- Write the response to the user's input by strictly aligning with the facts in the \
+_NO_TOOLS_AND_DOCS_SYSTEM_MESSAGE_PART = """\
+Write the response to the user's input by strictly aligning with the facts in the \
 provided documents. If the information needed to answer the question is not available \
 in the documents, inform the user that the question cannot be answered based on the \
 available data."""
+
+# String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
+# if there are tools in the current request but there are no documents in the current
+# request.
+_TOOLS_AND_NO_DOCS_SYSTEM_MESSAGE_PART = """\
+You are a helpful AI assistant with access to the following tools. When a tool is \
+required to answer the user's query, respond with <|tool_call|> followed by a JSON \
+list of tools used. If a tool does not exist in the provided list of tools, notify the \
+user that you do not have the ability to fulfill the request."""
 
 # String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
 # if there are no tools or documents in the current request and the "thinking" flag is

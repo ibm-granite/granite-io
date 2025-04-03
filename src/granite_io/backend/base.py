@@ -49,33 +49,39 @@ class Backend(FactoryConstructible):
 
     def process_input(self, inputs: GenerateInputs) -> GenerateInputs:
         """
-        Process kwargs to prepare them for completion.create() (or generate())
+        Process inputs to prepare them for completion.create() (or generate())
 
         Args:
-            inputs (GenerateInputs): the inputs which are being processed (modified)
+            inputs (GenerateInputs): the inputs which are being processed
              to be used in target backend call.
+
+        Returns:
+            GenerateInputs: a new copy of inputs, modified for the Backend
         """
 
+        # Do not modify `inputs` in place.
+        inputs_copy = inputs.model_copy() if inputs is not None else GenerateInputs()
+
         # Add required model, if missing
-        if not inputs.model:
-            inputs.model = self._model_str
+        if not inputs_copy.model:
+            inputs_copy.model = self._model_str
 
         # n (a.k.a. num_return_sequences) validation
-        n = inputs.n
+        n = inputs_copy.n
         if n is not None:  # noqa SIM102
             if n < 1:
                 raise ValueError(f"Invalid value for n ({n})")
             if n > 1:
                 # best_of must be >= n
-                best_of = inputs.best_of
+                best_of = inputs_copy.best_of
                 if best_of is None or best_of < n:
-                    inputs.best_of = n
+                    inputs_copy.best_of = n
 
         # Some backends prefer an array to a string
-        if isinstance(inputs.stop, str):
-            inputs.stop = [inputs.stop]
+        if isinstance(inputs_copy.stop, str):
+            inputs_copy.stop = [inputs_copy.stop]
 
-        return inputs
+        return inputs_copy
 
     @abc.abstractmethod
     async def generate(self, inputs: GenerateInputs) -> GenerateResults:

@@ -4,9 +4,6 @@
 
 The following is a set of guidelines for contributing. These are just guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-**Note:
-This project is currently IBM-internal but will eventually be open source.**
-
 ## What Should I Know Before I Get Started?
 
 ### Code of Conduct

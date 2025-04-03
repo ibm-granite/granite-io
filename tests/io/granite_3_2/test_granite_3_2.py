@@ -4,16 +4,18 @@
 
 # Standard
 import json
+import os
 
 # Third Party
 from litellm import UnsupportedParamsError
+from openai import APIConnectionError, PermissionDeniedError
 from pydantic import ValidationError
 import pytest
 import transformers
 
 # Local
 from granite_io import make_io_processor
-from granite_io.backend import Backend
+from granite_io.backend import Backend, make_backend
 from granite_io.backend.litellm import LiteLLMBackend
 from granite_io.backend.openai import OpenAIBackend
 from granite_io.backend.transformers import TransformersBackend
@@ -41,6 +43,7 @@ from granite_io.io.granite_3_2.output_processors.granite_3_2_output_processor im
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    ChatCompletionResult,
     ChatCompletionResults,
     Citation,
     Document,
@@ -472,3 +475,88 @@ def test_multiple_return(backend_x: Backend, input_json_str: str):
     assert isinstance(results, ChatCompletionResults)
     assert len(results.results) == 3
     # TODO: Verify outputs in greater detail
+
+
+test_key = "RITS_API_KEY"
+open_api_key = os.environ.get("OPENAI_API_KEY", "notset")
+bogus_api_key = "this-is-a-bogus-api-key"
+test_header = {test_key: open_api_key}
+bogus_header = {test_key: bogus_api_key}
+
+
+def header_id(default_headers, extra_headers):
+    dh_value = default_headers.get(test_key) if default_headers else None
+    eh_value = extra_headers.get(test_key) if extra_headers else None
+
+    ids = {
+        open_api_key: "notset" if open_api_key == "notset" else "env",
+        bogus_api_key: "bogus",
+        None: "none",
+    }
+    return f"{ids[dh_value]}-{ids[eh_value]}"
+
+
+header_test_matrix = [
+    (default_headers, extra_headers)
+    for default_headers in (None, bogus_header, test_header)
+    for extra_headers in (None, bogus_header, test_header)
+]
+header_test_ids = [header_id(h[0], h[1]) for h in header_test_matrix]
+
+
+@pytest.mark.parametrize(
+    "default_headers, extra_headers", header_test_matrix, ids=header_test_ids
+)
+@pytest.mark.skipif(open_api_key == "notset", reason="Needs OpenAI API key")
+async def test_headers(request, default_headers, extra_headers):
+    """Test headers using manual test case against a server to verify.
+
+    Use environment variables suitable for an OpenAI backend:
+    OPENAI_BASE_URI - base URL to the provider
+    MODEL_NAME - model name override for the provider
+    OPENAI_API_KEY - api key used for the provider
+    Note:  For this specific test, we have a provider that needs
+           the API key to also be in an additional header.
+           It also passes the num_returned test (Ollama does not).
+
+    Testing default_headers (openai only) in the openai contructor.
+    Testing extra_headers in the openai or litellm call.
+    Testing with both or neither.
+    """
+    be = make_backend(
+        "openai",
+        {
+            "model_name": "ibm-granite/granite-8b-instruct-preview-4k",
+            "openai_api_key": "<your api key>",  # Use env var to set
+            "openai_base_url": "<your base url>",  # Use env var to set
+            "default_headers": default_headers,
+        },
+    )
+
+    inputs = ChatCompletionInputs(
+        messages=[
+            {
+                "role": "user",
+                "content": "what is up?",
+            }
+        ],
+        generate_inputs={
+            "extra_headers": extra_headers,
+            "n": 3,  # n sampling works on test backend
+        },
+    )
+
+    io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=be)
+
+    test_name = request.node.name
+    if "env" in test_name and "env-bogus" not in test_name:
+        # when env is set unless a bogus extra_header overrides default_header
+        output: ChatCompletionResults = io_processor.create_chat_completion(inputs)
+        results = output.results
+        for result in results:
+            assert isinstance(result, ChatCompletionResult)
+        assert len(results) == 3  # Note: This would fail if you just hit Ollama
+    else:
+        # Raises with either bad apikey or bad url (for testing bogus, none and notset)
+        with pytest.raises((APIConnectionError, PermissionDeniedError)):
+            io_processor.create_chat_completion(inputs)
