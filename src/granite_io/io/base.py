@@ -17,7 +17,6 @@ from granite_io.backend.base import Backend, ChatCompletionBackend
 from granite_io.factory import FactoryConstructible
 from granite_io.types import (
     ChatCompletionInputs,
-    ChatCompletionResult,
     ChatCompletionResults,
     GenerateInputs,
     GenerateResults,
@@ -64,7 +63,7 @@ class InputOutputProcessor(FactoryConstructible):
     @abc.abstractmethod
     async def acreate_chat_completion(
         self, inputs: ChatCompletionInputs
-    ) -> ChatCompletionResult:
+    ) -> ChatCompletionResults:
         """
         :param inputs: Structured representation of the inputs to a chat completion
             request, possibly including additional fields that only this input-output
@@ -76,7 +75,7 @@ class InputOutputProcessor(FactoryConstructible):
 
     def create_chat_completion(
         self, inputs: ChatCompletionInputs
-    ) -> ChatCompletionResult:
+    ) -> ChatCompletionResults:
         """
         Non-async version of :func:`acreate_chat_completion()`
 
@@ -182,6 +181,76 @@ class ModelDirectInputOutputProcessor(InputOutputProcessor):
 
         :returns: The parsed output so far
         """
+
+
+class ModelDirectInputOutputProcessorWithGenerate(InputOutputProcessor):
+    """
+    Base class for IO processors that directly invoke a model and that modify the
+    generation arguments of requests, such as by enabling constrained decoding.
+    """
+
+    _backend: Backend | None
+    """Handle on the current inference engine, required if this io processor's
+    :func:`acreate_chat_completion()` method is going to be used"""
+
+    def __init__(
+        self, config: aconfig.Config | None = None, backend: Backend | None = None
+    ):
+        """
+        :param config: Setup config for this IO processor
+        :param backend: Handle on inference engine, required if this io processor's
+            :func:`create_chat_completion()` method is going to be used
+        """
+        super().__init__(config)
+        self._backend = backend
+
+    @abc.abstractmethod
+    def inputs_to_generate_inputs(self, inputs: ChatCompletionInputs) -> GenerateInputs:
+        """
+        Determine the best generation parameters (including prompt) to pass to the
+        backend when running the specified chat completion.
+
+        :param inputs: Structured representation of the inputs
+
+        :returns: A copy of inputs.generate_inputs with appropriate modifications for
+         the target model and with the ``prompt`` field populated with an appropriate
+         prompt
+        """
+
+    @abc.abstractmethod
+    def output_to_result(
+        self, output: GenerateResults, inputs: ChatCompletionInputs | None = None
+    ) -> ChatCompletionResults:
+        """
+        Convert the structured representation of the inputs to a completion request into
+        the string representation of the tokens that should be sent to the model to
+        implement said request.
+
+        :param output: Output of the a generation request, potentially incomplete
+           if it was a streaming request
+        :param inputs: Optional reference to the inputs that caused the model to produce
+           ``output``, for validating the correctness of the output. If no inputs are
+           provided, this method may skip some validations but will still produce the
+           same result.
+
+        :returns: The parsed output so far
+        """
+
+    async def acreate_chat_completion(
+        self, inputs: ChatCompletionInputs
+    ) -> ChatCompletionResults:
+        if self._backend is None:
+            raise ValueError(
+                "Attempted to call acreate_chat_completion() without "
+                "configuring an inference backend."
+            )
+
+        # Copy the inputs to prevent the caller experiencing surprise modifications to a
+        # local variable.
+        inputs = inputs.model_copy()
+        generate_inputs = self.inputs_to_generate_inputs(inputs)
+        model_output = await self._backend.pipeline(generate_inputs)
+        return self.output_to_result(output=model_output, inputs=inputs)
 
 
 class InputProcessor(FactoryConstructible):

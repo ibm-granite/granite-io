@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 04, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Only
+      your dog has fleas.<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '949'
+      content-type:
+      - application/json
+      host:
+      - localhost:50709
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:50709/v1/completions
+  response:
+    content: '{"id":"cmpl-58594b6d2ffc4016a3cb9b604c579ba4","object":"text_completion","created":1743800229,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":167,"total_tokens":169,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 04 Apr 2025 20:57:09 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1
