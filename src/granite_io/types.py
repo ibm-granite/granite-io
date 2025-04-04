@@ -130,24 +130,25 @@ class FunctionDefinition(pydantic.BaseModel):
 class GenerateInputs(pydantic.BaseModel):
     """Common inputs for backends
 
-    prompt: The prompt(s) to generate completions for.
-    model: Model name or ID.
-    best_of: Generates best_of completions server-side.
-    echo: Echo back the prompt in addition to the completion.
-    frequency_penalty: Penalize new tokens based on their existing frequency.
-    logit_bias: Modify the likelihood of specified tokens.
-    logprobs: Include the log probabilities on the most likely tokens.
-    max_tokens: The maximum number of tokens to generate in the completion.
-    n: How many completions to generate for each prompt.
-    presence_penalty: Penalize new tokens based on whether they appear in the text.
-    stop: Sequences where the API will stop generating further tokens.
-    stream: Whether to stream back partial progress.
-    stream_options: A dictionary containing options for the streaming response.
-    suffix: The suffix that comes after a completion of inserted text.
-    temperature: The temperature parameter for controlling the randomness of the output.
-    top_p: The top-p parameter for nucleus sampling.
-    user: A unique identifier representing your end-user.
-    timeout: The maximum execution time in seconds for the completion request.
+        OPTIONAL PARAMS
+            prompt: The prompt(s) to generate completions for.
+            model: Model name or ID.
+            best_of: Generates best_of completions server-side.
+            echo: Echo back the prompt in addition to the completion.
+            frequency_penalty: Penalize new tokens based on their existing frequency.
+            logit_bias: Modify the likelihood of specified tokens.
+            logprobs: Include the log probabilities on the most likely tokens.
+            max_tokens: The maximum number of tokens to generate in the completion.
+            n: How many completions to generate for each prompt.
+            presence_penalty: Penalize new tokens based on whether they are in the text.
+            stop: Sequences where the API will stop generating further tokens.
+            stream: Whether to stream back partial progress.
+            stream_options: A dictionary containing options for the streaming response.
+            suffix: The suffix that comes after a completion of inserted text.
+            temperature: The temperature parameter for controlling randomness of output.
+            top_p: The top-p parameter for nucleus sampling.
+            user: A unique identifier representing your end-user.
+            timeout: The maximum execution time in seconds for the completion request.
     """
 
     prompt: Optional[Union[str, List[Union[str, List[Union[str, List[int]]]]]]] = None
