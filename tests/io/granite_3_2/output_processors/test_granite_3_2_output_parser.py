@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# ruff: noqa: E501
 
 """
 Tests for the model output parser
@@ -96,9 +97,73 @@ def test_output_with_invalid_citation():
     )
     parsed_output = parse_model_output(model_output, "")
 
-    assert parsed_output["docs"] is None
     assert parsed_output["citations"] is None
     assert parsed_output["hallucinations"] is None
+
+
+def test_output_with_colons_in_citation_text():
+    model_output = load_text_file(
+        os.path.join(TEST_DATA_DIR, "test_output_with_colons_citation_text.txt")
+    )
+    parsed_output = parse_model_output(model_output, "")
+
+    assert parsed_output
+    assert isinstance(parsed_output, dict)
+    keys = ["docs", "response", "citations", "hallucinations"]
+    for key in keys:
+        assert key in parsed_output
+
+    docs = parsed_output["docs"]
+    assert len(docs) == 1
+    doc = docs[0]  # pylint: disable = unsubscriptable-object
+    keys = ["doc_id", "text"]
+    for key in keys:
+        assert key in doc
+    assert doc["doc_id"] == "2"
+    assert (
+        "3부 : [UNK] [UNK] 종료 [UNK], 공영 주택의 세입자는 이 프로그램에서 [UNK] [UNK] 종료에 직면합니다. 이 2가지 상황에 대해 더 자세"
+        in doc["text"]
+    )
+
+    response = parsed_output["response"]
+    assert isinstance(response, str)
+    assert "Yes, you can visit a law library to conduct your legal research" in response
+
+    citations = parsed_output["citations"]
+    assert len(citations) == 1
+    citation = citations[0]
+    keys = [
+        "citation_id",
+        "doc_id",
+        "context_text",
+        "context_begin",
+        "context_end",
+        "response_text",
+        "response_begin",
+        "response_end",
+    ]
+    for key in keys:
+        assert key in citation
+    assert citation["citation_id"] == "1"
+    assert citation["doc_id"] == "2"
+    assert len(citation["context_text"]) >= 1
+
+    hallucinations = parsed_output["hallucinations"]
+    assert len(hallucinations) == 4
+    hallc_id = 1
+    for hallucination in hallucinations:
+        keys = [
+            "hallucination_id",
+            "risk",
+            "response_text",
+            "response_begin",
+            "response_end",
+        ]
+        for key in keys:
+            assert key in hallucination
+        assert hallucination["hallucination_id"] == str(hallc_id)
+        assert len(hallucination["response_text"]) >= 1
+        hallc_id += 1
 
 
 def test_output_with_citation_hallucinations():
