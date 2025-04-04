@@ -285,11 +285,24 @@ def _add_citation_context_spans(
         "context_end": "The end index of "context_text" within document with ID doc_id"
     """
     augmented_citation_info = copy.deepcopy(citation_info)
-    docs_by_docid = _create_dict(docs, "doc_id")
+    docs_by_cit_doc_id = _create_dict(
+        docs, citation_attrib="citation_id", document_attrib="doc_id"
+    )
     for citation in augmented_citation_info:
-        matches = _find_substring_in_text(
-            citation["context_text"], docs_by_docid[citation["doc_id"]]["text"]
-        )
+        # Init values in event of error in processing
+        citation["context_begin"] = 0
+        citation["context_end"] = 0
+        try:
+            dict_id = citation["citation_id"] + "-" + citation["doc_id"]
+            doc = docs_by_cit_doc_id[dict_id]
+        except KeyError:
+            logging.error(
+                f"Document with id: {dict_id} not found "
+                f"when adding citation context spans."
+            )
+            continue
+
+        matches = _find_substring_in_text(citation["context_text"], doc["text"])
         if len(matches) == 0:
             logging.error("""Error in adding the context spans to citation: \
                             Cited text not found in corresponding document""")
@@ -461,34 +474,55 @@ def _get_docs_from_citations(docs: str) -> list[dict]:
     for line in docs.splitlines():
         if not line or line.isspace():
             continue
-        if start_citation not in line or end_citation not in line or colon not in line:
+        if (
+            start_citation not in line
+            or end_citation not in line
+            or start_document not in line
+            or colon not in line
+        ):
             continue
-        doc_id = line[
-            line.find(start_document) + len(start_document) : line.rfind(colon)
-        ].strip()
+        citation_id = line.split(start_citation)[1].split(end_citation)[0].strip()
+        if not citation_id.isdigit():
+            logging.error(f"""Unable to retrieve citation id from: {line}""")
+            continue
+        doc_id = line.split(start_document)[1].split(colon)[0].strip()
+        if not doc_id.isdigit():
+            logging.error(f"""Unable to retrieve doc id from: {line}""")
+            continue
         line_separated = line.split(colon, 1)
         if len(line_separated) <= 1:
+            logging.error(f"""Unable to retrieve doc text from: {line}""")
             continue
         text = line_separated[1].strip().strip('"')
-        doc_dicts.append({"doc_id": doc_id, "text": text})
+        doc_dicts.append({"citation_id": citation_id, "doc_id": doc_id, "text": text})
     return doc_dicts
 
 
-def _create_dict(input_array: object, key_attrib_name: str) -> dict:
+def _create_dict(input_array: object, **key_attrib_names: str) -> dict:
     """
-    Given an array and the name of an attribute within the array, return a dictionary
-    containing the contents of the array indexed by the given attribute
+    Given an array of dcits and the name of attribute(s) within the array, return a
+    dict containing the contents of the array indexed by the given attribute(s)
     """
     new_dict = {}
 
     for item in input_array:
-        if item[key_attrib_name] in new_dict:
+        new_dict_key_val: str = ""
+        key_attribs_len = len(key_attrib_names)
+        # Key for dictionary will be a combinations of attribute(s)
+        # the dictionary that we are trying to index
+        for key_attrib in key_attrib_names.values():
+            new_dict_key_val += item[key_attrib]
+            key_attribs_len -= 1
+            if key_attribs_len > 0:
+                new_dict_key_val += "-"
+
+        if new_dict_key_val in new_dict:
             logging.error(
-                f"""Found unexpected duplicate key while creating \
-                dictionary: {item[key_attrib_name]}"""
+                f"Found duplicate item while creating dictionary: "
+                f"{new_dict[new_dict_key_val]}"
             )
 
-        new_dict[item[key_attrib_name]] = item
+        new_dict[new_dict_key_val] = item
 
     return new_dict
 
@@ -589,12 +623,21 @@ def _validate_spans_in_parser_output(parsed_task: object):
             ]
         ):
             logging.error("Unexpected error in generated citation response span")
-        docs_by_id = _create_dict(parsed_task["docs"], "doc_id")
+        docs_by_cit_doc_id = _create_dict(
+            parsed_task["docs"], citation_attrib="citation_id", document_attrib="doc_id"
+        )
+        try:
+            dict_id = citation["citation_id"] + "-" + citation["doc_id"]
+            doc = docs_by_cit_doc_id[dict_id]
+        except KeyError:
+            logging.error(
+                f"Document with id: {dict_id} not found "
+                f"when validation citation context spans."
+            )
+            continue
         if (
             citation["context_text"]
-            != docs_by_id[citation["doc_id"]]["text"][
-                citation["context_begin"] : citation["context_end"]
-            ]
+            != doc["text"][citation["context_begin"] : citation["context_end"]]
         ):
             logging.error("Unexpected error in generated citation context span")
 
