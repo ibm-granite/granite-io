@@ -49,6 +49,9 @@ litellm = [
 voting = [
     "pandas"
 ]
+pdl = [
+    "prompt-declaration-language",
+]
 dev = [
     "isort==6.0.1",
     "pre-commit>=3.0.4,<5.0",
@@ -66,6 +69,7 @@ dev = [
     "granite-io[transformers]",
     "granite-io[openai]",
     "granite-io[litellm]",
+    "granite-io[pdl]",
     "granite-io[voting]"
 ]
 notebook = [
@@ -83,6 +87,9 @@ issues = "https://github.com/ibm-granite/granite-io/issues"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
+
+[tool.setuptools.package-data]
+granite_io = ["io/sequential_scaling.pdl"]
 
 [tool.setuptools_scm]
 version_file = "src/granite_io/_version.py"
