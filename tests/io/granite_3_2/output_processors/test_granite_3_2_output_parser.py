@@ -286,3 +286,81 @@ def test_output_with_citation_from_source():
     assert citation["response_end"] == 379
 
     assert parsed_output["hallucinations"] is None
+
+
+def test_output_with_multiple_citations_per_document():
+    model_output = load_text_file(
+        os.path.join(
+            TEST_DATA_DIR, "test_output_with_multiple_citations_per_document.txt"
+        )
+    )
+    parsed_output = parse_model_output(model_output, "")
+
+    assert parsed_output
+    assert isinstance(parsed_output, dict)
+    keys = ["docs", "response", "citations", "hallucinations"]
+    for key in keys:
+        assert key in parsed_output
+
+    docs = parsed_output["docs"]
+    assert len(docs) == 2
+    doc = docs[0]  # pylint: disable = unsubscriptable-object
+    keys = ["doc_id", "text"]
+    for key in keys:
+        assert key in doc
+    assert doc["doc_id"] == "2"
+    assert doc["citation_id"] == "1"
+    assert "law - libraries / 에서 [UNK] 수 [UNK] 지역 법률 도서관에" in doc["text"]
+    doc = docs[1]  # pylint: disable = unsubscriptable-object
+    keys = ["doc_id", "text"]
+    for key in keys:
+        assert key in doc
+    assert doc["doc_id"] == "2"
+    assert doc["citation_id"] == "2"
+    assert (
+        "1부 : 머리말 이 시리즈의 비디오에 대한 나머지 부분을 [UNK] 머리말을 들으려면"
+        in doc["text"]
+    )
+
+    response = parsed_output["response"]
+    assert isinstance(response, str)
+    assert (
+        "Law libraries typically have self-help legal books, official reports, and case laws that could be helpful for your research"
+        in response
+    )
+
+    citations = parsed_output["citations"]
+    assert len(citations) == 2
+    citation = citations[0]
+    keys = [
+        "citation_id",
+        "doc_id",
+        "context_text",
+        "context_begin",
+        "context_end",
+        "response_text",
+        "response_begin",
+        "response_end",
+    ]
+    for key in keys:
+        assert key in citation
+    assert citation["citation_id"] == "1"
+    assert citation["doc_id"] == "2"
+    assert len(citation["context_text"]) >= 1
+
+    hallucinations = parsed_output["hallucinations"]
+    assert len(hallucinations) == 4
+    hallc_id = 1
+    for hallucination in hallucinations:
+        keys = [
+            "hallucination_id",
+            "risk",
+            "response_text",
+            "response_begin",
+            "response_end",
+        ]
+        for key in keys:
+            assert key in hallucination
+        assert hallucination["hallucination_id"] == str(hallc_id)
+        assert len(hallucination["response_text"]) >= 1
+        hallc_id += 1
