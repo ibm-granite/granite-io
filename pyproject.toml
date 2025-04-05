@@ -47,6 +47,9 @@ litellm = [
     "litellm > 1.40.14, <= 1.63.2",  # Later versions introduce LiteLLM logging bug
     "python-dotenv==1.1.0",
 ]
+voting = [
+    "pandas"
+]
 dev = [
     "isort==6.0.1",
     "pre-commit>=3.0.4,<5.0",
@@ -64,6 +67,7 @@ dev = [
     "granite-io[transformers]",
     "granite-io[openai]",
     "granite-io[litellm]",
+    "granite-io[voting]"
 ]
 notebook = [
     "notebook"
