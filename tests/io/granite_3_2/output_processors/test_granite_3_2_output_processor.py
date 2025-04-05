@@ -113,3 +113,105 @@ def test_parse_tool_output():
     assert outputs.results[0].next_message.tool_calls[0].arguments == {
         "location": "New York"
     }
+
+
+def test_parse_majority_voting_output():
+    first_number = 234651
+    second_number = 13425
+    sum_answer = "248076"
+    completion_inputs = ChatCompletionInputs(
+        messages=[
+            {
+                "role": "user",
+                "content": f"What is {first_number} + {second_number}?\n"
+                f"Answer with just a number please.",
+            }
+        ],
+        majority_voting=True,
+        generate_inputs={"n": 10, "temperature": 0.6, "max_tokens": 1024},
+    )
+
+    # ruff: noqa: E501
+    results_completion_strings = [
+        """Here is my thought process:
+    The task is to calculate the sum of two numbers, 234651 and 13425.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum, we need to add the two numbers together.
+
+    Here is my response:
+
+    101896
+
+    </answer>""",
+        """Here is my thought process:
+    The task is to calculate the sum of two numbers, 234651 and 13425. I need to add these numbers together.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    The task is to calculate the sum of two numbers, 234651 and 13425.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum of 234651 and 13425, we need to add these two numbers together.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum of 234651 and 13425, we need to add these two numbers together.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum of 234651 and 13425, we need to add these two numbers together.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum of 234651 and 13425, we need to add these two numbers together.
+
+    Here is my response:
+
+    <answer>348076</answer>""",
+        """Here is my thought process:
+    The task is to calculate the sum of two numbers, 234651 and 13425.
+
+    Here is my response:
+
+    <answer>248076</answer>""",
+        """Here is my thought process:
+    To find the sum, we need to add the two numbers together.
+
+    Here is my response:
+
+    101896
+
+    </answer>""",
+    ]
+
+    results = []
+    for result in results_completion_strings:
+        gen_result = GenerateResult(
+            completion_string=result,
+            completion_tokens=[],
+            stop_reason="stop",
+        )
+        results.append(gen_result)
+    output_processor = get_output_processor(_GENERAL_MODEL_NAME)
+    outputs = output_processor.transform(
+        GenerateResults(results=results),
+        completion_inputs,
+    )
+
+    assert len(outputs.results) == 1
+    assert str(outputs.results[0].next_message.content) == sum_answer
