@@ -40,7 +40,7 @@ transformers = [
     "transformers[torch]",
 ]
 openai = [
-    "openai >= 1.0, <= 1.61.0",  # Later verions introduce LiteLLM logging bug
+    "openai >= 1.0, <= 1.71.0",  # Later verions introduce LiteLLM logging bug
 ]
 litellm = [
     "litellm > 1.40.14, <= 1.63.2",  # Later versions introduce LiteLLM logging bug
