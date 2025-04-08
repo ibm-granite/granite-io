@@ -75,7 +75,7 @@ class InputOutputProcessor(FactoryConstructible):
         """
 
     def create_chat_completion(
-        self, inputs: ChatCompletionInputs
+        self, inputs: ChatCompletionInputs | None = None, **kwargs
     ) -> ChatCompletionResult:
         """
         Non-async version of :func:`acreate_chat_completion()`
@@ -87,6 +87,12 @@ class InputOutputProcessor(FactoryConstructible):
         :returns: The next message that the model produces when fed the specified
             inputs, plus additional information about the low-level request.
         """
+
+        if inputs is None:
+            inputs = ChatCompletionInputs(**kwargs)
+
+        # TODO: inputs and kwargs is a problem
+
         # Fall back on async version of this method by default.  Subclasses may override
         # this method if they have a more efficient way of doing non-async operation.
         coroutine_to_run = self.acreate_chat_completion(inputs)

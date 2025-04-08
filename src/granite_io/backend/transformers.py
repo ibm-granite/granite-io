@@ -64,7 +64,7 @@ class TransformersBackend(Backend):
     _executor: concurrent.futures.ThreadPoolExecutor
     "Single background thread, wrapped in an executor for queueing"
 
-    def __init__(self, config: aconfig.Config):
+    def __init__(self, config: aconfig.Config | None = None, **kwargs):
         """
         :param model_to_load: String that the Transformers library can map to a location
             from which to load model files. This is usually a set of HuggingFace model
@@ -72,7 +72,7 @@ class TransformersBackend(Backend):
             be a local filesystem path or a URL.
         :param device: Optional Pytorch device string, usually "cpu" or "cuda"
         """
-        super().__init__(config)
+        super().__init__(config, **kwargs)
 
         with import_optional("transformers"):
             # Third Party

@@ -4,6 +4,16 @@
 
 Granite IO Processing is a framework which enables you to transform how a user calls or infers an IBM Granite model and how the output from the model is returned to the user. In other words, the framework allows you to extend the functionality of calling the model.
 
+> Note: This framework is composable and is intended to be used to build more complex workflows, but the "getting started" workflow looks like this:
+
+```mermaid
+sequenceDiagram
+    client->>+granite-io I/O processor: model input
+    granite-io I/O processor-->>backend: enhanced model input
+    backend-->>granite-io I/O processor: model output
+    granite-io I/O processor->>+client: enhanced model output
+```
+
 ## Getting Started
 
 ### Requirements
@@ -12,87 +22,150 @@ Granite IO Processing is a framework which enables you to transform how a user c
 
 ### Installation
 
-We recommend using a Python virtual environment with Python 3.10+. Here is how to setup a virtual environment using [Python venv](https://docs.python.org/3/library/venv.html):
+We recommend using a Python [virtual environment and pip](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/). Otherwise, you may have issues with installed packages not being found. Here is how to setup a virtual environment using [Python venv](https://docs.python.org/3/library/venv.html):
 
 ```
 python3 -m venv granite_io_venv
 source granite_io_venv/bin/activate
 ```
 
-> [!TIP]
-> If you use [pyenv](https://github.com/pyenv/pyenv), [Conda Miniforge](https://github.com/conda-forge/miniforge) or other such tools for Python version management, create the virtual environment with that tool instead of venv. Otherwise, you may have issues with installed packages not being found as they are linked to your Python version management tool and not `venv`.
+#### Install granite-io
 
-There are 2 ways to install the Granite IO Processor as follows:
-
-#### From Release
-
-To install from release ([PyPi package](https://pypi.org/project/granite-io/)):
+To install from releases ([PyPI package](https://pypi.org/project/granite-io/)):
 
 ```shell
-python3 -m venv granite_io_venv
-source granite_io_venv/bin/activate
 pip install granite-io
-sudo python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt punkt_tab
 ```
+#### Install NLTK data (punkt_tab)
 
-> [!NOTE]
-> `granite-io` uses [NLTK Data](https://www.nltk.org/data.html) [Punkt Sentence Tokenizer](https://www.nltk.org/api/nltk.tokenize.punkt.html) for extracting contents when parsing output from a model. The command above shows how to install tokenizers for MacOS. Check out [install guide](https://www.nltk.org/install.html) for other OSes.
-
-#### From Source
-
-To install from source(GitHub Repository):
+`granite-io` uses [NLTK Data](https://www.nltk.org/data.html) [Punkt Sentence Tokenizer](https://www.nltk.org/api/nltk.tokenize.punkt.html) for extracting contents when parsing output from a model. Check out [Installing NLTK Data](https://www.nltk.org/install.html#installing-nltk-data) for more detailed instructions.  Install punkt_tab data:
 
 ```shell
-python3 -m venv granite_io_venv
-source granite_io_venv/bin/activate
-git clone https://github.com/ibm-granite/granite-io
-cd granite-io
-pip install -e .
-python3 sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt punkt_tab
+python -m nltk.downloader punkt_tab
 ```
 
-> [!NOTE]
-> `granite-io` uses [NLTK Data](https://www.nltk.org/data.html) [Punkt Sentence Tokenizer](https://www.nltk.org/api/nltk.tokenize.punkt.html) for extracting contents when parsing output from a model. The command above shows how to install tokenizers for MacOS. Check out [install guide](https://www.nltk.org/install.html) for other OSes.
+#### Install granite-io backend extras
+
+Each backend provider, such as OpenAI or LiteLLM, has extra requirements. Install the extras for the backend(s) you intend to use:
+
+```shell
+pip install "granite-io[litellm]"       # For LiteLLM
+pip install "granite-io[openai]"        # For OpenAI API
+pip install "granite-io[transformers]"  # For Transformers
+```
 
 ### Framework Example
 
-Sample code snippet showing how to use the framework:
+> To be able to run the following code snippet, you will need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/granite) model cached (`ollama pull granite3.2:8b`).
+
+Simple code snippet showing how to use the framework:
 
 ```py
-from granite_io import make_backend, make_io_processor
-from granite_io.types import ChatCompletionInputs, UserMessage
+from granite_io import Granite3Point2InputOutputProcessor
+from granite_io import OpenAIBackend
 
-model_name = "granite3.2:8b"
-io_processor = make_io_processor(
-    model_name, backend=make_backend("openai", {"model_name": model_name})
-)
-messages=[
-    UserMessage(
-        content="What's the fastest way for a seller to visit all the cities in their region?",
-    )
+# Example using Granite 3.2 processor with OpenAIBackend defaults (local Ollama)
+processor = Granite3Point2InputOutputProcessor(backend=OpenAIBackend())
+
+messages = [
+  {
+    "role": "user",
+    "content": "What team is the most successful hurling team in the last 10 years?",
+  },
 ]
 
-# Without Thinking
-outputs = io_processor.create_chat_completion(ChatCompletionInputs(messages=messages))
-print("------ WITHOUT THINKING ------")
-print(outputs.results[0].next_message.content)
+# Try a simple chat completion with the above messages and enable thinking
+outputs = processor.create_chat_completion(messages=messages, thinking=True)
 
-# With Thinking
-outputs = io_processor.create_chat_completion(
-    ChatCompletionInputs(messages=messages, thinking=True)
-)
+# Note: The reasoning is separated from the response
 print("------ WITH THINKING ------")
-print(">> Thoughts:")
-print(outputs.results[0].next_message.reasoning_content)
-print(">> Response:")
+print("\n>> Response:\n")
 print(outputs.results[0].next_message.content)
+print("\n>> Thoughts:\n")
+print(outputs.results[0].next_message.reasoning_content)
+
+print("\n")
+print("+---------------------------------------------------------------------------")
+print("| That was easy and we can see the reasoning!!")
+print("| Now try using some other options (documents, citations and temperature)...")
+print("+---------------------------------------------------------------------------")
+print("\n")
+
+# Add documents for RAG
+documents = [
+  {
+    # Source: https://en.wikipedia.org/wiki/Limerick_county_hurling_team
+    "text": "The 2018 season concluded with Limerick winning the 2018 All-Ireland SHC, the team's first since 1973, with a 3–16 to 2–18 point defeat of Galway in the final.The team built on this success, winning the NHL in 2019, 2020 and 2023, the Munster SHC in 2019, 2020, 2021 and 2022 and the All-Ireland SHC again in 2020, 2021 and 2022. Munster Senior Hurling Championship 2023, All Ireland Hurling Championship 2023 to be forever remembered the team to join the Cork hurling Champions of the 40s and the Kilkenny hurling Champions of the 2000s to complete 4 in a row."  # noqa: E501
+  },
+]
+
+# Additional controls for Granite 3.2
+controls = {
+  "citations": True,
+}
+
+# Additional kwargs for text completion (generate)
+generate_kwargs = {
+  "temperature": 0.2,
+  "frequency_penalty": 1.5,
+  "max_tokens": 10000,
+}
+
+# Now try completion with thinking, controls, and additional kwargs
+outputs = processor.create_chat_completion(
+  messages=messages,
+  controls=controls,
+  documents=documents,
+  generate_inputs=generate_kwargs,
+  thinking=False,
+)
+
+print("------ USING DOCUMENTS WITH CITATIONS ------")
+print("\n>> Response:\n")
+print(outputs.results[0].next_message.content)
+print("\n>> Citations:\n")
+for citation in outputs.results[0].next_message.citations:
+  print(f"{citation.citation_id}.{citation.doc_id}): {citation.context_text}")
 ```
 
-> [!IMPORTANT]
-> To get started with the examples, make sure you have followed the [Installation](#installation) steps first.
-> You will need additional packages to be able to run the OpenAI example. They can be installed by running `pip install -e "granite-io[openai]"`. Replace package name `granite-io` with `.` if installing from source.
->
-> To be able to run the above code snippet, you will need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/granite) model cached (`ollama pull granite3.2:8b`).
+## Features
+
+### Input processing
+
+Structured input allows simplified usage of advanced model features.
+
+* Input messages, tools, documents, and controls
+* Controls:
+  * Response length
+  * Thinking (reasoning)
+  * Citations
+* Input enhancements
+  * Final prompt based on structured input
+  * Injection of current date/time
+
+### Output processing
+
+Structured output separates supporting information from the final response.
+
+* Output enhancements
+  * Filtered final answer(s)
+  * Additional attributes for supporting information
+* Structured output attributes:
+  * Response
+  * Thoughts (reasoning)
+  * Citations
+
+### Backends
+
+`granite-io` includes backends to support popular LLM provider APIs:
+
+* OpenAI API
+* LiteLLM
+* Transformers
+
+### Supported models
+
+`granite-io` is intended to be somewhat model-agnostic, but the first releases are very focused on [Granite 3.2 Language Models](https://huggingface.co/collections/ibm-granite/granite-32-language-models-67b3bc8c13508f6d064cff9a).
 
 ### Try It Out!
 

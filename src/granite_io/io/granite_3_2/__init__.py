@@ -6,4 +6,6 @@ processing.
 """
 
 # Local
-import granite_io.io.granite_3_2.granite_3_2  # noqa: F401
+from granite_io.io.granite_3_2.granite_3_2 import (  # noqa: F401
+    Granite3Point2InputOutputProcessor,
+)

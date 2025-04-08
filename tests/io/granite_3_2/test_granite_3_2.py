@@ -29,8 +29,8 @@ from granite_io.io.granite_3_2.granite_3_2 import (
     Granite3Point2InputOutputProcessor,
 )
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
+    Granite3Point2Inputs,
     _ControlsRecord,
-    _Granite3Point2Inputs,
 )
 from granite_io.io.granite_3_2.output_processors.granite_3_2_output_parser import (
     _CITATION_START,
@@ -210,7 +210,7 @@ def test_read_inputs(input_json_str):
     assert input_obj == input_obj_2
 
     # Parse additional Granite-specific fields
-    granite_input_obj = _Granite3Point2Inputs.model_validate(input_obj.model_dump())
+    granite_input_obj = Granite3Point2Inputs.model_validate(input_obj.model_dump())
 
     # Verify that we can convert back to JSON without crashing
     granite_input_obj.model_dump_json()

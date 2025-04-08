@@ -30,19 +30,24 @@ if TYPE_CHECKING:
 class OpenAIBackend(Backend):
     _openai_client: "openai.AsyncOpenAI"
 
-    def __init__(self, config: aconfig.Config):
-        super().__init__(config)
+    def __init__(self, config: aconfig.Config | None = None, **kwargs):
+        if config is None:
+            config = {}
+        model = kwargs.get("model", config.get("model_name", "granite3.2:8b"))
+
+        super().__init__(config, model=model)
+
         with import_optional("openai"):
             # Third Party
             import openai
 
-        api_key = config.get("openai_api_key", "ollama")
-        base_url = config.get("openai_base_url", "http://localhost:11434/v1")
-        default_headers = config.get("default_headers")
+        merged_kwargs = {
+            "api_key": config.get("openai_api_key", "ollama"),
+            "base_url": config.get("openai_base_url", "http://localhost:11434/v1"),
+            "default_headers": config.get("default_headers")
+        } | kwargs
 
-        self._openai_client = openai.AsyncOpenAI(
-            base_url=base_url, api_key=api_key, default_headers=default_headers
-        )
+        self._openai_client = openai.AsyncOpenAI(**merged_kwargs)
 
     async def generate(self, inputs: GenerateInputs):
         """Run a direct /completions call"""

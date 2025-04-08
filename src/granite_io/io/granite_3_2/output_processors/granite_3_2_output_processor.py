@@ -17,7 +17,7 @@ from granite_io.io.consts import (
     _GRANITE_3_2_MODEL_NAME,
 )
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
-    _Granite3Point2Inputs,
+    Granite3Point2Inputs,
 )
 from granite_io.io.granite_3_2.output_processors.granite_3_2_output_parser import (
     parse_model_output,
@@ -75,7 +75,7 @@ class Granite3Point2OutputProcessor(OutputProcessor):
     ) -> ChatCompletionResults:
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
-        inputs = _Granite3Point2Inputs.model_validate(inputs.model_dump())
+        inputs = Granite3Point2Inputs.model_validate(inputs.model_dump())
 
         results = []
         for result in output.results:

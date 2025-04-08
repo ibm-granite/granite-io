@@ -31,7 +31,7 @@ dynamic = ["version"]
 dependencies = [
     "alchemy-config",
     "jsonschema",
-    "nltk",
+    "nltk~=3.9.1",
     "pydantic >= 2.0.0",  # LiteLLM requires >= 2
 ]
 
@@ -40,7 +40,7 @@ transformers = [
     "transformers[torch]",
 ]
 openai = [
-    "openai >= 1.0, <= 1.61.0",  # Later verions introduce LiteLLM logging bug
+    "openai >= 1.0, <= 1.61.0",  # Later versions introduce LiteLLM logging bug
 ]
 litellm = [
     "litellm > 1.40.14, <= 1.63.2",  # Later versions introduce LiteLLM logging bug
