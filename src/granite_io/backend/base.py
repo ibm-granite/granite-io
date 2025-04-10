@@ -26,15 +26,17 @@ class Backend(FactoryConstructible):
     Base class for classes that provide an interface to a string-based completions API
     for a model.
 
-    This base class exists for two reasons: It smoothes out the differences between
+    This base class exists for two reasons: It smooths out the differences between
     APIs, and it provides a level of indirection so that backend inference libraries can
     be optional dependencies of this Python package.
     """
 
     _model_str: str
 
-    def __init__(self, config: aconfig.Config):
-        self._model_str = config.model_name
+    def __init__(self, config: aconfig.Config | None = None, **kwargs):
+        if config is None:
+            config = {}
+        self._model_str = kwargs.get("model", config.get("model_name"))
 
     async def __call__(self, inputs: GenerateInputs) -> GenerateResults:
         return await self.pipeline(inputs)
