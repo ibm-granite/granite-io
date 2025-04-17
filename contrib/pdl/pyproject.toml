@@ -1,20 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [build-system]
-requires = ["setuptools>=70.1.0", "setuptools_scm>=8", "wheel"]
+requires = ["setuptools>=70.1.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "granite-io"
+name = "granite-io-pdl"
 authors = [
-  { name="Fred Reiss", email="frreiss@us.ibm.com" },
-  { name="Gabe Goodhart", email="ghart@us.ibm.com" },
-  { name="Mark Sturdevant", email="mark.sturdevant@ibm.com" },
-  { name="Martin Hickey", email="martin.hickey@ie.ibm.com" },
+  { name="Louis Mandel", email="lmandel@us.ibm.com" },
 ]
-description = "Input and output processing for IBM Granite models"
+description = "Input and output processors written in PDL"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
@@ -22,82 +19,30 @@ classifiers = [
     "Operating System :: MacOS :: MacOS X",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
-dynamic = ["version"]
+version = "0.1.0"
 dependencies = [
-    "alchemy-config",
-    "jsonschema",
-    "nltk",
-    "pydantic >= 2.0.0, < 3.0",  # LiteLLM requires >= 2
-    "rouge_score",
-    "aiohttp"
+    "prompt-declaration-language >= 0.6",
 ]
 
-[project.optional-dependencies]
-transformers = [
-    "transformers[torch]",
-]
-openai = [
-    "openai >= 1.68.2, < 2.0",
-]
-litellm = [
-    "litellm >= 1.63.14, < 2.0",
-    "python-dotenv==1.1.0",
-]
-vllm = [
-    "vllm"
-]
-voting = [
-    "pandas",
-]
-dev = [
-    "isort==6.0.1",
-    "pre-commit>=3.0.4,<5.0",
-    "pylint>=2.16.2,<4.0",
-    "pylint-pydantic",
-    "pytest",
-    "pytest-asyncio",
-    "pytest-cov",
-    "pytest-html",
-    "pytest-recording~=0.13.2",
-    "pytest-retry~=1.7",
-    "ruff==0.11.5",
-    "tox",
-    "vcrpy==5.1.0",  # pin to avoid flakey newer
-    "granite-io[transformers]",
-    "granite-io[openai]",
-    "granite-io[litellm]",
-    "granite-io[voting]",
-    "granite-io[vllm]"
-]
-notebook = [
-    "notebook"
-]
-all = [
-    "granite-io[dev]",
-    "granite-io[notebook]",
-]
 
 [project.urls]
 homepage = "https://github.com/ibm-granite/granite-io"
-source = "https://github.com/ibm-granite/granite-io"
+source = "https://github.com/ibm-granite/granite-io/tree/main/contrib/pdl"
 issues = "https://github.com/ibm-granite/granite-io/issues"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
 
-[tool.setuptools_scm]
-version_file = "src/granite_io/_version.py"
-# do not include +gREV local version, required for Test PyPI upload
-local_scheme = "no-local-version"
+[tool.setuptools.package-data]
+granite_io_pdl = ["sequential_scaling.pdl"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["granite_io", "granite_io*"]
+include = ["granite_io_pdl", "granite_io_pdl*"]
 
 [tool.ruff]
 target-version = "py310"
@@ -136,5 +81,5 @@ from-first=true
 # import_heading_thirdparty="Third Party"
 # import_heading_firstparty="First Party"
 # import_heading_localfolder="Local"
-known-local-folder=["src/granite_io","tests"]
-# extend-skip="src/granite_io/_version.py"
+known-local-folder=["src/granite_io_pdl","tests"]
+# extend-skip="src/granite_io_pdl/_version.py"

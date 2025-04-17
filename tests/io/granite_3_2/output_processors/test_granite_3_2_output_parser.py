@@ -10,7 +10,7 @@ import os
 
 # Local
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
-    _Document,
+    Document,
 )
 from granite_io.io.granite_3_2.output_processors.granite_3_2_output_parser import (
     parse_model_output,
@@ -239,7 +239,7 @@ def test_output_with_citation_from_source():
         os.path.join(TEST_DATA_DIR, "test_output_with_citation_from_source.txt")
     )
     doc_source = load_text_file(os.path.join(TEST_DATA_DIR, "test_document_source.txt"))
-    doc_input = [_Document(text=f"{doc_source}")]
+    doc_input = [Document(text=f"{doc_source}")]
     parsed_output = parse_model_output(model_output, doc_input)
 
     assert parsed_output

@@ -205,12 +205,16 @@ class ModelDirectInputOutputProcessorWithGenerate(InputOutputProcessor):
         self._backend = backend
 
     @abc.abstractmethod
-    def inputs_to_generate_inputs(self, inputs: ChatCompletionInputs) -> GenerateInputs:
+    def inputs_to_generate_inputs(
+        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+    ) -> GenerateInputs:
         """
         Determine the best generation parameters (including prompt) to pass to the
         backend when running the specified chat completion.
 
         :param inputs: Structured representation of the inputs
+        :param add_generation_prompt: If true, the generated prompt will include the
+         appropriate response prefix to trigger generation.
 
         :returns: A copy of inputs.generate_inputs with appropriate modifications for
          the target model and with the ``prompt`` field populated with an appropriate
@@ -392,3 +396,48 @@ def make_new_io_processor(
         config=config,
         backend=backend,
     )
+
+
+class RequestProcessor(abc.ABC):
+    """
+    Base class for objects that modify a ``ChatCompletionInputs`` object in various
+    ways, such as by adding RAG documents or changing the content of existing turns.
+    """
+
+    @abc.abstractmethod
+    async def aprocess(
+        self, inputs: ChatCompletionInputs
+    ) -> list[ChatCompletionInputs]:
+        """
+        Subclasses must implement this entry point. Modify the request, potentially
+        spawning asynchronous background tasks to perform the modifications.
+
+        :param inputs: The original request
+
+        :returns: One or more modified COPIES of the original request
+        """
+
+    def process(self, inputs: ChatCompletionInputs) -> list[ChatCompletionInputs]:
+        """
+        Subclasses may optionally implement this entry point if they have a more
+        efficient way to do non-async operation. The default implementation calls to
+        :func:`aprocess()`.
+
+        :param inputs: The original request
+
+        :returns: One or more modified COPIES of the original request
+        """
+        # Fall back on async version of this method by default.  Subclasses may override
+        # this method if they have a more efficient way of doing non-async operation.
+        coroutine_to_run = self.aprocess(inputs)
+        try:  # Exceptions as control flow. Sorry, asyncio forces this design on us.
+            asyncio.get_running_loop()
+
+            # If we get here, this code is running inside an async function.
+            return _workaround_for_horrible_design_flaw_in_asyncio(coroutine_to_run)
+        except RuntimeError:
+            # If we get here, this code is not running inside an async function.
+            # First we exit the the exception handler; otherwise any exceptions that are
+            # thrown from the coroutine will be chained off the current RuntimeError.
+            pass
+        return asyncio.run(coroutine_to_run)

@@ -1,0 +1,718 @@
+interactions:
+- request:
+    body: '{"model":"ibm-granite/granite-3.2-8b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":5,"n":5,"temperature":0.2}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '852'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-c6fb0dc369614404b9f36c349e7c0749","object":"text_completion","created":1744400551,"model":"ibm-granite/granite-3.2-8b-instruct","choices":[{"index":0,"text":"Based
+      on the provided documents, only your dog has fleas.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"Based
+      on the provided documents, only your dog has fleas.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":2,"text":"According
+      to the information I have, only your dog has fleas.","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":3,"text":"Based
+      on the provided documents, only your dog has fleas. The document","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":4,"text":"Based
+      on the provided documents, only your dog has fleas. The document","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":152,"total_tokens":230,"completion_tokens":78,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '1089'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:30 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas.<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '987'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-8ea7c141ba3e4ba8bdb0476f34379b28","object":"text_completion","created":1744400553,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":172,"total_tokens":174,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:32 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas.<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '987'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-76f28aeb60724e828c835142bcb86d4a","object":"text_completion","created":1744400559,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":172,"total_tokens":174,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:38 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>According
+      to the information I have, only your dog has fleas.<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '991'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-f8abef75f70546169597394c7acbe89e","object":"text_completion","created":1744400559,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:38 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas. The document<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1000'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-77be1d6604c14fa0b4283ff8fa2af9fe","object":"text_completion","created":1744400559,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:38 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas. The document<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1000'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-6daf09198c724f35b2998d747ced18ef","object":"text_completion","created":1744400560,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:39 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"ibm-granite/granite-3.2-8b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":5,"n":5,"temperature":0.2}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '852'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '1'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-abecc0272d624c4eba5b29847b33377b","object":"text_completion","created":1744400560,"model":"ibm-granite/granite-3.2-8b-instruct","choices":[{"index":0,"text":"Based
+      on the provided documents, only your dog has fleas. The document","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"Based
+      on the provided documents, your dog has fleas. There is no","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":2,"text":"Based
+      on the provided documents, only your dog has fleas.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":3,"text":"Based
+      on the provided documents, only your dog has fleas. Your cat","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":4,"text":"Based
+      on the provided documents, only your dog has fleas. The document","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":152,"total_tokens":231,"completion_tokens":79,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '1103'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:40 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas. The document<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1000'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '1'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-7fd3df4237b3442b93de9df04a25ead6","object":"text_completion","created":1744400563,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:42 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, your dog has fleas. There is no<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '994'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-ed46b30fc0bd4d5fb0fe30c9ffef272b","object":"text_completion","created":1744400563,"model":"certainty","choices":[{"index":0,"text":"7","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:42 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas.<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '987'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-7ed4f8828430487c9897452cf63ad01d","object":"text_completion","created":1744400563,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":172,"total_tokens":174,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:42 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas. Your cat<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '996'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-5596a6c13e4c4751a49ddcb03642dfc1","object":"text_completion","created":1744400564,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:43 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+- request:
+    body: '{"model":"certainty","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nMy dog has fleas.\n\nDocument 1\nMy cat does not have fleas.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Based
+      on the provided documents, only your dog has fleas. The document<|end_of_text|>\n<|start_of_role|>certainty<|end_of_role|>","n":1,"temperature":0.0,"guided_choice":["0","1","2","3","4","5","6","7","8","9"]}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1000'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-107ce14b14144c90ae32148505bef1b6","object":"text_completion","created":1744400564,"model":"certainty","choices":[{"index":0,"text":"8","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":174,"total_tokens":176,"completion_tokens":2,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '330'
+      content-type:
+      - application/json
+      date:
+      - Fri, 11 Apr 2025 19:42:43 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

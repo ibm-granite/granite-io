@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: '{"model":"hallucinations","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM.Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>documents<|end_of_role|>Document
+      0\nGit Repos and Issue Tracking is an IBM-hosted component of the Continuous
+      Delivery service. All of the data that you provide to Git Repos and Issue Tracking,
+      including but not limited to source files, issues, pull requests, and project
+      configuration properties, is managed securely within Continuous Delivery. However,
+      Git Repos and Issue Tracking supports various mechanisms for exporting, sending,
+      or otherwise sharing data to users and third parties. The ability of Git Repos
+      and Issue Tracking to share information is typical of many social coding platforms.
+      However, such sharing might conflict with regulatory controls that apply to
+      your business. After you create a project in Git Repos and Issue Tracking, but
+      before you entrust any files, issues, records, or other data with the project,
+      review the project settings and change any settings that you deem necessary
+      to protect your data. Settings to review include visibility levels, email notifications,
+      integrations, web hooks, access tokens, deploy tokens, and deploy keys. Project
+      visibility levels \n\nGit Repos and Issue Tracking projects can have one of
+      the following visibility levels: private, internal, or public. * Private projects
+      are visible only to project members. This setting is the default visibility
+      level for new projects, and is the most secure visibility level for your data.
+      * Internal projects are visible to all users that are logged in to IBM Cloud.
+      * Public projects are visible to anyone. To limit project access to only project
+      members, complete the following steps:\n\n\n\n1. From the project sidebar, click
+      Settings > General. 2. On the General Settings page, click Visibility > project
+      features > permissions. 3. Locate the Project visibility setting. 4. Select
+      Private, if it is not already selected. 5. Click Save changes. Project membership
+      \n\nGit Repos and Issue Tracking is a cloud hosted social coding environment
+      that is available to all Continuous Delivery users. If you are a Git Repos and
+      Issue Tracking project Maintainer or Owner, you can invite any user and group
+      members to the project. IBM Cloud places no restrictions on who you can invite
+      to a project.\n\nDocument 1\nAfter you create a project in Git Repos and Issue
+      Tracking, but before you entrust any files, issues, records, or other data with
+      the project, review the project settings and change any settings that are necessary
+      to protect your data. Settings to review include visibility levels, email notifications,
+      integrations, web hooks, access tokens, deploy tokens, and deploy keys. Project
+      visibility levels \n\nGit Repos and Issue Tracking projects can have one of
+      the following visibility levels: private, internal, or public. * Private projects
+      are visible only to project members. This setting is the default visibility
+      level for new projects, and is the most secure visibility level for your data.
+      * Internal projects are visible to all users that are logged in to IBM Cloud.
+      * Public projects are visible to anyone. To limit project access to only project
+      members, complete the following steps:\n\n\n\n1. From the project sidebar, click
+      Settings > General. 2. On the General Settings page, click Visibility > project
+      features > permissions. 3. Locate the Project visibility setting. 4. Select
+      Private, if it is not already selected. 5. Click Save changes. Project email
+      settings \n\nBy default, Git Repos and Issue Tracking notifies project members
+      by way of email about project activities. These emails typically include customer-owned
+      data that was provided to Git Repos and Issue Tracking by users. For example,
+      if a user posts a comment to an issue, Git Repos and Issue Tracking sends an
+      email to all subscribers. The email includes information such as a copy of the
+      comment, the user who posted it, and when the comment was posted. To turn off
+      all email notifications for your project, complete the following steps:\n\n\n\n1.
+      From the project sidebar, click Settings > General. 2. On the **General Settings
+      **page, click Visibility > project features > permissions. 3. Select the Disable
+      email notifications checkbox. 4. Click Save changes. Project integrations and
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
+      level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
+      Git Repos and Issue Tracking projects can have one of the following visibility
+      levels: private, internal, or public. <r1> Private projects are visible only
+      to project members, internal projects are visible to all users that are logged
+      in to IBM Cloud, and public projects are visible to anyone.<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split
+      the last assistant response into individual sentences. For each sentence in
+      the last assistant response, identify the faithfulness score range. Ensure that
+      your output includes all response sentence IDs, and for each response sentence
+      ID, provide the corresponding faithfulness score range. The output must be a
+      json structure.<|end_of_text|>","max_tokens":1024,"n":1,"temperature":0.0}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '5591'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-ec873c11fbdf4f088f0334d3338012fa","object":"text_completion","created":1744418829,"model":"hallucinations","choices":[{"index":0,"text":"\"{\\\"<r0>\\\":
+      \\\"0.1-0.2\\\", \\\"<r1>\\\": \\\"0.9-1.0\\\"}\"","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1087,"total_tokens":1120,"completion_tokens":33,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '403'
+      content-type:
+      - application/json
+      date:
+      - Sat, 12 Apr 2025 00:47:09 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

@@ -2,7 +2,15 @@
 
 
 # Local
-from .certainty import CertaintyIOProcessor
+from .certainty import (
+    AssistantMessageWithScore,
+    CertaintyCompositeIOProcessor,
+    CertaintyIOProcessor,
+)
 
 # Expose public symbols at `granite_io.io.certainty` to save users from typing
-__all__ = ["CertaintyIOProcessor"]
+__all__ = [
+    "CertaintyIOProcessor",
+    "CertaintyCompositeIOProcessor",
+    "AssistantMessageWithScore",
+]

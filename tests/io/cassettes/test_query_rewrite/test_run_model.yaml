@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: '{"model":"query_rewrite","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I have
+      two pets, a dog named Rex and a cat named Lucy.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Great,
+      what would you like to share about them?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Rex
+      spends a lot of time in the backyard and outdoors, and Luna is always inside.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Sounds
+      good! Rex must love exploring outside, while Lucy probably enjoys her cozy indoor
+      life.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>But is he more likely
+      to get fleas because of that?<|end_of_text|>\n<|start_of_role|>rewrite: Reword
+      the final utterance from the USER into a single utterance that doesn''t need
+      the prior conversation history to understand the user''s intent. If the final
+      utterance is a clear and standalone question, please DO NOT attempt to rewrite
+      it, rather output the last user utterance as is. Your output format should be
+      in JSON: { \"rewritten_question\": <REWRITE> }<|end_of_role|>","max_tokens":80,"temperature":0.0}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1347'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.66.5
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.66.5
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-761bf04229e348838748467879e56260","object":"text_completion","created":1744420951,"model":"query_rewrite","choices":[{"index":0,"text":"\n{\n  \"rewritten_question\":
+      \"Is Rex more likely to get fleas because he spends a lot of time outdoors?\"\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":259,"total_tokens":294,"completion_tokens":35,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '445'
+      content-type:
+      - application/json
+      date:
+      - Sat, 12 Apr 2025 01:22:30 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

@@ -17,7 +17,7 @@ scorer = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
 
 
 def _minimum_bayesian_risk_decoding(
-    answers: list[str], similarity: Callable
+    answers: list[str], similarity: Callable[[str, str], float]
 ) -> Union[str, int, list[float]]:
     """Minimum Bayes Risk (MBR) decoding is a method for choosing the outputs of a
     machine learning system based not on the output with the highest probability, but

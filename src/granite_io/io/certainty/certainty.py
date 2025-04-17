@@ -7,10 +7,14 @@ See model card at https://huggingface.co/ibm-granite/granite-uncertainty-3.2-8b-
 """
 
 # Local
-from granite_io.io.base import ModelDirectInputOutputProcessorWithGenerate
+from granite_io.backend.base import Backend
+from granite_io.io.base import (
+    InputOutputProcessor,
+    ModelDirectInputOutputProcessorWithGenerate,
+)
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     Granite3Point2InputProcessor,
-    _Granite3Point2Inputs,
+    Granite3Point2Inputs,
 )
 from granite_io.types import (
     AssistantMessage,
@@ -99,19 +103,22 @@ class CertaintyIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         # I/O processor for the base model, which does most of the input formatting.
         self.base_input_processor = Granite3Point2InputProcessor()
 
-    def inputs_to_generate_inputs(self, inputs: ChatCompletionInputs) -> GenerateInputs:
+    def inputs_to_generate_inputs(
+        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+    ) -> GenerateInputs:
         # Validate the input and convert to Granite input
-        inputs = _Granite3Point2Inputs.model_validate(inputs.model_dump())
+        inputs = Granite3Point2Inputs.model_validate(inputs.model_dump())
 
         # Check for the invariants that the model expects its input to satisfy
         if inputs.messages[-1].role not in ("user", "assistant"):
             raise ValueError("Last message is not a user or assistant message")
 
         # The beginning of the prompt doesn't change relative to base Granite 3.2
-        prompt_prefix = self.base_input_processor.transform(inputs, False)
+        prompt = self.base_input_processor.transform(inputs, False)
 
         # Only the generation prompt portion changes
-        prompt = prompt_prefix + "<|start_of_role|>certainty<|end_of_role|>"
+        if add_generation_prompt:
+            prompt = prompt + "<|start_of_role|>certainty<|end_of_role|>"
         result = inputs.generate_inputs.model_copy(
             update={
                 "prompt": prompt,
@@ -146,3 +153,100 @@ class CertaintyIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
             )
 
         return ChatCompletionResults(results=results)
+
+
+DEFAULT_CANNED_RESPONSE = (
+    "Sorry, but I am unable to generate a response with high certainty."
+)
+
+
+class AssistantMessageWithScore(AssistantMessage):
+    """Extended output format for the :class:`CertaintyCompositeIOProcessor` with
+    an extra field for passing through certainty score."""
+
+    certainty_score: float | None = None
+    """Output of checking this message with the certainty intrinsic."""
+
+
+class CertaintyCompositeIOProcessor(InputOutputProcessor):
+    """
+    Composite I/O processor that generates a response, checks the response for
+    certainty, and falls back on a canned response if the check falls below a threshold.
+    """
+
+    def __init__(
+        self,
+        generator: InputOutputProcessor,
+        lora_backend: Backend,
+        threshold: float = 0.75,
+        canned_response: str = DEFAULT_CANNED_RESPONSE,
+        include_score: bool = False,
+    ):
+        """
+        :param generator: I/O processor that generates the results that this I/O
+         processor shoid validate.
+        :param lora_backend: Backend for running the certainty intrinsic.
+        :param threshold: If the certainty score of every completion is below this
+         value, a canned response will be given.
+        :param canned_response: Fallback response if none of the responses from the
+         generator pass the threshold.
+        """
+        self._generator = generator
+        self._certainty = CertaintyIOProcessor(lora_backend)
+        self._threshold = threshold
+        self._canned_response = canned_response
+        self._include_score = include_score
+
+    def update_threshold(self, threshold: float):
+        """Convenience method to update the filtering threshold.
+
+        :param threshold: New value to be applied to subsequent calls to the certainty
+         I/O processor."""
+        self._threshold = threshold
+
+    async def acreate_chat_completion(
+        self, inputs: ChatCompletionInputs
+    ) -> ChatCompletionResults:
+        # Generate one or more completions
+        generator_output = await self._generator.acreate_chat_completion(inputs)
+
+        # Run certainty checks on all completions in parallel
+        futures = []
+        for result in generator_output.results:
+            futures.append(
+                self._certainty.acreate_chat_completion(
+                    inputs.with_next_message(
+                        result.next_message
+                    ).with_addl_generate_params({"n": 1, "temperature": 0.0})
+                )
+            )
+
+        # Process results as they come back. Check each certainty score against the
+        # threshold.
+        processed_results = []
+        max_certainty = 0.0
+        for result, future in zip(generator_output.results, futures, strict=True):
+            certainty_output = await future
+            certainty_score = float(certainty_output.results[0].next_message.content)
+            max_certainty = max(certainty_score, max_certainty)
+            if certainty_score >= self._threshold:
+                # Tack a certainty score onto the assistant message.
+                message_with_score = AssistantMessageWithScore.model_validate(
+                    result.next_message.model_dump()
+                    | {"certainty_score": certainty_score}
+                )
+                processed_results.append(
+                    result.model_copy(update={"next_message": message_with_score})
+                )
+
+        if len(processed_results) == 0:
+            # No completions passed the certainty threshold. Use canned response.
+            processed_results.append(
+                ChatCompletionResult(
+                    next_message=AssistantMessageWithScore(
+                        content=self._canned_response, certainty_score=max_certainty
+                    )
+                )
+            )
+
+        return ChatCompletionResults(results=processed_results)

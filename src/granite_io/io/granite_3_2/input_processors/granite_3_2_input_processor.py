@@ -23,11 +23,27 @@ from granite_io.io.registry import input_processor
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
-    FunctionDefinition,
     SystemMessage,
     ToolResultMessage,
     UserMessage,
 )
+
+_TODAYS_DATE_STR = datetime.datetime.now().strftime("%B %d, %Y")
+
+
+def override_date_for_testing(todays_date_str: str | None):
+    """Override the date that methods in this file will use for today's date, in order
+    to make test outputs consistent.
+
+    :param todays_date_str: Date string to use for generating prompts until further
+     notice, or ``None`` to revert to using the real date.
+    """
+    global _TODAYS_DATE_STR  # pylint: disable=global-statement
+    if todays_date_str is None:
+        _TODAYS_DATE_STR = datetime.datetime.now().strftime("%B %d, %Y")
+    else:
+        _TODAYS_DATE_STR = todays_date_str
+
 
 # String that comes at the beginning of the system message that a Granite 3.2 model must
 # receive at the beginning of the prompt for any completion request that does not
@@ -37,10 +53,15 @@ from granite_io.types import (
 # the "Today's date" part. Instead of replicating that behavior, we put today's actual
 # date in that section of the prompt. This difference probably doesn't matter, since
 # none of the supervised fine tuning data exercises knowledge cutoffs.
-_SYSTEM_MESSAGE_START = f"""\
+#
+# As an additional wrinkle, we need to use a consistent date when testing, so we use a
+# function to recreate this string every time we need it.
+def _make_system_message_start():
+    return f"""\
 Knowledge Cutoff Date: April 2024.
-Today's Date: {datetime.datetime.now().strftime("%B %d, %Y")}.
+Today's Date: {_TODAYS_DATE_STR}.
 You are Granite, developed by IBM."""
+
 
 # String that a Granite 3.2 model must receive immediately after _SYSTEM_MESSAGE_START
 # if there are both tools and RAG documents in the current request.
@@ -127,11 +148,11 @@ class PromptPartSelection(Enum):
     MESSAGES = "messages"
     GENERATION_PROMPT = "generation_prompt"
 
-class _Document(pydantic.BaseModel):
+class Document(pydantic.BaseModel):
     text: str
 
 
-class _ControlsRecord(pydantic.BaseModel):
+class ControlsRecord(pydantic.BaseModel):
     citations: bool | None = None
     hallucinations: bool | None = None
     length: str | None = None  # Length output control variable
@@ -160,7 +181,7 @@ class _ControlsRecord(pydantic.BaseModel):
         )
 
 
-class _Granite3Point2Inputs(ChatCompletionInputs):
+class Granite3Point2Inputs(ChatCompletionInputs):
     """
     Class that represents the inputs to a Granite 3.2 model generation call.
 
@@ -170,10 +191,8 @@ class _Granite3Point2Inputs(ChatCompletionInputs):
     This class will gain additional fields as new functionality is added to Granite.
     """
 
-    tools: list[FunctionDefinition] = []
-
-    documents: list[_Document] = []
-    controls: _ControlsRecord | None = None
+    documents: list[Document] = []
+    controls: ControlsRecord | None = None
 
     thinking: bool = False
 
@@ -341,7 +360,7 @@ class Granite3Point2InputProcessor(InputProcessor):
     """
 
     def _split_messages(
-        self, inputs: _Granite3Point2Inputs
+        self, inputs: Granite3Point2Inputs
     ) -> tuple[SystemMessage | None, list[UserMessage]]:
         """
         Separate the system message from other messages.
@@ -358,7 +377,7 @@ class Granite3Point2InputProcessor(InputProcessor):
             return messages[0], messages[1:]
         return None, messages
 
-    def _build_default_system_message(self, inputs: _Granite3Point2Inputs) -> str:
+    def _build_default_system_message(self, inputs: Granite3Point2Inputs) -> str:
         """
         :param inputs: All inputs to a completion request that does not include a custom
             system message.
@@ -390,7 +409,7 @@ class Granite3Point2InputProcessor(InputProcessor):
         # The default system message starts with a header that includes the date and
         # knowledge cutoff.
         system_message = "<|start_of_role|>system<|end_of_role|>"
-        system_message += _SYSTEM_MESSAGE_START
+        system_message += _make_system_message_start()
 
         # Add a middle part that varies depending on tools, documents, and citations.
         if have_documents and have_tools:
@@ -451,7 +470,7 @@ class Granite3Point2InputProcessor(InputProcessor):
             )
         raise TypeError(f"Unexpected message type {type(message)}")
 
-    def _build_controls_record(self, inputs: _Granite3Point2Inputs) -> dict | None:
+    def _build_controls_record(self, inputs: Granite3Point2Inputs) -> dict | None:
         """
         Use the output control flags in ``inputs`` to build a version of the
         undocumented arbitrary JSON data regarding output controls that the Jinja
@@ -486,7 +505,7 @@ class Granite3Point2InputProcessor(InputProcessor):
     ) -> str:
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
-        inputs = _Granite3Point2Inputs.model_validate(inputs.model_dump())
+        inputs = Granite3Point2Inputs.model_validate(inputs.model_dump())
 
         # Check for a caller-provided system message
         system_message_json, loop_messages = self._split_messages(inputs)

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Tests for the Granite certainty intrinsic's I/O processor
+Test cases for io_adapters/answerability.py
 """
 
 # Standard
@@ -12,24 +12,19 @@ import textwrap
 import pytest
 
 # Local
-from granite_io import make_io_processor
 from granite_io.backend.vllm_server import LocalVLLMServer
-from granite_io.io.certainty import CertaintyCompositeIOProcessor, CertaintyIOProcessor
+from granite_io.io.answerability import AnswerabilityIOProcessor
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     Granite3Point2Inputs,
     override_date_for_testing,
 )
-from granite_io.types import (
-    GenerateResult,
-    GenerateResults,
-)
+from granite_io.types import GenerateResult, GenerateResults
 
 _EXAMPLE_CHAT_INPUT = Granite3Point2Inputs.model_validate(
     {
         "messages": [
             {"role": "assistant", "content": "Welcome to pet questions!"},
             {"role": "user", "content": "Which of my pets have fleas?"},
-            {"role": "assistant", "content": "Only your dog has fleas."},
         ],
         "documents": [
             {"text": "My dog has fleas."},
@@ -57,9 +52,11 @@ def test_canned_input():
     Validate that the I/O processor handles a single instance of canned input in the
     expected way.
     """
-    io_processor = CertaintyIOProcessor(None)
-    output = io_processor.inputs_to_generate_inputs(_EXAMPLE_CHAT_INPUT).prompt
-    print(f"Actual output:\n{output}")
+    io_processor = AnswerabilityIOProcessor(None)
+    output = io_processor.inputs_to_string(_EXAMPLE_CHAT_INPUT)
+    print("*****")
+    print(output)
+    print("*****")
     expected_output = textwrap.dedent(f"""\
     <|start_of_role|>system<|end_of_role|>Knowledge Cutoff Date: April 2024.
     Today's Date: {_TODAYS_DATE}.
@@ -74,8 +71,7 @@ question cannot be answered based on the available data.<|end_of_text|>
     My cat does not have fleas.<|end_of_text|>
     <|start_of_role|>assistant<|end_of_role|>Welcome to pet questions!<|end_of_text|>
     <|start_of_role|>user<|end_of_role|>Which of my pets have fleas?<|end_of_text|>
-    <|start_of_role|>assistant<|end_of_role|>Only your dog has fleas.<|end_of_text|>
-    <|start_of_role|>certainty<|end_of_role|>""")
+    <|start_of_role|>answerability<|end_of_role|>""")
     assert output == expected_output
 
 
@@ -84,13 +80,12 @@ def test_canned_output():
     Validate that the I/O processor handles a single instance of canned model output
     in the expected way.
     """
-    io_processor = CertaintyIOProcessor(None)
+    io_processor = AnswerabilityIOProcessor(None)
 
     raw_output_to_expected = [
-        ("0", "0.0"),
-        ("7", "0.7"),
-        ("9", "0.9"),
-        ("Hello world", "nan"),
+        ("answerable", "answerable"),
+        ("unanswerable", "unanswerable"),
+        ("<invalid model response>", "ERROR"),
     ]
 
     # Single output
@@ -118,40 +113,11 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
-    backend = lora_server.make_lora_backend("certainty")
-    io_proc = CertaintyIOProcessor(backend)
+    backend = lora_server.make_lora_backend("answerability")
+    io_proc = AnswerabilityIOProcessor(backend)
 
     # Pass our example input thorugh the I/O processor and retrieve the result
     override_date_for_testing(fake_date)  # For consistent VCR output
     chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT)
 
-    # We run at temperature zero, so this result should be consistent
-    assert float(chat_result.results[0].next_message.content) == 0.8
-
-
-@pytest.mark.vcr
-def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
-    """
-    Generate chat completions and check certainty using a composite I/O processor to
-    choreograph the flow.
-    """
-    granite_backend = lora_server.make_backend()
-    lora_backend = lora_server.make_lora_backend("certainty")
-    granite_io_proc = make_io_processor("Granite 3.2", backend=granite_backend)
-    io_proc = CertaintyCompositeIOProcessor(
-        granite_io_proc, lora_backend, threshold=0.5
-    )
-
-    # Strip off last message and rerun
-    input_without_msg = _EXAMPLE_CHAT_INPUT.model_copy(
-        update={"messages": _EXAMPLE_CHAT_INPUT.messages[:-1]}
-    ).with_addl_generate_params({"temperature": 0.2, "n": 5})
-    override_date_for_testing(fake_date)  # For consistent VCR output
-    results = io_proc.create_chat_completion(input_without_msg)
-    assert len(results.results) > 1
-
-    # High threshold ==> Nothing passes
-    io_proc.update_threshold(0.99)
-    results = io_proc.create_chat_completion(input_without_msg)
-    assert len(results.results) == 1
-    assert results.results[0].next_message.content == io_proc._canned_response
+    assert chat_result.results[0].next_message.content in ("answerable", "unanswerable")
