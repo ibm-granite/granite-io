@@ -3,7 +3,6 @@
 # Standard
 import datetime
 import json
-from enum import Enum
 
 # Third Party
 from typing import Set
@@ -23,6 +22,7 @@ from granite_io.io.registry import input_processor
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    PromptPartSelection,
     SystemMessage,
     ToolResultMessage,
     UserMessage,
@@ -139,15 +139,6 @@ _DOCS_AND_HALLUCINATIONS_SYSTEM_MESSAGE_PART = """\
 Finally, after the response is written, include a numbered list of sentences from the \
 response that are potentially hallucinated and not based in the documents."""
 
-
-class PromptPartSelection(Enum):
-    """Enum for selecting which parts of the prompt to include in the final prompt
-    string."""
-    SYSTEM = "system"
-    TOOLS = "tools"
-    DOCUMENTS = "documents"
-    MESSAGES = "messages"
-    GENERATION_PROMPT = "generation_prompt"
 
 class Document(pydantic.BaseModel):
     text: str
@@ -601,11 +592,12 @@ class Granite3Point2InputProcessor(InputProcessor):
                 part if select_part else "" \
                 for select_part, part in inputs
             ])
-        else:
-            return (
-                system_message
-                + tools_part
-                + documents_part
-                + messages_part
-                + generation_prompt_part
-            )
+
+        # Return the full prompt string
+        return (
+            system_message
+            + tools_part
+            + documents_part
+            + messages_part
+            + generation_prompt_part
+        )

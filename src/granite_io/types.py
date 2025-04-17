@@ -6,11 +6,23 @@ Common shared types
 
 # Standard
 from collections.abc import Mapping
+from enum import Enum
 from typing import Any, List, Optional, Union
 
 # Third Party
 from typing_extensions import Literal, TypeAlias
 import pydantic
+
+
+
+class PromptPartSelection(Enum):
+    """Enum for selecting which parts of the prompt to include in the final prompt
+    string."""
+    SYSTEM = "system"
+    TOOLS = "tools"
+    DOCUMENTS = "documents"
+    MESSAGES = "messages"
+    GENERATION_PROMPT = "generation_prompt"
 
 
 class FunctionCall(pydantic.BaseModel):
