@@ -3,8 +3,10 @@
 # Standard
 import datetime
 import json
+from enum import Enum
 
 # Third Party
+from typing import Set
 from pydantic_core import PydanticCustomError
 import pydantic
 
@@ -116,6 +118,14 @@ _DOCS_AND_HALLUCINATIONS_SYSTEM_MESSAGE_PART = """\
 Finally, after the response is written, include a numbered list of sentences from the \
 response that are potentially hallucinated and not based in the documents."""
 
+
+class PromptPartSelection(Enum):
+    """Enum for selecting which parts of the prompt to include in the final prompt string."""
+    SYSTEM = "system"
+    TOOLS = "tools"
+    DOCUMENTS = "documents"
+    MESSAGES = "messages"
+    GENERATION_PROMPT = "generation_prompt"
 
 class _Document(pydantic.BaseModel):
     text: str
@@ -469,7 +479,10 @@ class Granite3Point2InputProcessor(InputProcessor):
         return result
 
     def transform(
-        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+        self, 
+        inputs: ChatCompletionInputs, 
+        add_generation_prompt: bool = True,
+        select_parts: Set[PromptPartSelection] = None
     ) -> str:
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
@@ -555,10 +568,19 @@ class Granite3Point2InputProcessor(InputProcessor):
             else f"<|start_of_role|>assistant{controls_str}<|end_of_role|>"
         )
 
-        return (
-            system_message
-            + tools_part
-            + documents_part
-            + messages_part
-            + generation_prompt_part
-        )
+        if select_parts:
+            # Filter the prompt parts based on the selected parts
+            return (
+                system_message if PromptPartSelection.SYSTEM in select_parts else "" +
+                tools_part if PromptPartSelection.TOOLS in select_parts else "" +
+                documents_part if PromptPartSelection.DOCUMENTS in select_parts else "" +
+                messages_part if PromptPartSelection.MESSAGES in select_parts else "" + generation_prompt_part if PromptPartSelection.GENERATION_PROMPT in select_parts else ""
+            )
+        else:
+            return (
+                system_message
+                + tools_part
+                + documents_part
+                + messages_part
+                + generation_prompt_part
+            )
