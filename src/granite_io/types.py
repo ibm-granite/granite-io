@@ -14,10 +14,10 @@ from typing_extensions import Literal, TypeAlias
 import pydantic
 
 
-
 class PromptPartSelection(Enum):
     """Enum for selecting which parts of the prompt to include in the final prompt
     string."""
+
     SYSTEM = "system"
     TOOLS = "tools"
     DOCUMENTS = "documents"
