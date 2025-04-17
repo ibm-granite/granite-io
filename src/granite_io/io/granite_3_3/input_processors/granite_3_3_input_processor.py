@@ -26,6 +26,7 @@ from granite_io.io.registry import input_processor
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
+    PromptPartSelection,
     SystemMessage,
     ToolResultMessage,
     UserMessage,
@@ -402,7 +403,10 @@ class Granite3Point3InputProcessor(InputProcessor):
         return result
 
     def transform(
-        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+        self,
+        inputs: ChatCompletionInputs,
+        add_generation_prompt: bool = True,
+        select_parts: set[PromptPartSelection] = None,
     ) -> str:
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
@@ -483,6 +487,24 @@ class Granite3Point3InputProcessor(InputProcessor):
             else f"<|start_of_role|>assistant{controls_str}<|end_of_role|>"
         )
 
+        if select_parts:
+            # Filter the prompt parts based on the selected parts
+            inputs = [
+                (PromptPartSelection.SYSTEM in select_parts, system_message),
+                (PromptPartSelection.TOOLS in select_parts, tools_part),
+                (PromptPartSelection.DOCUMENTS in select_parts, documents_part),
+                (PromptPartSelection.MESSAGES in select_parts, messages_part),
+                (
+                    PromptPartSelection.GENERATION_PROMPT in select_parts,
+                    generation_prompt_part,
+                ),
+            ]
+
+            return "".join(
+                [part if select_part else "" for select_part, part in inputs]
+            )
+
+        # Return the full prompt string
         return (
             system_message
             + tools_part

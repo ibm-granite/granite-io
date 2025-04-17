@@ -493,7 +493,7 @@ class Granite3Point2InputProcessor(InputProcessor):
         self,
         inputs: ChatCompletionInputs,
         add_generation_prompt: bool = True,
-        select_parts: Set[PromptPartSelection] = None
+        select_parts: Set[PromptPartSelection] = None,
     ) -> str:
         # Downcast to a Granite-specific request type with possible additional fields.
         # This operation also performs additional validation.
@@ -581,17 +581,20 @@ class Granite3Point2InputProcessor(InputProcessor):
 
         if select_parts:
             # Filter the prompt parts based on the selected parts
-            inputs = [(PromptPartSelection.SYSTEM in select_parts, system_message),
-                      (PromptPartSelection.TOOLS in select_parts, tools_part),
-                      (PromptPartSelection.DOCUMENTS in select_parts, documents_part),
-                      (PromptPartSelection.MESSAGES in select_parts, messages_part),
-                      (PromptPartSelection.GENERATION_PROMPT in select_parts, \
-                        generation_prompt_part)]
-            
-            return "".join([
-                part if select_part else "" \
-                for select_part, part in inputs
-            ])
+            inputs = [
+                (PromptPartSelection.SYSTEM in select_parts, system_message),
+                (PromptPartSelection.TOOLS in select_parts, tools_part),
+                (PromptPartSelection.DOCUMENTS in select_parts, documents_part),
+                (PromptPartSelection.MESSAGES in select_parts, messages_part),
+                (
+                    PromptPartSelection.GENERATION_PROMPT in select_parts,
+                    generation_prompt_part,
+                ),
+            ]
+
+            return "".join(
+                [part if select_part else "" for select_part, part in inputs]
+            )
 
         # Return the full prompt string
         return (
