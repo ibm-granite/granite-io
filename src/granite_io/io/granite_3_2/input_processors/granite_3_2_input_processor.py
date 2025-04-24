@@ -489,7 +489,7 @@ class Granite3Point2InputProcessor(InputProcessor):
             return None
         return result
 
-    def transform(
+    def selective_transform(
         self,
         inputs: ChatCompletionInputs,
         add_generation_prompt: bool = True,
@@ -603,4 +603,14 @@ class Granite3Point2InputProcessor(InputProcessor):
             + documents_part
             + messages_part
             + generation_prompt_part
+        )
+
+    def transform(
+        self,
+        inputs: ChatCompletionInputs,
+        add_generation_prompt: bool = True,
+    ) -> str:
+
+        return self.selective_transform(
+            inputs, add_generation_prompt=add_generation_prompt, select_parts=None
         )

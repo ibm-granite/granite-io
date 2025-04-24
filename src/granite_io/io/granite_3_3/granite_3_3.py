@@ -2,7 +2,6 @@
 
 # Third Party
 import aconfig
-from typing import Set
 
 # Local
 from granite_io.backend.base import Backend
@@ -26,7 +25,6 @@ from granite_io.types import (
     ChatCompletionResults,
     GenerateInputs,
     GenerateResults,
-    PromptPartSelection,
 )
 
 
@@ -85,10 +83,9 @@ class Granite3Point3InputOutputProcessor(ModelDirectInputOutputProcessor):
         self,
         inputs: ChatCompletionInputs,
         add_generation_prompt: bool = True,
-        select_parts: Set[PromptPartSelection] = None,
     ) -> str:
         input_processor = Granite3Point3InputProcessor()
-        return input_processor.transform(inputs, add_generation_prompt, select_parts)
+        return input_processor.transform(inputs, add_generation_prompt)
 
     def output_to_result(
         self,
