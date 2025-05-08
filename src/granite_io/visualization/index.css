@@ -1,0 +1,67 @@
+.citations-widget {    
+
+    .response {
+        margin-top: 1rem;
+        font-weight: normal;
+        font-size: 1rem;
+        background-color: #eaeaea;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+    }
+    
+    .refs {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+    
+    .citation-num {
+        font-size: 0.85rem;
+        margin-left: 0.25rem;
+        border: 1px solid #555555;
+        border-radius: 0.25rem;
+        background-color: white;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+    
+    .citation-ref {
+        cursor: pointer;
+    }
+    
+    .citation-highlighted {
+        background-color: #ffffc5;
+    }
+    
+    .doc-highlight {
+        background-color: #ffffc5;
+    }
+    
+    .citation-doc {
+        font-size: 0.9rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 1.5rem;
+        padding-right: 1rem;
+        display: none;
+    }
+
+    .citation {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        border-top: solid 1px #aaaaaa;
+        border-bottom: solid 1px #aaaaaa;
+        margin-top: -1px;
+        cursor: pointer;
+    }
+    
+    .citation-text {
+        margin-left: 0.5rem;
+    }
+    
+    .citation-arrow {
+        margin-left: 0.5rem;
+        color: #888888;
+    }    
+}
