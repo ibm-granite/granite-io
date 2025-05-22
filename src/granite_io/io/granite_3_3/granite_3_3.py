@@ -72,7 +72,7 @@ class Granite3Point3InputOutputProcessor(ModelDirectInputOutputProcessor):
         generate_inputs.prompt = self.inputs_to_string(inputs)
 
         # Add skip_special_tokens = False to see citations.
-        if inputs.controls and inputs.controls.get("citations"):
+        if inputs.controls and inputs.controls.citations is not None:
             extra_body = generate_inputs.extra_body or {}
             extra_body["skip_special_tokens"] = False
             generate_inputs.extra_body = extra_body

@@ -449,6 +449,13 @@ def test_citation_hallucination_parsing(
     inputs, output, exp_document, exp_citation, exp_hallucination, exp_resp
 ):
     """Test the parsing logic for Rag and hallucinations output"""
+
+    # Controls must be explicitly enabled, see issue #173.
+    controls = ControlsRecord()
+    controls.citations = True
+    controls.hallucinations = True
+    inputs.controls = controls
+
     proc = Granite3Point3InputOutputProcessor()
     generated = GenerateResults(
         results=[
