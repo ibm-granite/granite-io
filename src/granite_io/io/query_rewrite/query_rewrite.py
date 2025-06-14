@@ -1,23 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"""
-I/O processor for the Granite query rewrite intrinsic.
-"""
-
-# Standard
 import json
-
-# Third Party
-import pydantic
-
-# Local
-from granite_io.io.base import (
-    ModelDirectInputOutputProcessorWithGenerate,
-)
-from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
-    Granite3Point2InputProcessor,
-    Granite3Point2Inputs,
-)
+import re
+from granite_io.io.granite_3_3.input_processors import (
+    granite_3_3_input_processor as g33_input_processor)
+from granite_io.io.base import ModelDirectInputOutputProcessorWithGenerate
 from granite_io.types import (
     ChatCompletionInputs,
     ChatCompletionResult,
@@ -26,106 +13,164 @@ from granite_io.types import (
     GenerateResults,
 )
 
-INSTRUCTION_TEXT = (
-    "Reword the final utterance from the USER into a single utterance that doesn't "
-    "need the prior conversation history to understand the user's intent. If the final "
-    "utterance is a clear and standalone question, please DO NOT attempt to rewrite "
-    "it, rather output the last user utterance as is. "
+# Granite 3.3 specific configurations
+# Regex pattern for constrained decoding with JSON fence format
+_JSON_FENCE_REGEX = r"```json\n\{\s*\"rewritten_question\"\s*:\s*\"[^\"]*\"\s*\}\n```"
+
+# JSON object template for Granite 3.3 output format
+_JSON_OBJECT_3_3 = {
+    "rewritten_question": "YOUR_REWRITTEN_QUESTION_HERE"
+}
+
+JSON_OBJECT_3_3_STR = json.dumps(_JSON_OBJECT_3_3, indent=4)
+
+# Template for instructing the model on expected JSON output format
+JSON_TEMPLATE_3_3 = (
+    "Your output should be a JSON structure with the rewritten question:\n"
+    "```json\n"
+    f"{JSON_OBJECT_3_3_STR}\n"
+    "```"
 )
-JSON = 'Your output format should be in JSON: { "rewritten_question": <REWRITE> }'
-REWRITE_PROMPT = (
-    "<|start_of_role|>rewrite: " + INSTRUCTION_TEXT + JSON + "<|end_of_role|>"
+
+# Query to rewrite prompt template for query rewrite LoRA
+QUERY_TO_REWRITE_TEMPLATE = (
+    "<|start_of_role|>query_to_rewrite<|end_of_role|>{msg}<|end_of_text|>\n"
 )
 
+INSTRUCTION_TEXT_3_3 = (
+    "Given the conversation history above and the specific query provided in the "
+    "'query_to_rewrite' role, rewrite that query into a standalone question that "
+    "captures the user's intent without requiring the conversation context. "
+    "If the query is already clear and standalone, output it as is."
+)
 
-class QueryRewriteRawOutput(pydantic.BaseModel):
-    rewritten_question: str
-
-
-RAW_OUTPUT_JSON_SCHEMA = QueryRewriteRawOutput.model_json_schema()
+REWRITE_PROMPT_3_3 = (
+    "<|start_of_role|>rewrite: "
+    + INSTRUCTION_TEXT_3_3
+    + "\n"
+    + JSON_TEMPLATE_3_3
+    + "<|end_of_role|>"
+)
 
 
 class QueryRewriteIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
     """
-    I/O processor for the query rewrite intrinsic, also known as the [LoRA Adapter for 
-    Query Rewrite](https://huggingface.co/ibm-granite/
-    granite-3.2-8b-lora-rag-query-rewrite)
-
-    Takes as input a chat completion and returns a completion with a rewrite of the
-    most recent user turn (last in the conversation).
-
-    Example raw input:
-    ```
-    <|start_of_role|>user<|end_of_role|>Tim Cook is the CEO of Apple Inc.<|end_of_text|>
-    <|start_of_role|>assistant<|end_of_role|>Yes, Tim Cook is the Chief Executive \
-Officer of Apple Inc.<|end_of_text|>
-    <|start_of_role|>user<|end_of_role|>and for Microsoft?<|end_of_text|>
-    ```
+    I/O processor for Granite 3.3 query-rewrite LoRAs.
     
-    Example of corresponding raw output:
-    ```
-    { "rewritten_question": "Who is the CEO of Microsoft" }
-    ```
-
-    Output string with the rewrite of the last user turn:
-        'Who is the CEO of Microsoft'
+    This processor takes a conversation history and rewrites the final user query
+    into a standalone question that doesn't require context from the conversation
+    history to understand the user's intent.
+    
+    Note: Previously supported Granite 3.2, but support has been removed to 
+    simplify the codebase and focus on the newer 3.3 architecture.
     """
 
     def __init__(self, backend):
+        """
+        Initialize the QueryRewriteIOProcessor for Granite 3.3.
+        
+        Args:
+            backend: The model backend to use for generation
+        """
         super().__init__(backend=backend)
-
-        # Input processor for the base model, which does most of the input formatting.
-        self.base_input_processor = Granite3Point2InputProcessor()
+        
+        # Import and configure Granite 3.3 specific components
+        Granite3Point3InputProcessor = g33_input_processor.Granite3Point3InputProcessor
+        Granite3Point3Inputs = g33_input_processor.Granite3Point3Inputs
+        
+        self.InputsModel = Granite3Point3Inputs
+        self.base_input_processor = Granite3Point3InputProcessor()
+        # Use guided regex for constrained JSON output
+        self._extra_body = {"guided_regex": _JSON_FENCE_REGEX}
 
     def inputs_to_generate_inputs(
-        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+        self,
+        inputs: ChatCompletionInputs,
+        add_generation_prompt: bool = True
     ) -> GenerateInputs:
-        # Validate the input and convert to Granite input
-        inputs = Granite3Point2Inputs.model_validate(inputs.model_dump())
+        """
+        Convert chat completion inputs to generation inputs for query rewriting.
+        
+        Args:
+            inputs: Chat completion inputs containing conversation history
+            add_generation_prompt: Whether to add the generation prompt
+            
+        Returns:
+            GenerateInputs configured for query rewriting task
+        """
+        # Validate and normalize inputs for Granite 3.3
+        inputs = self.InputsModel.model_validate(inputs.model_dump())
 
-        # Check for the invariants that the model expects its input to satisfy
-        if not inputs.messages[-1].role == "user":
+        if inputs.messages[-1].role != "user":
             raise ValueError("Last message is not a user message")
 
-        # The beginning of the prompt doesn't change relative to base Granite 3.2
-        prompt = self.base_input_processor.transform(inputs, False)
-
-        # To invoke the model, we add the rewrite prompt to the prompt prefix:
-        if add_generation_prompt:
-            prompt = prompt + REWRITE_PROMPT
-        result = inputs.generate_inputs.model_copy(
-            update={
-                "prompt": prompt,
-                "max_tokens": 256,
-                # TODO Enable constrained decoding on vLLM backends
-                "extra_body": {
-                    "guided_json": RAW_OUTPUT_JSON_SCHEMA,
-                },
-            }
+        # Build the prompt using conversation history and the query to rewrite
+        prompt_prefix = self.base_input_processor.transform(inputs, False)
+        prompt = self._make_prompt_3_3(
+            prompt_prefix,
+            inputs.messages[-1].content,
+            add_generation_prompt
         )
-        return result
+        
+        return inputs.generate_inputs.model_copy(update={
+            "prompt": prompt,
+            "max_tokens": 256,  # Sufficient for query rewriting tasks
+            "extra_body": self._extra_body,
+        })
+
+    def _make_prompt_3_3(self, prefix: str, final_msg: str, add_prompt: bool) -> str:
+        """
+        Build the complete prompt for Granite 3.3 query rewriting.
+        
+        Args:
+            prefix: Conversation history formatted by input processor
+            final_msg: The final user message to be rewritten
+            add_prompt: Whether to add the rewrite instruction prompt
+            
+        Returns:
+            Complete prompt string for the model
+        """
+        prompt = prefix + QUERY_TO_REWRITE_TEMPLATE.format(msg=final_msg)
+        if add_prompt:
+            prompt += REWRITE_PROMPT_3_3
+        return prompt
 
     def output_to_result(
         self,
         output: GenerateResults,
-        inputs: ChatCompletionInputs | None = None,  # pylint: disable=unused-argument
+        inputs: ChatCompletionInputs | None = None,
     ) -> ChatCompletionResults:
+        """
+        Process the model output and extract the rewritten query.
+        
+        Args:
+            output: Raw generation results from the model
+            inputs: Original chat completion inputs (for context)
+            
+        Returns:
+            ChatCompletionResults with rewritten query as the next message
+        """
         results = []
-        for raw_result in output.results:
-            json_result = raw_result.completion_string
-            # print(f"{json_result=}")
-            try:
-                rewrite = json.loads(json_result)["rewritten_question"]
-            except Exception as e:  # pylint: disable=broad-exception-caught
-                # Cannot parse the JSON. Pass through the unparsed raw output for now
-                # instead of raising an exception from the I/O processor.
-                print(f"\nException: {e}\n")
-                rewrite = json_result
+        for raw in output.results:
+            s = raw.completion_string.strip()
+            rewrite = None
 
-            # Change content but retain other properties of the message.
-            rewritten_last_message = inputs.messages[-1].model_copy(
-                update={"content": rewrite}
-            )
-            results.append(ChatCompletionResult(next_message=rewritten_last_message))
+            # Attempt to parse JSON output to extract rewritten question
+            try:
+                m = re.search(r"\{.*\}", s, re.DOTALL)
+                if m:
+                    data = json.loads(m.group(0))
+                    rewrite = data.get("rewritten_question")
+            except Exception:
+                # JSON parsing failed, will fallback to raw string
+                pass
+
+            # Fallback to raw string if JSON parsing failed
+            if not rewrite:
+                rewrite = s
+
+            # Create new message with rewritten content and return it to the caller
+            rewritten = inputs.messages[-1].model_copy(update={"content": rewrite})
+            results.append(ChatCompletionResult(next_message=rewritten))
 
         return ChatCompletionResults(results=results)
