@@ -452,7 +452,7 @@ class Granite3Point3InputProcessor(InputProcessor):
         else:
             tools_part = (
                 "<|start_of_role|>available_tools<|end_of_role|>"
-                + json.dumps(inputs.tools.to_openai_json(), indent=4)
+                + json.dumps([t.to_openai_json() for t in inputs.tools], indent=4)
                 + "<|end_of_text|>\n"
             )
 

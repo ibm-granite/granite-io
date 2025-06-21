@@ -65,26 +65,42 @@ def test_parse_tool_output():
             {
                 "name": "get_current_weather",
                 "description": "Get the current weather",
-                "arguments": {
-                    "location": {
-                        "description": "The city and state, e.g. San Francisco, CA"
-                    }
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The location to get the temperature for, "
+                            'in the format "City, State, Country".',
+                        },
+                        "unit": {
+                            "type": "string",
+                            "enum": ["celsius", "fahrenheit"],
+                            "description": "The unit to return the temperature in. "
+                            'Defaults to "celsius".',
+                        },
+                    },
+                    "required": ["location"],
                 },
             },
             {
                 "name": "get_stock_price",
-                "description": "Retrieves the current stock price for a given ticker "
-                "symbol. The ticker symbol must be a valid symbol for a publicly "
-                "traded company on a major US stock exchange like NYSE or NASDAQ. "
-                "The tool will return the latest trade price in USD. It should be "
-                "used when the user asks about the current or most recent price of "
-                "a specific stock. It will not provide any other information about "
-                "the stock or company.",
-                "arguments": {
-                    "ticker": {
-                        "description": "The stock ticker symbol, e.g. AAPL for Apple "
-                        "Inc."
-                    }
+                "description": "Retrieve lowest and highest stock price for a given "
+                "stock symbol and date",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "symbol": {
+                            "type": "string",
+                            "description": "Stock symbol, for example MSFT for "
+                            "Microsoft",
+                        },
+                        "date": {
+                            "type": "string",
+                            "description": "Date in YYYY-MM-DD format",
+                        },
+                    },
+                    "required": ["symbol", "date"],
                 },
             },
         ],

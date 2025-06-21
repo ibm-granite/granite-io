@@ -87,7 +87,7 @@ available data."""
 # if there are tools in the current request but there are no documents in the current
 # request.
 _TOOLS_AND_NO_DOCS_SYSTEM_MESSAGE_PART = """\
-You are a helpful AI assistant with access to the following tools. When a tool is \
+ You are a helpful AI assistant with access to the following tools. When a tool is \
 required to answer the user's query, respond with <|tool_call|> followed by a JSON \
 list of tools used. If a tool does not exist in the provided list of tools, notify the \
 user that you do not have the ability to fulfill the request."""
@@ -538,7 +538,7 @@ class Granite3Point2InputProcessor(InputProcessor):
         else:
             tools_part = (
                 "<|start_of_role|>tools<|end_of_role|>"
-                + json.dumps(inputs.tools.to_openai_json(), indent=4)
+                + json.dumps([t.to_openai_json() for t in inputs.tools], indent=4)
                 + "<|end_of_text|>\n"
             )
 

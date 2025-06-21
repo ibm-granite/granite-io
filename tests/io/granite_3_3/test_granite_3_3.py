@@ -102,6 +102,44 @@ strategy for managing dividend income."}
     ]
 }
 """,
+    "functions": """
+{
+    "messages":
+    [
+        {"role": "user", "content": "Where is my money?"}
+    ],
+    "tools":[
+        {
+            "name": "get_current_weather",
+            "description": "Get the current weather",
+            "parameters": {
+                "type": "object",
+                "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                }
+            }
+        },
+        {
+            "name": "find_money",
+            "description": "Locate a person's money.",
+            "parameters": {
+                "type": "object",
+                "name": {
+                    "type": "string",
+                    "description": "Full legal name of the person"
+                },
+                "age": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "How old the person is"
+                }
+            }
+        }
+    ]
+    
+}
+""",
 }
 
 
@@ -350,7 +388,6 @@ def test_completion_presence_param(backend_3_3: Backend):
     assert isinstance(outputs, ChatCompletionResults)
 
 
-@pytest.mark.vcr
 @pytest.mark.vcr
 def test_run_processor(backend_3_3: Backend, input_json_str: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)

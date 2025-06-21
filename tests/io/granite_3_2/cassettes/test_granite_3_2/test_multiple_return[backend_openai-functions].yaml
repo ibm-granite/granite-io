@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: June 20, 2025.\nYou are Granite, developed
+      by IBM.You are a helpful AI assistant with access to the following tools. When
+      a tool is required to answer the user''s query, respond with <|tool_call|> followed
+      by a JSON list of tools used. If a tool does not exist in the provided list
+      of tools, notify the user that you do not have the ability to fulfill the request.<|end_of_text|>\n<|start_of_role|>tools<|end_of_role|>[\n    {\n        \"name\":
+      \"get_current_weather\",\n        \"description\": \"Get the current weather\",\n        \"parameters\":
+      {\n            \"type\": \"object\",\n            \"location\": {\n                \"type\":
+      \"string\",\n                \"description\": \"The city and state, e.g. San
+      Francisco, CA\"\n            }\n        }\n    },\n    {\n        \"name\":
+      \"find_money\",\n        \"description\": \"Locate a person''s money.\",\n        \"parameters\":
+      {\n            \"type\": \"object\",\n            \"name\": {\n                \"type\":
+      \"string\",\n                \"description\": \"Full legal name of the person\"\n            },\n            \"age\":
+      {\n                \"type\": \"integer\",\n                \"minimum\": 0,\n                \"description\":
+      \"How old the person is\"\n            }\n        }\n    }\n]<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Where
+      is my money? I''m Joe User and I''m 27 years old.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":3}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1583'
+      content-type:
+      - application/json
+      host:
+      - localhost:11434
+      user-agent:
+      - AsyncOpenAI/Python 1.86.0
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.86.0
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.13
+    method: POST
+    uri: http://localhost:11434/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-585","object":"text_completion","created":1750476106,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"\u003ctool_call\u003e[{\"name\":
+        \"find_money\", \"arguments\": {\"name\": \"Joe User\", \"age\": 27}}]","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":384,"completion_tokens":33,"total_tokens":417}}
+
+        '
+    headers:
+      Content-Length:
+      - '355'
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 21 Jun 2025 03:21:46 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

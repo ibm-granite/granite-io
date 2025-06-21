@@ -52,7 +52,7 @@ _EMBEDDING_MODEL_NAME = "multi-qa-mpnet-base-dot-v1"
 
 def test_rerank_request_processor(backend_3_3: Backend):  # pylint: disable=redefined-outer-name
     if not isinstance(backend_3_3, OpenAIBackend):
-        pytest.xfail("Non-OpenAI backends very slow with long requests")
+        pytest.skip("Non-OpenAI backends very slow with long requests")
     temp_data_dir = "data/test_retrieval"
     corpus_name = "govt10"
     embeddings_location = f"{temp_data_dir}/{corpus_name}_embeds.parquet"

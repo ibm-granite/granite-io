@@ -65,7 +65,7 @@ def test_parse_tool_output():
             {
                 "name": "get_current_weather",
                 "description": "Get the current weather",
-                "arguments": {
+                "parameters": {
                     "location": {
                         "description": "The city and state, e.g. San Francisco, CA"
                     }
@@ -80,7 +80,7 @@ def test_parse_tool_output():
                 "used when the user asks about the current or most recent price of "
                 "a specific stock. It will not provide any other information about "
                 "the stock or company.",
-                "arguments": {
+                "parameters": {
                     "ticker": {
                         "description": "The stock ticker symbol, e.g. AAPL for Apple "
                         "Inc."
