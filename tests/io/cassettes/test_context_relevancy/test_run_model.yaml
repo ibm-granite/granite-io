@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"model":"context_relevancy","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>final_user_query<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>document {\"document_id\":
+      \"1\"}<|end_of_role|>\nMy dog has fleas.<|end_of_text|>\n<|start_of_role|>context_relevance:
+      Analyze the provided document in relation to the final user query from the conversation.
+      Determine if the document contains information that could help answer the final
+      user query. Output ''relevant'' if the document contains substantial information
+      directly useful for answering the final user query. Output ''partially relevant''
+      if the document contains some related information that could partially help
+      answer the query, or if you are uncertain about the relevance - err on the side
+      of ''partially relevant'' when in doubt. Output ''irrelevant'' only if the document
+      clearly contains no information that could help answer the final user query.
+      When uncertain, choose ''partially relevant'' rather than ''irrelevant''. Your
+      output should be a JSON structure with the context relevance classification:\n```json\n{\n    \"context_relevance\":
+      \"YOUR_CONTEXT_RELEVANCE_CLASSIFICATION_HERE\"\n}\n```<|end_of_role|>","max_tokens":100,"temperature":0.0,"guided_regex":"```json\\n\\{\\s*\\\"context_relevance\\\"\\s*:\\s*\\\"(irrelevant|relevant|partially
+      relevant)\\\"\\s*\\}\\n```"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1689'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.90.0
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.90.0
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.10.18
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    content: '{"id":"cmpl-7bdd4009a8db44a29c628fae007fe18d","object":"text_completion","created":1750472492,"model":"context_relevancy","choices":[{"index":0,"text":"```json\n{\n    \"context_relevance\":
+      \"relevant\"\n}\n```","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":303,"total_tokens":322,"completion_tokens":19,"prompt_tokens_details":null}}'
+    headers:
+      content-length:
+      - '397'
+      content-type:
+      - application/json
+      date:
+      - Sat, 21 Jun 2025 02:21:32 GMT
+      server:
+      - uvicorn
+    http_version: HTTP/1.1
+    status_code: 200
+version: 1

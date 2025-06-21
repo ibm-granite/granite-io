@@ -9,12 +9,14 @@ interactions:
       spends a lot of time in the backyard and outdoors, and Luna is always inside.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Sounds
       good! Rex must love exploring outside, while Lucy probably enjoys her cozy indoor
       life.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>But is he more likely
-      to get fleas because of that?<|end_of_text|>\n<|start_of_role|>rewrite: Reword
-      the final utterance from the USER into a single utterance that doesn''t need
-      the prior conversation history to understand the user''s intent. If the final
-      utterance is a clear and standalone question, please DO NOT attempt to rewrite
-      it, rather output the last user utterance as is. Your output format should be
-      in JSON: { \"rewritten_question\": <REWRITE> }<|end_of_role|>","max_tokens":80,"temperature":0.0}'
+      to get fleas because of that?<|end_of_text|>\n<|start_of_role|>query_to_rewrite<|end_of_role|>But
+      is he more likely to get fleas because of that?<|end_of_text|>\n<|start_of_role|>rewrite:
+      Given the conversation history above and the specific query provided in the
+      ''query_to_rewrite'' role, rewrite that query into a standalone question that
+      captures the user''s intent without requiring the conversation context. If the
+      query is already clear and standalone, output it as is.\nYour output should
+      be a JSON structure with the rewritten question:\n```json\n{\n    \"rewritten_question\":
+      \"YOUR_REWRITTEN_QUESTION_HERE\"\n}\n```<|end_of_role|>","max_tokens":256,"seed":42,"temperature":0.0,"guided_regex":"```json\\n\\{\\s*\\\"rewritten_question\\\"\\s*:\\s*\\\"[^\\\"]*\\\"\\s*\\}\\n```"}'
     headers:
       accept:
       - application/json
@@ -23,13 +25,13 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '1347'
+      - '1646'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.66.5
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -39,7 +41,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.66.5
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -47,19 +49,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.11.11
+      - 3.10.18
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
-    content: '{"id":"cmpl-1aefe08c05f5497493f4f94aa4a11618","object":"text_completion","created":1744762262,"model":"query_rewrite","choices":[{"index":0,"text":"\n{\n  \"rewritten_question\":
-      \"Is Rex more likely to get fleas because he spends a lot of time outdoors?\"\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":259,"total_tokens":294,"completion_tokens":35,"prompt_tokens_details":null}}'
+    content: '{"id":"cmpl-2ffb86b9b0c343f1a55ff637a1d52e9d","object":"text_completion","created":1750472454,"model":"query_rewrite","choices":[{"index":0,"text":"```json\n{\n    \"rewritten_question\":
+      \"Is Rex more likely to get fleas because he spends a lot of time in the backyard
+      and outdoors?\"\n}\n```","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":301,"total_tokens":345,"completion_tokens":44,"prompt_tokens_details":null}}'
     headers:
       content-length:
-      - '445'
+      - '479'
       content-type:
       - application/json
       date:
-      - Wed, 16 Apr 2025 00:11:01 GMT
+      - Sat, 21 Jun 2025 02:20:54 GMT
       server:
       - uvicorn
     http_version: HTTP/1.1

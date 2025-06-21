@@ -19,6 +19,7 @@ from granite_io.io.consts import (
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     override_date_for_testing as g32_override_date_for_testing,
 )
+from granite_io.io.rag_agent_lib import obtain_lora
 
 
 @pytest.fixture(scope="session")
@@ -129,22 +130,30 @@ def lora_server() -> collections.abc.Generator[LocalVLLMServer, object, None]:
     if not torch.cuda.is_available():
         pytest.xfail("GPU required to run vLLM. vLLM required to run model.")
 
-    # Currently all adapters are trained on Granite 3.2 8B
-    base_model = "ibm-granite/granite-3.2-8b-instruct"
-    lora_adapters = [
-        # Format is server name, model name
-        (
-            "answerability",
-            "ibm-granite/granite-3.2-8b-lora-rag-answerability-prediction",
-        ),
-        ("certainty", "ibm-granite/granite-uncertainty-3.2-8b-lora"),
-        ("citations", "ibm-granite/granite-3.2-8b-lora-rag-citation-generation"),
-        (
-            "hallucinations",
-            "ibm-granite/granite-3.2-8b-lora-rag-hallucination-detection",
-        ),
-        ("query_rewrite", "ibm-granite/granite-3.2-8b-lora-rag-query-rewrite"),
+    # Updated to use Granite 3.3 8B with latest LoRA adapters
+    base_model = "ibm-granite/granite-3.3-8b-instruct"
+
+    # LoRA adapter short names - these will be resolved to local paths using
+    # obtain_lora()
+    lora_adapter_names = [
+        "answerability_prediction",  # Maps to answerability_prediction_lora
+        "certainty",  # Maps to certainty_lora
+        "citation_generation",  # Maps to citation_generation_lora
+        "hallucination_detection",  # Maps to hallucination_detection_lora
+        "query_rewrite",  # Maps to query_rewrite_lora
+        "context_relevancy",  # Maps to context_relevancy_lora
     ]
+
+    # Download and get local paths for all LoRA adapters
+    lora_adapters = []
+    for lora_name in lora_adapter_names:
+        try:
+            lora_path = obtain_lora(lora_name)
+            lora_adapters.append((lora_name, str(lora_path)))
+            print(f"✅ Downloaded LoRA adapter: {lora_name} -> {lora_path}")
+        except (OSError, ValueError, RuntimeError) as e:
+            print(f"❌ Failed to download LoRA adapter {lora_name}: {e}")
+            # Continue with other adapters
 
     server = LocalVLLMServer(base_model, lora_adapters=lora_adapters, port=35782)
     server.wait_for_startup(200)

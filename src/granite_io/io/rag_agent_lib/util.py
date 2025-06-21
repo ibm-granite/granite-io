@@ -43,6 +43,16 @@ class RagAgentLibModelInfo(RagAgentModelInfoMixin, enum.Enum):
         "LoRA Adapter for Citation Generation",
         True,
     )
+    QUERY_REWRITE = (
+        "query_rewrite",
+        "LoRA Adapter for Query Rewrite",
+        True,
+    )
+    CONTEXT_RELEVANCY = (
+        "context_relevancy",
+        "LoRA Adapter for Context Relevancy",
+        True,
+    )
 
     @staticmethod
     def from_str(short_name: str):
