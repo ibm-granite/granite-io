@@ -22,8 +22,8 @@ class NoDefaultsMixin:
     @pydantic.model_serializer(mode="wrap")
     def _workaround_for_design_flaw_in_pydantic(self, nxt):
         """
-        Workaround for a design flaw in Pydantic that forces users to accept
-        unnecessary garbage in their serialized JSON data or to override
+        Horrible hack because the developers of Pydantic think their users really enjoy
+        either having unnecessary garbage in their serialized JSON data or overriding
         poorly-documented serialization hooks repeatedly.  Automates overriding said
         poorly-documented serialization hooks for a single dataclass.
 
@@ -32,46 +32,16 @@ class NoDefaultsMixin:
         method was disabled a year later. Now you need to add a custom serializer method
         with a ``@model_serializer`` decorator.
 
-        See the docs at
+        See the unclear docs at
         https://docs.pydantic.dev/latest/api/functional_serializers/
         for some dubious information on how this API works.
-        See comments below for important gotchas that aren't in the documentation.
         """
-        # Start with the value that self.model_dump() would return without this mixin.
-        # Otherwise serialization of sub-records will be inconsistent.
+        # Start with the value that self.model_dump() would return without this mixin
         serialized_value = nxt(self)
 
-        # Figure out which fields are set. Pydantic does not make this easy.
-        # Start with fields that are set in __init__() or in the JSON parser.
-        fields_to_retain_set = self.model_fields_set
-
-        # Add in fields that were set during validation and extra fields added by
-        # setattr().  These fields all go to self.model.extra
-        if self.model_extra is not None:  # model_extra is sometimes None. Not sure why.
-            # model_extra is a dictionary. There is no self.model_extra_fields_set.
-            fields_to_retain_set |= set(list(self.model_extra))
-
-        # Use a subclass hook for the additional fields that fall through the cracks.
-        fields_to_retain_set |= set(self._keep_these_fields())
-
-        # Avoid changing Pydantic's field order or downstream code that computes a
-        # diff over JSON strings will break.
-        fields_to_retain = [k for k in serialized_value if k in fields_to_retain_set]
-
-        # Fields that weren't in the original serialized value should be in a consistent
-        # order to ensure consistent serialized output.
-        # Use alphabetical order for now and hope for the best.
-        fields_to_retain.extend(sorted(fields_to_retain_set - self.model_fields_set))
-
-        result = {}
-        for f in fields_to_retain:
-            if f in serialized_value:
-                result[f] = serialized_value[f]
-            else:
-                # Sometimes Pydantic adds fields to self.model_fields_set without adding
-                # them to the output of self.model_dump()
-                result[f] = getattr(self, f)
-        return result
+        # Strip out unset fields
+        fields_to_retain = tuple(self.model_fields_set) + self._keep_these_fields()
+        return {name: serialized_value[name] for name in fields_to_retain}
 
     def _keep_these_fields(self) -> tuple[str]:
         """
@@ -167,14 +137,6 @@ class AssistantMessage(_ChatMessageBase):
     def raw(self) -> str:
         """Get the raw content of the response"""
         return self._raw if self._raw is not None else self.content
-
-    def _keep_these_fields(self):
-        # Start with superclass's field set
-        result = super()._keep_these_fields()
-        if self._raw is not None:
-            # Add raw data if different from content
-            result = result + ("raw",)
-        return result
 
 
 class ToolResultMessage(_ChatMessageBase):
@@ -367,12 +329,6 @@ class GenerateResult(pydantic.BaseModel):
     completion_tokens: list[int]
 
     stop_reason: str
-
-    # tokens for logprobs
-    tokens: Optional[list[str]] = None
-
-    # token logprobs
-    token_logprobs: Optional[list] = None
 
 
 class GenerateResults(pydantic.BaseModel):
