@@ -286,6 +286,12 @@ class GenerateResult(pydantic.BaseModel):
 
     stop_reason: str
 
+    # tokens for logprobs
+    tokens: Optional[list[str]] = None
+
+    # token logprobs
+    token_logprobs: Optional[list] = None
+
 
 class GenerateResults(pydantic.BaseModel):
     results: list[GenerateResult]

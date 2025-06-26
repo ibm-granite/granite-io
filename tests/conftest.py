@@ -162,13 +162,17 @@ def lora_server_session_scoped() -> collections.abc.Generator[
         "hallucination_detection",  # Maps to hallucination_detection_lora
         "query_rewrite",  # Maps to query_rewrite_lora
         "context_relevancy",  # Maps to context_relevancy_lora
+        "prm",  # Maps to prm_lora
     ]
 
     # Download and get local paths for all LoRA adapters
     lora_adapters = []
     for lora_name in lora_adapter_names:
         try:
-            lora_path = obtain_lora(lora_name)
+            if lora_name == "prm":
+                lora_path = "ibm-granite/granite-3.3-8b-lora-math-prm"
+            else:
+                lora_path = obtain_lora(lora_name)
             lora_adapters.append((lora_name, str(lora_path)))
             print(f"✅ Downloaded LoRA adapter: {lora_name} -> {lora_path}")
         except (OSError, ValueError, RuntimeError) as e:

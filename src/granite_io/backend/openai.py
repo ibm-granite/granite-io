@@ -57,12 +57,23 @@ class OpenAIBackend(Backend):
     def process_output(self, outputs):
         results = []
         for choice in outputs.choices:
-            results.append(
-                GenerateResult(
-                    completion_string=choice.text,
-                    completion_tokens=[],  # Not part of the OpenAI spec
-                    stop_reason=choice.finish_reason,
+            if not choice.logprobs:
+                results.append(
+                    GenerateResult(
+                        completion_string=choice.text,
+                        completion_tokens=[],  # Not part of the OpenAI spec
+                        stop_reason=choice.finish_reason,
+                    )
                 )
-            )
+            else:
+                results.append(
+                    GenerateResult(
+                        completion_string=choice.text,
+                        completion_tokens=[],  # Not part of the OpenAI spec
+                        stop_reason=choice.finish_reason,
+                        tokens=choice.logprobs.tokens,
+                        token_logprobs=choice.logprobs.token_logprobs,
+                    )
+                )
 
         return GenerateResults(results=results)
