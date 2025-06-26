@@ -14,8 +14,9 @@ function:
   inputs: obj
 return:
   lastOf:
-  - model: "granite3.2:2b"
-    backend: openai
+  - processor:
+      model: "granite3.2:2b"
+      backend: openai
     input: ${ inputs.messages }
     modelResponse: results
   - ${ results }

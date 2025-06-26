@@ -1,5 +1,5 @@
 function:
-  inputs: obj
+  inputs: object
 return:
   defs:
     valid: false
@@ -10,8 +10,9 @@ return:
     - repeat:
         lastOf:
           - def: answer
-            model: ${model}
-            backend: ${backend}
+            processor:
+              model: ${model}
+              backend: ${backend}
             modelResponse: results
           - defs:
               valid:
@@ -25,6 +26,6 @@ return:
           - data: ${ results }
             contribute: [result]
       until: ${ valid }
-      max_iterations: ${ k }
+      maxIterations: ${ k }
       join:
         as: lastOf

@@ -25,7 +25,7 @@ classifiers = [
 ]
 version = "0.1.0"
 dependencies = [
-    "prompt-declaration-language >= 0.6",
+    "prompt-declaration-language >= 0.7",
 ]
 
 
