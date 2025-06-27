@@ -80,7 +80,9 @@ class Granite3Point3InputOutputProcessor(ModelDirectInputOutputProcessor):
         return self.output_to_result(output=model_output, inputs=inputs)
 
     def inputs_to_string(
-        self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
+        self,
+        inputs: ChatCompletionInputs,
+        add_generation_prompt: bool = True,
     ) -> str:
         input_processor = Granite3Point3InputProcessor()
         return input_processor.transform(inputs, add_generation_prompt)
