@@ -3,6 +3,7 @@
 """Various utility functions relating to the Granite 3.3 RAG Agent Library."""
 
 # Standard
+from collections.abc import Iterable
 import dataclasses
 import enum
 import pathlib
@@ -97,3 +98,20 @@ def obtain_lora(model_name: str, cache_dir: str | None = None) -> pathlib.Path:
     )
 
     return pathlib.Path(local_root_path) / lora_subdir_name
+
+
+def obtain_loras(
+    model_names: Iterable[str], cache_dir: str | None = None
+) -> list[tuple[str, pathlib.Path]]:
+    """
+    Convenience function that calls :func:`obtain_lora()` multiple times to download
+    multiple models.
+
+    :param model_name: List/tuple of short model names, such as "certainty"
+    :param cache_dir: Local directory to use as a cache (in Hugging Face Hub format),
+        or ``None`` to use the Hugging Face Hub default location.
+
+    :returns: List of tuples of model name and local directory
+    """
+    # The Hugging Face APIs are not reentrant at all, so load models one at a time.
+    return [(name, obtain_lora(name, cache_dir)) for name in model_names]

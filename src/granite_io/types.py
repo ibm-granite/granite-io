@@ -13,7 +13,57 @@ from typing_extensions import Literal, TypeAlias
 import pydantic
 
 
-class FunctionCall(pydantic.BaseModel):
+class NoDefaultsMixin:
+    """
+    Mixin so that we don't need to copy and paste the code to avoid filling JSON values
+    with a full catalog of the default values of rarely-used fields.
+    """
+
+    @pydantic.model_serializer(mode="wrap")
+    def _workaround_for_design_flaw_in_pydantic(self, nxt):
+        """
+        Horrible hack because the developers of Pydantic think their users really enjoy
+        either having unnecessary garbage in their serialized JSON data or overriding
+        poorly-documented serialization hooks repeatedly.  Automates overriding said
+        poorly-documented serialization hooks for a single dataclass.
+
+        See https://github.com/pydantic/pydantic/issues/4554 for the relevant dismissive
+        comment from the devs. This comment suggests overriding :func:`dict()`, but that
+        method was disabled a year later. Now you need to add a custom serializer method
+        with a ``@model_serializer`` decorator.
+
+        See the unclear docs at
+        https://docs.pydantic.dev/latest/api/functional_serializers/
+        for some dubious information on how this API works.
+        """
+        # Start with the value that self.model_dump() would return without this mixin
+        serialized_value = nxt(self)
+
+        # Strip out unset fields
+        fields_to_retain = self.model_fields_set | set(self._keep_these_fields())
+
+        result = {}
+        for f in fields_to_retain:
+            if f in serialized_value:
+                result[f] = serialized_value[f]
+            else:
+                # Sometimes Pydantic adds fields to self.model_fields_set without adding
+                # them to the output of self.model_dump()
+                result[f] = getattr(self, f)
+        return result
+
+    def _keep_these_fields(self) -> tuple[str]:
+        """
+        Dataclasses that include this mixin can override this method to add specific
+        default values to serialized JSON.
+
+        This is necessary for round-tripping to JSON when there are fields that
+        determine which dataclass to use for deserialization.
+        """
+        return ()
+
+
+class FunctionCall(pydantic.BaseModel, NoDefaultsMixin):
     id: str | None = None
     name: str
 
@@ -22,7 +72,7 @@ class FunctionCall(pydantic.BaseModel):
     arguments: dict[str, Any] | None
 
 
-class Hallucination(pydantic.BaseModel):
+class Hallucination(pydantic.BaseModel, NoDefaultsMixin):
     """Hallucination data as returned by the model output parser"""
 
     hallucination_id: str
@@ -53,7 +103,7 @@ class Document(pydantic.BaseModel):
     text: str
 
 
-class _ChatMessageBase(pydantic.BaseModel):
+class _ChatMessageBase(pydantic.BaseModel, NoDefaultsMixin):
     """Base class for all message types.
 
     Due to the vaguaries of Pydantic's JSON parser, we use this class only for common
@@ -68,6 +118,9 @@ class _ChatMessageBase(pydantic.BaseModel):
     def to_openai_json(self):
         result = {"role": self.role, "content": self.content}
         return result
+
+    def _keep_these_fields(self):
+        return ("role",)
 
 
 class UserMessage(_ChatMessageBase):
@@ -94,6 +147,14 @@ class AssistantMessage(_ChatMessageBase):
         """Get the raw content of the response"""
         return self._raw if self._raw is not None else self.content
 
+    def _keep_these_fields(self):
+        # Start with superclass's field set
+        result = super()._keep_these_fields()
+        if self._raw is not None:
+            # Add raw data if different from content
+            result = result + ("raw",)
+        return result
+
 
 class ToolResultMessage(_ChatMessageBase):
     role: Literal["tool"] = "tool"
@@ -111,7 +172,7 @@ ChatMessage: TypeAlias = (
 :class:`_ChatMessageBase` so that Pydantic can parse the message list from JSON."""
 
 
-class FunctionDefinition(pydantic.BaseModel):
+class FunctionDefinition(pydantic.BaseModel, NoDefaultsMixin):
     name: str
     description: str | None = None
 
@@ -134,7 +195,7 @@ class FunctionDefinition(pydantic.BaseModel):
         return self.model_dump()
 
 
-class GenerateInputs(pydantic.BaseModel):
+class GenerateInputs(pydantic.BaseModel, NoDefaultsMixin):
     """Common inputs for backends
 
     Attributes:
@@ -189,7 +250,7 @@ class GenerateInputs(pydantic.BaseModel):
     )
 
 
-class ChatCompletionInputs(pydantic.BaseModel):
+class ChatCompletionInputs(pydantic.BaseModel, NoDefaultsMixin):
     """
     Class that represents the lowest-common-denominator inputs to a chat completion
     call.  Individual input/output processors can extend this schema with their own

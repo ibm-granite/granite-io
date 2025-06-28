@@ -2,7 +2,7 @@
 
 
 # Local
-from .util import RagAgentLibModelInfo, obtain_lora
+from .util import RagAgentLibModelInfo, obtain_lora, obtain_loras
 from granite_io.io.answerability.answerability import (
     AnswerabilityCompositeIOProcessor,
     AnswerabilityIOProcessor,
@@ -31,4 +31,5 @@ __all__ = [
     "CertaintyIOProcessor",
     "RagAgentLibModelInfo",
     "obtain_lora",
+    "obtain_loras",
 ]
