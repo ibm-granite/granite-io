@@ -40,8 +40,17 @@ class NoDefaultsMixin:
         serialized_value = nxt(self)
 
         # Strip out unset fields
-        fields_to_retain = tuple(self.model_fields_set) + self._keep_these_fields()
-        return {name: serialized_value[name] for name in fields_to_retain}
+        fields_to_retain = self.model_fields_set | set(self._keep_these_fields())
+
+        result = {}
+        for f in fields_to_retain:
+            if f in serialized_value:
+                result[f] = serialized_value[f]
+            else:
+                # Sometimes Pydantic adds fields to self.model_fields_set without adding
+                # them to the output of self.model_dump()
+                result[f] = getattr(self, f)
+        return result
 
     def _keep_these_fields(self) -> tuple[str]:
         """
@@ -137,6 +146,14 @@ class AssistantMessage(_ChatMessageBase):
     def raw(self) -> str:
         """Get the raw content of the response"""
         return self._raw if self._raw is not None else self.content
+
+    def _keep_these_fields(self):
+        # Start with superclass's field set
+        result = super()._keep_these_fields()
+        if self._raw is not None:
+            # Add raw data if different from content
+            result = result + ("raw",)
+        return result
 
 
 class ToolResultMessage(_ChatMessageBase):
