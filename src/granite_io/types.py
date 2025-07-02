@@ -22,8 +22,8 @@ class NoDefaultsMixin:
     @pydantic.model_serializer(mode="wrap")
     def _workaround_for_design_flaw_in_pydantic(self, nxt):
         """
-        Horrible hack because the developers of Pydantic think their users really enjoy
-        either having unnecessary garbage in their serialized JSON data or overriding
+        Workaround for a design flaw in Pydantic that forces users to accept
+        unnecessary garbage in their serialized JSON data or to override
         poorly-documented serialization hooks repeatedly.  Automates overriding said
         poorly-documented serialization hooks for a single dataclass.
 
@@ -32,15 +32,36 @@ class NoDefaultsMixin:
         method was disabled a year later. Now you need to add a custom serializer method
         with a ``@model_serializer`` decorator.
 
-        See the unclear docs at
+        See the docs at
         https://docs.pydantic.dev/latest/api/functional_serializers/
         for some dubious information on how this API works.
+        See comments below for important gotchas that aren't in the documentation.
         """
-        # Start with the value that self.model_dump() would return without this mixin
+        # Start with the value that self.model_dump() would return without this mixin.
+        # Otherwise serialization of sub-records will be inconsistent.
         serialized_value = nxt(self)
 
-        # Strip out unset fields
-        fields_to_retain = self.model_fields_set | set(self._keep_these_fields())
+        # Figure out which fields are set. Pydantic does not make this easy.
+        # Start with fields that are set in __init__() or in the JSON parser.
+        fields_to_retain_set = self.model_fields_set
+
+        # Add in fields that were set during validation and extra fields added by
+        # setattr().  These fields all go to self.model.extra
+        if self.model_extra is not None:  # model_extra is sometimes None. Not sure why.
+            # model_extra is a dictionary. There is no self.model_extra_fields_set.
+            fields_to_retain_set |= set(list(self.model_extra))
+
+        # Use a subclass hook for the additional fields that fall through the cracks.
+        fields_to_retain_set |= set(self._keep_these_fields())
+
+        # Avoid changing Pydantic's field order or downstream code that computes a
+        # diff over JSON strings will break.
+        fields_to_retain = [k for k in serialized_value if k in fields_to_retain_set]
+
+        # Fields that weren't in the original serialized value should be in a consistent
+        # order to ensure consistent serialized output.
+        # Use alphabetical order for now and hope for the best.
+        fields_to_retain.extend(sorted(fields_to_retain_set - self.model_fields_set))
 
         result = {}
         for f in fields_to_retain:
