@@ -10,9 +10,9 @@ from granite_io.io.base import (
     InputOutputProcessor,
     ModelDirectInputOutputProcessorWithGenerate,
 )
-from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
-    Granite3Point2InputProcessor,
-    Granite3Point2Inputs,
+from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
+    Granite3Point3InputProcessor,
+    Granite3Point3Inputs,
 )
 from granite_io.types import (
     AssistantMessage,
@@ -50,13 +50,13 @@ class AnswerabilityIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         super().__init__(backend=backend)
 
         # Input processor for the base model, which does most of the input formatting.
-        self.base_input_processor = Granite3Point2InputProcessor()
+        self.base_input_processor = Granite3Point3InputProcessor()
 
     def inputs_to_generate_inputs(
         self, inputs: ChatCompletionInputs, add_generation_prompt: bool = True
     ) -> GenerateInputs:
         # Validate the input and convert to Granite input
-        inputs = Granite3Point2Inputs.model_validate(inputs.model_dump())
+        inputs = Granite3Point3Inputs.model_validate(inputs.model_dump())
 
         # Check for the invariants that the model expects its input to satisfy
         if not inputs.documents:
@@ -64,7 +64,7 @@ class AnswerabilityIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         if not inputs.messages[-1].role == "user":
             raise ValueError("Last message is not a user message")
 
-        # The beginning of the prompt doesn't change relative to base Granite 3.2
+        # The beginning of the prompt doesn't change relative to base Granite 3.3
         prompt = self.base_input_processor.transform(inputs, False)
 
         # Only the generation prompt portion changes
