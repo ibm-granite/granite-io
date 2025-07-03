@@ -339,7 +339,12 @@ projects are visible to anyone.",
         # each sentence boundary marked with <c0>, <c1>, ... <ck-1>, where `k` is the
         # number of sentences in ALL documents.
         rewritten_docs = [
-            Document(text=t) for t in mark_sentence_boundaries(docs_as_sentences, "c")
+            Document(text=t, doc_id=id)
+            for t, id in zip(
+                mark_sentence_boundaries(docs_as_sentences, "c"),
+                [d.doc_id for d in inputs.documents],
+                strict=True,
+            )
         ]
 
         # The last assistant message also needs to be split into sentences. The we

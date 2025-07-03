@@ -279,7 +279,7 @@ def test_output_with_citation_from_source(inputs):
         os.path.join(TEST_DATA_DIR, "test_output_with_citation_from_source.txt")
     )
     doc_source = load_text_file(os.path.join(TEST_DATA_DIR, "test_document_source.txt"))
-    doc_input = [Document(text=f"{doc_source}")]
+    doc_input = [Document(text=f"{doc_source}", doc_id=1)]
 
     inputs_with_doc = inputs["empty_with_citation_control"]
     inputs_with_doc.documents = doc_input

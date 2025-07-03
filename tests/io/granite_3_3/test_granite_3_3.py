@@ -140,6 +140,21 @@ strategy for managing dividend income."}
     
 }
 """,
+    "documents": """
+{
+    "messages":
+    [
+        {"role": "user", "content": "What's another word for thesaurus?"}
+    ],
+    "documents":
+    [
+        {"doc_id": 42, 
+         "text": "It's a small world, but I wouldn't want to have to paint it."},
+        {"doc_id": 213, 
+         "text": "Whenever I think of the past, it brings back so many memories."}
+    ]
+}
+""",
 }
 
 
@@ -274,6 +289,8 @@ def test_same_input_string(
     # Then compare against the input processor
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_proc_str = Granite3Point3InputOutputProcessor().inputs_to_string(inputs)
+
+    print(f"======\n{io_proc_str=}\n======={transformers_str=}")
 
     assert io_proc_str == transformers_str
 
