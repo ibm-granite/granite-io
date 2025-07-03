@@ -10,9 +10,7 @@ return:
     - repeat:
         lastOf:
           - def: answer
-            processor:
-              model: ${model}
-              backend: ${backend}
+            processor: ${generator}
             modelResponse: results
           - defs:
               valid:
