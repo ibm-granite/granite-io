@@ -49,6 +49,7 @@ _EXAMPLE_CHAT_INPUT = Granite3Point3Inputs.model_validate(
         ],
         "documents": [
             {
+                "doc_id": 1,
                 # Original text
                 "text": "Git Repos and Issue Tracking is an IBM-hosted component of \
 the Continuous Delivery service. All of the data that you provide to Git Repos and \
@@ -76,9 +77,10 @@ selected. 5. Click Save changes. Project membership \n\nGit Repos and Issue Trac
 is a cloud hosted social coding environment that is available to all Continuous \
 Delivery users. If you are a Git Repos and Issue Tracking project Maintainer or Owner, \
 you can invite any user and group members to the project. IBM Cloud places no \
-restrictions on who you can invite to a project."
+restrictions on who you can invite to a project.",
             },
             {
+                "doc_id": 2,
                 "text": "After you create a project in Git Repos and Issue Tracking, \
 but before you entrust any files, issues, records, or other data with the project, \
 review the project settings and change any settings that are necessary to protect your \
@@ -104,7 +106,7 @@ To turn off all email notifications for your project, complete the following \
 steps:\n\n\n\n1. From the project sidebar, click Settings > General. 2. On the \
 **General Settings **page, click Visibility > project features > permissions. \
 3. Select the Disable email notifications checkbox. 4. Click Save changes. Project \
-integrations and webhooks"
+integrations and webhooks",
             },
         ],
     }
@@ -158,7 +160,8 @@ By default, Git Repos and Issue Tracking notifies project members by way of emai
 
 
 
-1. From the project sidebar, click Settings > General. 2. On the **General Settings **page, click Visibility > project features > permissions. 3. Select the Disable email notifications checkbox. 4. Click Save changes. Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>
+1. From the project sidebar, click Settings > General. 2. On the **General Settings **page, click Visibility > project features > permissions. 3. Select the Disable email notifications checkbox. 4. Click Save changes. Project integrations and webhooks<|end_of_text|>
+<|start_of_role|>user<|end_of_role|>What is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>
 <|start_of_role|>assistant<|end_of_role|><i0> Git Repos and Issue Tracking projects can have one of three visibility levels: private, internal, or public. <i1> Private projects are visible only to project members, internal projects are visible to all logged-in IBM Cloud users, and public projects are visible to anyone.<|end_of_text|>
 <|start_of_role|>system<|end_of_role|>Split the last assistant response into individual sentences. For each sentence in the last assistant response, identify the faithfulness by comparing with the provided documents and generate the faithfulness reasoning and faithfulness decision. Ensure that your output includes all response sentence IDs, and for each response sentence ID, provide the corresponding faithfulness reasoning and faithfulness decision. The output must be a json structure.<|end_of_text|>\
 """  # noqa: E501

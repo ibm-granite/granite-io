@@ -26,7 +26,7 @@ _EXAMPLE_CHAT_INPUT = Granite3Point3Inputs.model_validate(
             {"role": "user", "content": "Which of my pets have fleas?"},
         ],
         "documents": [
-            {"text": "My dog has fleas."},
+            {"doc_id": 1, "text": "My dog has fleas."},
         ],
         "generate_inputs": {
             "temperature": 0.0  # Ensure consistency across runs

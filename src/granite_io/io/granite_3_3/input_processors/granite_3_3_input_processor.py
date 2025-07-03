@@ -146,6 +146,9 @@ response with a corresponding risk value that are hallucinated and not based in 
 class Document(pydantic.BaseModel):
     text: str
 
+    # Document ID is required in Granite 3.3
+    doc_id: str | int
+
 
 class ControlsRecord(pydantic.BaseModel):
     citations: bool | None = None
@@ -459,10 +462,11 @@ class Granite3Point3InputProcessor(InputProcessor):
         if len(inputs.documents) == 0:
             documents_part = ""
         else:
-            documents_part = "\n".join(
+            documents_part = "".join(
                 [
-                    f'<|start_of_role|>document {{"document_id": "{i + 1}"}}<|end_of_role|>\n{d.text}<|end_of_text|>'
-                    for i, d in enumerate(inputs.documents)
+                    f'<|start_of_role|>document {{"document_id": "{d.doc_id}"}}'
+                    f"<|end_of_role|>\n{d.text}<|end_of_text|>\n"
+                    for d in inputs.documents
                 ]
             )
 
