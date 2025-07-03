@@ -8,9 +8,6 @@ Sequential Scaling I/O processor
 from typing import Callable
 import pathlib
 
-# Third Party
-import aconfig
-
 # Local
 from .pdl_io import PdlInputOutputProcessor
 from granite_io.io.base import InputOutputProcessor

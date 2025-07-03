@@ -9,6 +9,8 @@ to enforce the that model response has no hallucination.
 from granite_io_pdl.sequential_scaling import SequentialScalingInputOutputProcessor
 
 # Local
+from granite_io import make_backend
+from granite_io.io import make_io_processor
 from granite_io.types import ChatCompletionInputs, ChatCompletionResults, UserMessage
 
 
@@ -17,8 +19,10 @@ def hallucination_validator(processor_outputs: ChatCompletionResults):
 
 
 model_name = "granite3.3:8b"
+backend = make_backend("openai", {"model_name": "granite3.3:8b"})
+base_processor = make_io_processor(model_name, backend=backend)
 io_processor = SequentialScalingInputOutputProcessor(
-    model=model_name, backend="openai", validator=hallucination_validator
+    generator=base_processor, validator=hallucination_validator
 )
 question = "What is RAG?"
 messages = [UserMessage(content=question)]
