@@ -219,4 +219,10 @@ Click the badge below to view the documentation site:
 
 ## 🤝 Contributing
 
-Check out our [contributing guide](CONTRIBUTING.md) to learn how to contribute.
+<div align="center">
+
+Click below to view our contributing guide:
+
+[![Contributing](https://img.shields.io/badge/_Contributing_Guide-28a745?style=for-the-badge&logo=github&logoColor=white)](CONTRIBUTING.md)
+
+</div>
