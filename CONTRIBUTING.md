@@ -128,3 +128,77 @@ Unsure where to begin contributing? You can start by looking through these issue
 
 - Issues with the [`good first issue` label](https://github.com/ibm-granite/granite-io/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) - these should only require a few lines of code and are good targets if you're just starting contributing.
 - Issues with the [`help wanted` label](https://github.com/ibm-granite/granite-io/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) - these range from simple to more complex, but are generally things we want but can't get to in a short time frame.
+
+## Developer Certificate of Origin (DCO)
+
+We use the [Developer's Certificate of Origin 1.1 (DCO)](https://developercertificate.org/) - the same approach used by the Linux® Kernel community - to manage code contributions. 
+
+All commits must include a `Signed-off-by:` line in the commit message. To enable this:
+
+1. Set your git config:
+   ```shell
+   git config user.name "Your Name"
+   git config user.email "your.email@example.com"
+   ```
+
+2. Sign your commits automatically:
+   ```shell
+   git commit -s
+   ```
+
+3. If you forgot to sign a commit, you can amend it:
+   ```shell
+   git commit --amend -s
+   ```
+
+Your commit message should include a line like:
+```
+Signed-off-by: John Doe <john.doe@example.com>
+```
+
+We'll automatically verify that all commit messages contain a valid `Signed-off-by:` line with your email address.
+
+### Using DCO Signoff
+
+To sign off on a commit, use the `--signoff` or `-s` flag:
+
+```shell
+git commit -s -m "Fix bug in user authentication"
+```
+
+This will add a line like this to your commit message:
+```
+Signed-off-by: Your Name <your.email@example.com>
+```
+
+### Setting Up Automatic DCO Signoff
+
+You can configure Git globally to always sign off your commits:
+
+```shell
+git config --global commit.signoff true
+```
+
+This tells Git to behave as if `--signoff` is always passed to `git commit`.
+
+Now this will work as you expect:
+
+```shell
+git commit -m "Your message"
+# This will include the sign-off line automatically
+```
+
+This is the cleanest and most recommended way if your goal is always to sign off commits.
+
+### Fixing Missing DCO Signoff
+
+If you forgot to sign off on past commits, you can retroactively apply the sign-off:
+
+```shell
+cd /path/to/your/repo
+# Note: replace the `#` with however many commits you want to go back and update
+git rebase -i HEAD~# --signoff
+
+# Then run:
+git push --force-with-lease origin main
+```

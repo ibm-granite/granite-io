@@ -1,4 +1,19 @@
+<div align="center">
+
+<img src="./mkdocs/docs/img/ibm_logo_rebus.png" alt="IBM Logo" width="200"/>
+
 # Granite IO Processing
+
+[![PyPI version](https://img.shields.io/pypi/v/granite-io?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/granite-io/)
+[![Python versions](https://img.shields.io/pypi/pyversions/granite-io?logo=python&logoColor=white)](https://pypi.org/project/granite-io/)
+[![License](https://img.shields.io/github/license/ibm-granite/granite-io?color=green)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ibm-granite/granite-io?style=social)](https://github.com/ibm-granite/granite-io/stargazers)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue?logo=materialformkdocs)](./mkdocs/)
+[![Downloads](https://img.shields.io/pypi/dm/granite-io?color=orange&logo=pypi)](https://pypi.org/project/granite-io/)
+
+**🚀 A powerful framework for extending IBM Granite model functionality through input/output processing**
+
+</div>
 
 ## Introduction
 
@@ -6,11 +21,11 @@ Granite IO Processing is a framework which enables you to transform how a user c
 
 ## Getting Started
 
-### Requirements
+### 📋 Requirements
 
 * Python 3.10+
 
-### Installation
+### 💾 Installation
 
 We recommend using a Python virtual environment with Python 3.10+. Here is how to setup a virtual environment using [Python venv](https://docs.python.org/3/library/venv.html):
 
@@ -24,7 +39,7 @@ source granite_io_venv/bin/activate
 
 There are 2 ways to install the Granite IO Processor as follows:
 
-#### From Release
+#### 📦 From Release
 
 To install from release ([PyPi package](https://pypi.org/project/granite-io/)):
 
@@ -34,7 +49,7 @@ source granite_io_venv/bin/activate
 pip install granite-io
 ```
 
-#### From Source
+#### 🔧 From Source
 
 To install from source(GitHub Repository):
 
@@ -46,7 +61,7 @@ cd granite-io
 pip install -e .
 ```
 
-### Framework Example
+### 🎯 Framework Example
 
 Sample code snippet showing how to use the framework:
 
@@ -80,7 +95,7 @@ print(">> Response:")
 print(outputs.results[0].next_message.content)
 ```
 
-#### Sample Output
+#### 📊 Sample Output
 
 When you run the above example, you should see output similar to this:
 
@@ -144,7 +159,7 @@ When choosing a method, consider factors like the number of cities, available co
 
 To help you get up and running as quickly as possible with the Granite IO Processing framework, check out the following resources which demonstrate further how to use the framework:
 
-1. Python script examples:
+1. **Python script examples:**
 
 > [!IMPORTANT]
 > To get started with the examples, make sure you have followed the [Installation](#installation) steps first.
@@ -152,35 +167,62 @@ To help you get up and running as quickly as possible with the Granite IO Proces
 >
 > You will also need an [Ollama](https://ollama.com/) server [running locally](https://github.com/ollama/ollama?tab=readme-ov-file#start-ollama) and [IBM Granite 3.2](https://www.ibm.com/new/announcements/ibm-granite-3-2-open-source-reasoning-and-vision) model cached (`ollama pull granite3.2:8b`).
 
-   - [Granite 3.2 chat request](./examples/model_chat.py)
-   - [Granite 3.2 chat request with thinking](./examples/inference_with_thinking.py)
-   - [Granite 3.2 RAG](./examples/model_chat_with_citation.py)
-   - [Granite 3.2 RAG and hallucinations](./examples/model_chat_with_citation_hallucination.py)
-   - [Granite 3.2 MBRD majority voting](./examples/model_chat_with_mbrd_majority_voting.py)
-   - [Granite 3.2 custom IO processor](./examples/model_chat_with_thinking_custom_io_processor.py)
-   - [Granite 3.2 separate input and out processors](./examples/model_chat_with_thinking_separate_backend.py)
-   - [Using watsonx.ai](./examples/watsonx_litellm.py)
+   - 💬 [Granite 3.2 chat request](./examples/model_chat.py)
+   - 🧠 [Granite 3.2 chat request with thinking](./examples/inference_with_thinking.py)
+   - 📚 [Granite 3.2 RAG](./examples/model_chat_with_citation.py)
+   - 🚨 [Granite 3.2 RAG and hallucinations](./examples/model_chat_with_citation_hallucination.py)
+   - 🗳️ [Granite 3.2 MBRD majority voting](./examples/model_chat_with_mbrd_majority_voting.py)
+   - 🔧 [Granite 3.2 custom IO processor](./examples/model_chat_with_thinking_custom_io_processor.py)
+   - 🔀 [Granite 3.2 separate input and out processors](./examples/model_chat_with_thinking_separate_backend.py)
+   - ☁️ [Using watsonx.ai](./examples/watsonx_litellm.py)
 
-2. Jupyter notebook tutorials:
+2. **Jupyter notebook tutorials:**
 
 > [!IMPORTANT]
-> To get started with the examples, make sure you have followed the [Installation](#installation) steps first. You will also need additional packages to be able to run the Jupyter notebook. They can be installed by running `pip install -e "granite-io[transformers]"` and `pip install -e "granite-io[notebook]"`. Replace package name `granite-io` with `.` if installing from source. The notebooks can be then run with following command `jupyter notebook <path_to_notebook>`.
+> To get started with the examples, make sure you have followed the [Installation](#💾-installation) steps first. You will also need additional packages to be able to run the Jupyter notebook. They can be installed by running `pip install -e "granite-io[transformers]"` and `pip install -e "granite-io[notebook]"`. Replace package name `granite-io` with `.` if installing from source. The notebooks can be then run with following command `jupyter notebook <path_to_notebook>`.
 
-   - [Granite 3.2 answerability](./notebooks/answerability.ipynb)
-   - [Granite 3.2 certainity](./notebooks/certainty.ipynb)
-   - [Granite 3.2 citations](./notebooks/citations.ipynb)
-   - [Granite 3.2 hallucinations](./notebooks/hallucinations.ipynb)
-   - [Granite 3.2 IO APIs](./notebooks/io.ipynb)
-   - [Granite 3.2 query rewrite](./notebooks/query_rewrite.ipynb)
-   - [Granite 3.2 RAG](./notebooks/rag.ipynb)
-   - [Granite 3.2 retrieval](./notebooks/retrieval.ipynb)
-   - [Granite 3.2 simple majority voting](./notebooks/voting.ipynb)
+   - 🤔 [Granite 3.2 answerability](./notebooks/answerability.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/answerability.ipynb)
+   - 🎯 [Granite 3.2 certainity](./notebooks/certainty.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/certainty.ipynb)
+   - 📖 [Granite 3.2 citations](./notebooks/citations.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/citations.ipynb)
+   - 🚨 [Granite 3.2 hallucinations](./notebooks/hallucinations.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/hallucinations.ipynb)
+   - 🔄 [Granite 3.2 IO APIs](./notebooks/io.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/io.ipynb)
+   - ✏️ [Granite 3.2 query rewrite](./notebooks/query_rewrite.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/query_rewrite.ipynb)
+   - 📚 [Granite 3.2 RAG](./notebooks/rag.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/rag.ipynb)
+   - 🔍 [Granite 3.2 retrieval](./notebooks/retrieval.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/retrieval.ipynb)
+   - 🗳️ [Granite 3.2 simple majority voting](./notebooks/voting.ipynb) [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ibm-granite/granite-io/blob/main/notebooks/voting.ipynb)
 
 
-## Architecture
+## Documentation and Architecture
 
-For more information about architecture and design decisions, refer to [docs/design.md](docs/design.md).
+This project uses [MkDocs](https://www.mkdocs.org/) with the Material theme for comprehensive documentation. To access and work with the documentation:
 
-## Contributing
+- **📁 Documentation source**: Located in [`./mkdocs/docs/`](./mkdocs/docs/)
+- **⚙️ Configuration**: See [`./mkdocs/mkdocs.yml`](./mkdocs/mkdocs.yml)
+- **🚀 Local development**: Follow the instructions in [`./mkdocs/README.md`](./mkdocs/README.md)
 
-Check out our [contributing guide](CONTRIBUTING.md) to learn how to contribute.
+To serve the documentation locally:
+```bash
+cd mkdocs
+pip install mkdocs mkdocs-material
+mkdocs serve
+```
+
+<div align="center">
+
+Click the badge below to view the documentation site:
+
+[![Documentation](https://img.shields.io/badge/_View_Documentation_Site-4285F4?style=for-the-badge&logo=googledocs&logoColor=white)](https://ibm-granite.github.io/granite-io/)
+
+</div>
+
+---
+
+## 🤝 Contributing
+
+<div align="center">
+
+Click below to view our contributing guide:
+
+[![Contributing](https://img.shields.io/badge/_Contributing_Guide-28a745?style=for-the-badge&logo=github&logoColor=white)](CONTRIBUTING.md)
+
+</div>
