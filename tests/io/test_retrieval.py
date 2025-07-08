@@ -2,6 +2,10 @@
 
 """
 Test cases for the retrieval intrinsic.
+
+Note: These tests require the HuggingFace model 'sentence-transformers/multi-qa-mpnet-base-dot-v1'
+which will be automatically downloaded on first run (~438MB). Ensure you have internet
+connectivity and sufficient disk space. See CONTRIBUTING.md for more details.
 """
 
 # Standard

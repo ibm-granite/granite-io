@@ -63,11 +63,47 @@ You can run your dev environment using [tox](https://tox.wiki), which is an envi
 
 If you want to manage your own virtual environment instead of using `tox`, you can install granite io processing and all dependencies. Check out [README](./README.md) for more details.
 
+> [!IMPORTANT]
+> **First-time Setup**: Some tests require machine learning models from HuggingFace that will be automatically downloaded on first run. Ensure you have internet connectivity and ~1GB of free disk space. See the [HuggingFace Model Dependencies](#huggingface-model-dependencies) section below for details.
+
 Before pushing changes to GitHub, you need to run the tests, coding style and spelling check as shown below. They can be run individually as shown in each sub-section or can be run with the one command:
 
 ```shell
 tox
 ```
+
+### HuggingFace Model Dependencies
+
+Some tests in this project require machine learning models from [HuggingFace](https://huggingface.co/) that are automatically downloaded on first use. This is particularly relevant for tests related to retrieval and embedding functionality.
+
+#### Important Notes for Developers
+
+- **First Test Run**: When running retrieval tests for the first time, models will be automatically downloaded from HuggingFace
+- **Internet Required**: Initial test runs require internet connectivity to download models
+- **Disk Space**: The embedding model (`sentence-transformers/multi-qa-mpnet-base-dot-v1`) is approximately 438MB
+- **Download Time**: First test run may take significantly longer due to model download
+- **Caching**: Models are cached in `~/.cache/huggingface/hub/` and reused for subsequent runs
+
+#### Affected Tests
+
+The following test files require HuggingFace models:
+- `tests/io/test_retrieval.py` - Requires `sentence-transformers/multi-qa-mpnet-base-dot-v1`
+- `tests/io/test_rerank.py` - Requires `sentence-transformers/multi-qa-mpnet-base-dot-v1`
+
+#### Manual Model Download (Optional)
+
+If you prefer to download models manually before running tests, you can use:
+
+```shell
+pip install -U "huggingface_hub[cli]"
+huggingface-cli download sentence-transformers/multi-qa-mpnet-base-dot-v1
+```
+
+#### Troubleshooting
+
+- **Network Issues**: If download fails, ensure you have stable internet connectivity
+- **Cache Issues**: If experiencing model loading problems, try clearing the cache: `rm -rf ~/.cache/huggingface/`
+- **Disk Space**: Ensure you have at least 1GB of free disk space for model storage
 
 ### Unit tests
 
@@ -84,7 +120,8 @@ By default, all tests found within the tests directory are run. However, specifi
 ```shell
 tox -e unit -- tests/io/test_granite_3_2.py::test_read_inputs
 ```
-#### OpenAI env
+
+#### OpenAI Environment Variables
 
 The OpenAI tests will by default find a typical local ollama installation, but you can use environment variables
 to refer to another server by specifying the URL and API_KEY (if required).  The environment variables are as follows:
@@ -94,6 +131,8 @@ to refer to another server by specifying the URL and API_KEY (if required).  The
 | OPENAI_BASE_URL | http://localhost:11434/v1 | Base URL for OpenAI endpoints  |
 | OPENAI_API_KEY  | ollama                    | API Key (depends on provider)  |
 | MODEL_NAME      | granite3.2:2b             | Model name on backend provider |
+
+> **Note**: These environment variables are separate from the HuggingFace model requirements mentioned above. OpenAI tests connect to external services, while HuggingFace models are downloaded and cached locally.
 
 ### Coding style
 
