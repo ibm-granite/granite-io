@@ -71,7 +71,7 @@ dev = [
     "pytest-html",
     "pytest-recording~=0.13.2",
     "pytest-retry~=1.7",
-    "ruff==0.12.2",
+    "ruff==0.12.4",
     "tox",
     "anywidget",
     "ipywidgets",
