@@ -498,7 +498,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 03 Jul 2025 22:06:16 GMT
+      - Fri, 18 Jul 2025 15:22:43 GMT
       Transfer-Encoding:
       - chunked
     status:
@@ -506,7 +506,7 @@ interactions:
       message: OK
 - request:
     body: '{"model": "granite3.3:2b", "prompt": "<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: July 03, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. Write the response to the user''s input by strictly aligning with the
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
@@ -534,55 +534,14 @@ interactions:
     uri: http://localhost:11434/api/generate
   response:
     body:
-      string: '{"model":"granite3.3:2b","created_at":"2025-07-03T22:06:16.066414673Z","response":"dictionary","done":true,"done_reason":"stop","context":[49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,19551,47330,32,0,203,49152,496,49153,49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,23669,1182,2821,44,32868,225,34,37,30,225,36,34,36,39,32,203,4282,884,8080,278,659,30,18909,810,25697,32,5950,322,1789,372,322,1256,1182,1509,810,33220,3014,299,623,322,44052,328,322,3943,12827,32,1670,322,2471,5349,372,7592,322,7000,438,646,3304,328,322,12827,30,7956,322,1256,688,322,7000,4881,526,40031,4122,544,322,3304,706,32,0,203,49152,2812,3447,2812,81,314,563,313,38,36,3612,49153,203,1011,1182,312,5532,5788,30,1273,439,21551,1330,2637,372,1159,372,16880,561,32,0,203,49152,2812,3447,2812,81,314,563,313,36,35,37,3612,49153,203,2444,43212,439,3540,432,322,11169,30,561,42340,1751,1259,5075,2349,3096,32,0,203,49152,496,49153,8197,1182,4674,3594,436,322,2496,31625,49,0,203,49152,17594,49153,0,203,49152,17594,49153,11702],"total_duration":34978834,"load_duration":9545792,"prompt_eval_count":218,"prompt_eval_duration":8910611,"eval_count":2,"eval_duration":15330672}'
+      string: '{"model":"granite3.3:2b","created_at":"2025-07-18T15:22:43.796619017Z","response":"dictionary","done":true,"done_reason":"stop","context":[49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,19551,47330,32,0,203,49152,496,49153,49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,23669,1182,2821,44,30468,225,35,30,225,36,34,36,39,32,203,4282,884,8080,278,659,30,18909,810,25697,32,5950,322,1789,372,322,1256,1182,1509,810,33220,3014,299,623,322,44052,328,322,3943,12827,32,1670,322,2471,5349,372,7592,322,7000,438,646,3304,328,322,12827,30,7956,322,1256,688,322,7000,4881,526,40031,4122,544,322,3304,706,32,0,203,49152,2812,3447,2812,81,314,563,313,38,36,3612,49153,203,1011,1182,312,5532,5788,30,1273,439,21551,1330,2637,372,1159,372,16880,561,32,0,203,49152,2812,3447,2812,81,314,563,313,36,35,37,3612,49153,203,2444,43212,439,3540,432,322,11169,30,561,42340,1751,1259,5075,2349,3096,32,0,203,49152,496,49153,8197,1182,4674,3594,436,322,2496,31625,49,0,203,49152,17594,49153,0,203,49152,17594,49153,11702],"total_duration":63908920,"load_duration":15083933,"prompt_eval_count":217,"prompt_eval_duration":17527541,"eval_count":2,"eval_duration":30408931}'
     headers:
       Content-Length:
-      - '1256'
+      - '1255'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 03 Jul 2025 22:06:16 GMT
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "granite3.3:2b", "prompt": "<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: July 03, 2025.\nYou are Granite, developed
-      by IBM. Write the response to the user''s input by strictly aligning with the
-      facts in the provided documents. If the information needed to answer the question
-      is not available in the documents, inform the user that the question cannot
-      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"42\"}<|end_of_role|>\nIt''s a small world, but I wouldn''t
-      want to have to paint it.<|end_of_text|>\n<|start_of_role|>document {\"document_id\":
-      \"213\"}<|end_of_role|>\nWhenever I think of the past, it brings back so many
-      memories.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What''s another
-      word for thesaurus?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>",
-      "options": {}, "stream": false}'
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate, zstd
-      connection:
-      - keep-alive
-      content-length:
-      - '916'
-      host:
-      - localhost:11434
-      user-agent:
-      - litellm/1.73.0
-    method: POST
-    uri: http://localhost:11434/api/generate
-  response:
-    body:
-      string: ''
-    headers:
-      Content-Length:
-      - '1256'
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 03 Jul 2025 22:06:16 GMT
+      - Fri, 18 Jul 2025 15:22:43 GMT
     status:
       code: 200
       message: OK

@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: July 03, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. Write the response to the user''s input by strictly aligning with the
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
@@ -48,26 +48,23 @@ interactions:
     uri: http://localhost:11434/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-8","object":"text_completion","created":1751580604,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"I''m
-        sorry, but there is no direct connection between the provided documents and
-        a question about the meaning or synonym of \"thesaurus.\" These documents
-        primarily seem to revolve around personal reflections on the past and related
-        experiences. Therefore, I cannot provide an accurate response based on these
-        text fragments. If you have any questions related to the content of the given
-        documents, please feel free to ask, and I will do my best to offer information
-        from there.\n\nFor reference, a \"thesaurus\" is a dictionary that provides
-        synonyms, antonyms, and often other lexical information about words. It can
-        help users expand their vocabulary by finding alternative words with similar
-        meanings.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":218,"completion_tokens":143,"total_tokens":361}}
+      string: '{"id":"cmpl-731","object":"text_completion","created":1752850625,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"I''m
+        sorry for any confusion, but this document only mentions \"thesaurus\" in
+        passing. It doesn''t provide a direct synonym or alternative for it. However,
+        a thesaurus is a reference work that lists words showing their origins, definitions,
+        and sometimes cognates, often used to expand vocabulary by offering variations
+        of meaning \u003c|start_of_cite|\u003e{\"document_id\": \"1\"}\u003c|end_of_cite|\u003e.
+        To find an alternative word, one might consider using a different type of
+        dictionary or lexicon.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":217,"completion_tokens":101,"total_tokens":318}}
 
         '
     headers:
       Content-Length:
-      - '955'
+      - '757'
       Content-Type:
       - application/json
       Date:
-      - Thu, 03 Jul 2025 22:10:04 GMT
+      - Fri, 18 Jul 2025 14:57:05 GMT
     status:
       code: 200
       message: OK

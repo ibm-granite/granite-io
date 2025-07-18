@@ -15,7 +15,6 @@ from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.base import RewriteRequestProcessor
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 from granite_io.io.query_rewrite.query_rewrite import (
     QUERY_TO_REWRITE_TEMPLATE,
@@ -69,13 +68,13 @@ def _make_result(content: str):
     )
 
 
-def test_canned_input(fake_date: str):
+def test_canned_input(_use_fake_date: str):
     """
     Validate that the I/O processor handles a single instance of canned input in the
     expected way.
     """
+    fake_date = _use_fake_date  # Fixture returns the date it put in place
     io_processor = QueryRewriteIOProcessor(None)
-    override_date_for_testing(fake_date)  # Use the fake date for consistent testing
     output = io_processor.inputs_to_generate_inputs(_EXAMPLE_CHAT_INPUT)
 
     # Build the expected output using the actual Granite 3.3 format
@@ -142,13 +141,12 @@ def test_canned_output():
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
     backend = lora_server.make_lora_backend("query_rewrite")
     io_proc = QueryRewriteIOProcessor(backend)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Pass our example input through the I/O processor and retrieve the result
     chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT)
@@ -162,14 +160,13 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_request_processor(lora_server: LocalVLLMServer, fake_date: str):
+def test_request_processor(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using a RequestProcessor
     """
     backend = lora_server.make_lora_backend("query_rewrite")
     io_proc = QueryRewriteIOProcessor(backend)
     request_proc = RewriteRequestProcessor(io_proc)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Pass our example input through the rewrite and retrieve the result
     rewrites = request_proc.process(_EXAMPLE_CHAT_INPUT)

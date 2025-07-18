@@ -16,7 +16,6 @@ from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.citations import CitationsCompositeIOProcessor, CitationsIOProcessor
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 from granite_io.types import GenerateResult, GenerateResults
 
@@ -219,13 +218,12 @@ def test_canned_output():
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
     backend = lora_server.make_lora_backend("citation_generation")
     io_proc = CitationsIOProcessor(backend)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Pass our example input through the I/O processor and retrieve the result
 
@@ -236,7 +234,7 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_composite(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the composite I/O processor.
     """
@@ -244,7 +242,6 @@ def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
     lora_backend = lora_server.make_lora_backend("citation_generation")
     granite_io_proc = make_io_processor("Granite 3.3", backend=granite_backend)
     io_proc = CitationsCompositeIOProcessor(granite_io_proc, lora_backend)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Strip off last message and rerun
     input_without_msg = _EXAMPLE_CHAT_INPUT.model_copy(

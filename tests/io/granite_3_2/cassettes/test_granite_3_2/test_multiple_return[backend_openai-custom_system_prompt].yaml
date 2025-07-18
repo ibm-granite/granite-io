@@ -2,7 +2,7 @@ interactions:
 - request:
     body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Answer
       all questions like a three year old.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hi,
-      I would like some advice on the best tax strategy for managing dividend income.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
+      I would like some advice on the best tax strategy for managing dividend income.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":3}'
     headers:
       accept:
       - application/json
@@ -11,56 +11,66 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '348'
+      - '336'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.61.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.61.0
+      - 1.90.0
+      x-stainless-read-timeout:
+      - '600'
       x-stainless-retry-count:
       - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.5
+      - 3.12.3
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-669\",\"object\":\"text_completion\",\"created\":1744206497,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"To
-      help you understand this in simple ways, let's imagine you have a piggy bank
-      with money from your toys that grows over time because of big helpers (dividends).\\n\\n1.
-      **Saving the Money**: One good thing is saving the money you get as dividends
-      right back into the same piggy bank it came from. That way, more money can grow
-      in it through future dividends. This means less \\\"tax\\\" time later because
-      you didn't spend it before the tax happens.\\n\\n2. **Using Special Pockets**:
-      Sometimes, your toy helpers let you put some of that grown-up money into a little
-      extra piggy bank without touching it, and this part doesn't have to pay \\\"tax\\\"
-      yet. It's like having a secret treasure chest!\\n\\n3. **Talking to Helpers**:
-      It\u2019s nice to speak with your big helper (a tax accountant) who can tell
-      you more about how much they expect you might need to give back as tax. They
-      know the rules of how money grows and when the tax fairy comes out to take a
-      bit at the end.\\n\\nRemember, wearing smarter clothes (tax strategies) doesn't
-      change that you still have play-withable money \u2013 it's just more organized.
-      So, let these ideas help grow your piggy bank while managing any small \\\"fees\\\"
-      to the tax fairy!\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":84,\"completion_tokens\":302,\"total_tokens\":386}}\n"
+    body:
+      string: '{"id":"cmpl-733","object":"text_completion","created":1752797216,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Dividing-income
+        money is nice, but it''s not like having candy every day. To help with this,
+        we could play a fun game with numbers to make sure we have as much money as
+        possible after giving some away each time we get dividends:\n\n1. **Grown-up
+        friends say to keep record**: Let''s write down how many pieces of income
+        we get from our toy boxes (dividends). Then, remember which ones are the biggest,
+        because those let us know when we can share more or save it for special treats
+        later.\n\n2. **Save small pieces for later**: Some grown-ups say good things
+        happen if we set aside some little bits of income in a special piggy bank
+        (tax-deferred accounts like 401(k)s). That way, when we want to buy really
+        big or fancy things in the future, we have extra money.\n\n3. **Charity for
+        bigger pieces**: If there''s an animal shelter nearby that we like a lot,
+        some grown-ups let us give away the bigger pieces. This can lower how much
+        tax they get from our leftover toys (dividends). It makes them feel good when
+        you help others too!\n\n4. **Ask smart friends for advice**: We might talk
+        with teachers or people at a tax club for grown-ups who are really good at
+        guessing which gifts (investments) should pay less in taxes and need which
+        bank accounts (accounts). They can help us get the most playtime (money) for
+        our toys.\n\nRemember, no matter how many dividends we find, always keep good
+        records so tax-time won''t seem scary or tricky! Isn''t life fun with money
+        puzzles like this?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":84,"completion_tokens":377,"total_tokens":461}}
+
+        '
     headers:
       Content-Length:
-      - '1450'
+      - '1731'
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Apr 2025 13:48:17 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 00:06:56 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

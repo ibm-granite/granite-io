@@ -16,7 +16,6 @@ from granite_io import make_io_processor
 from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 from granite_io.io.process_reward_model.best_of_n import (
     PRMBestOfNCompositeIOProcessor,
@@ -77,16 +76,14 @@ Is this response correct so far (Y/N)?<|end_of_text|>
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
     backend = lora_server.make_lora_backend("prm")
     io_proc = ProcessRewardModelIOProcessor(backend)
 
-    # Pass our example input thorugh the I/O processor and retrieve the result
-    override_date_for_testing(fake_date)  # For consistent VCR output
-
+    # Pass our example input through the I/O processor and retrieve the result
     good_chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT_CORRECT)
     # good chat should have a high score
     assert float(good_chat_result.results[0].next_message.content) > 0.9
@@ -97,7 +94,7 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_composite(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Generate chat completions and check certainty using a composite I/O processor to
     choreograph the flow.
@@ -114,7 +111,6 @@ def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
     input_without_msg = _EXAMPLE_CHAT_INPUT_CORRECT.model_copy(
         update={"messages": _EXAMPLE_CHAT_INPUT_CORRECT.messages[:-1]}
     ).with_addl_generate_params({"temperature": 1.0, "n": 5, "max_tokens": 2048})
-    override_date_for_testing(fake_date)  # For consistent VCR output
     results = io_proc.create_chat_completion(input_without_msg)
     assert len(results.results) == 1
     assert "36" in results.results[0].next_message.content

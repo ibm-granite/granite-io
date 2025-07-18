@@ -1,88 +1,34 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
       much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1000,"stop":["chuck"]}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '416'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: '{"id":"cmpl-d3fd861c1bd645a0b14b38d027a40811","object":"text_completion","created":1744791359,"model":"ibm-granite/granite-3.3-2b-instruct","choices":[{"index":0,"text":"The
-      phrase \"how much wood could a wood ","logprobs":null,"finish_reason":"stop","stop_reason":"chuck","prompt_logprobs":null}],"usage":{"prompt_tokens":69,"total_tokens":80,"completion_tokens":11,"prompt_tokens_details":null}}'
-    headers:
-      content-length:
-      - '397'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:15:59 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1000,"stop":["chuck"]}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '394'
+      - '392'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -90,21 +36,23 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-948","object":"text_completion","created":1744815890,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Interesting
-      question! The phrase \"how much wood would a wood","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":112,"completion_tokens":15,"total_tokens":127}}
+    body:
+      string: '{"id":"cmpl-376","object":"text_completion","created":1752852478,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"The
+        term \"wood","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":112,"completion_tokens":6,"total_tokens":118}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '313'
+      - '266'
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:50 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 15:27:58 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: July 03, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. Write the response to the user''s input by strictly aligning with the
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
@@ -48,24 +48,16 @@ interactions:
     uri: http://localhost:11434/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-46","object":"text_completion","created":1751580240,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"It
-        seems like you have asked a question that is not related to the provided documents.
-        A thesaurus is a reference work that provides lists of words in one language,
-        together with information about their meanings, etymologies, and functions
-        in sentences. However, it does not appear that either document from your list
-        uses this term; they both seem to focus on personal reflections or experiences
-        related to \"the past.\"  If you''re interested in synonyms or alternative
-        terms for any of the concepts discussed in these documents, please provide
-        more context or specify which words you are interested in.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":218,"completion_tokens":120,"total_tokens":338}}
+      string: '{"id":"cmpl-139","object":"text_completion","created":1752852562,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"enhancements","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":217,"completion_tokens":4,"total_tokens":221}}
 
         '
     headers:
       Content-Length:
-      - '856'
+      - '263'
       Content-Type:
       - application/json
       Date:
-      - Thu, 03 Jul 2025 22:04:00 GMT
+      - Fri, 18 Jul 2025 15:29:22 GMT
     status:
       code: 200
       message: OK

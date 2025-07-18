@@ -40,9 +40,6 @@ from granite_io.io.granite_3_2.output_processors.granite_3_2_output_processor im
     _COT_END_ALTERNATIVES,
     _COT_START_ALTERNATIVES,
 )
-from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
-    override_date_for_testing,
-)
 from granite_io.types import (
     AssistantMessage,
     ChatCompletionInputs,
@@ -335,7 +332,7 @@ def test_basic_inputs_to_string():
 
 
 @pytest.mark.vcr
-def test_completion_repetition_param(backend_x: Backend):
+def test_completion_repetition_param(backend_x: Backend, _use_fake_date: str):
     messages = [
         {
             "role": "user",
@@ -367,7 +364,7 @@ def test_completion_repetition_param(backend_x: Backend):
 
 
 @pytest.mark.vcr
-def test_completion_presence_param(backend_x: Backend):
+def test_completion_presence_param(backend_x: Backend, _use_fake_date: str):
     messages = [
         {
             "role": "user",
@@ -396,11 +393,8 @@ def test_completion_presence_param(backend_x: Backend):
     assert isinstance(outputs, ChatCompletionResults)
 
 
-@pytest.mark.vcr(record_mode="new_episodes")
-def test_run_processor(backend_x: Backend, input_json_str: str, fake_date: str):
-    # Granite 3.2 prompt includes date string. Change the date so that the prompt is
-    # consistent with the vcrpy recording of past network traffic.
-    override_date_for_testing(fake_date)
+@pytest.mark.vcr
+def test_run_processor(backend_x: Backend, input_json_str: str, _use_fake_date: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
@@ -514,9 +508,8 @@ def test_citation_hallucination_parsing(
     assert result.hallucinations == exp_hallucination
 
 
-@pytest.mark.vcr(record_mode="new_episodes")
-@pytest.mark.block_network
-def test_multiple_return(backend_x: Backend, input_json_str: str):
+@pytest.mark.vcr
+def test_multiple_return(backend_x: Backend, input_json_str: str, _use_fake_date: str):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     inputs = inputs.model_copy(
         update={"generate_inputs": GenerateInputs(max_tokens=1024, n=3)}

@@ -344,7 +344,7 @@ def test_basic_inputs_to_string():
 
 
 @pytest.mark.vcr
-def test_completion_repetition_param(backend_3_3: Backend):
+def test_completion_repetition_param(backend_3_3: Backend, _use_fake_date: str):
     messages = [
         {
             "role": "user",
@@ -376,7 +376,7 @@ def test_completion_repetition_param(backend_3_3: Backend):
 
 
 @pytest.mark.vcr
-def test_completion_presence_param(backend_3_3: Backend):
+def test_completion_presence_param(backend_3_3: Backend, _use_fake_date: str):
     messages = [
         {
             "role": "user",
@@ -406,7 +406,7 @@ def test_completion_presence_param(backend_3_3: Backend):
 
 
 @pytest.mark.vcr
-def test_run_processor(backend_3_3: Backend, input_json_str: str):
+def test_run_processor(backend_3_3: Backend, input_json_str: str, _use_fake_date):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_io_processor(_GRANITE_3_3_MODEL_NAME, backend=backend_3_3)
     outputs: ChatCompletionResults = io_processor.create_chat_completion(inputs)
@@ -526,7 +526,9 @@ def test_citation_hallucination_parsing(
 
 
 @pytest.mark.vcr
-def test_multiple_return(backend_3_3: Backend, input_json_str: str):
+def test_multiple_return(
+    backend_3_3: Backend, input_json_str: str, _use_fake_date: str
+):
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     inputs = inputs.model_copy(
         update={"generate_inputs": GenerateInputs(max_tokens=1024, n=3)}

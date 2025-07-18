@@ -1,38 +1,36 @@
 interactions:
 - request:
     body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: March 11, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
       how are you?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>I''m doing
       great. How can I help you today?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I''d
-      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":1,"n":1}'
+      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '556'
+      - '537'
       content-type:
       - application/json
       host:
       - localhost:11434
-      rits_api_key:
-      - ollama
       user-agent:
-      - OpenAI/Python 1.65.5
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
-      - 'false'
+      - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.65.5
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -40,41 +38,40 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.5
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-457\",\"object\":\"text_completion\",\"created\":1741680399,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Absolutely,
-      let's dive into chat templating! Chat templates allow us to create dynamic responses
-      based on input or predefined conditions. They're incredibly useful for maintaining
-      conversational flow and consistency in our AI-driven conversations. Here\u2019s
-      a simple demonstration using a template-based approach:\\n\\n1. **Template Definition:**\\n
-      \  Let's define a basic conversation template for responding to questions about
-      the weather.\\n\\n   ```\\n   Hello! How can I assist you with the weather?\\n\\n
-      \  It appears we're in [Location] at this moment, so let's check that. Here\u2019s
-      what I know:\\n   \\n   - **Temperature**: Around [\xB0C] degrees.\\n   - **Condition**:
-      Most likely, it\u2019s [Weather Condition], possibly with a chance of [Chance].\\n
-      \  \\n   Are there any specific aspects of the weather you're curious about?
-      If you wish to ask about another location or time, feel free.\\n   ```\\n\\n2.
-      **Input and Rendering:**\\n\\n   Now, we'll simulate this template:\\n\\n   **User
-      Input (Question):** \\\"Weather in New York today.\\\"\\n\\n   Applying our
-      defined template with this input yields a dynamic response. Here\u2019s how
-      it might look:\\n\\n   - `It appears we're in [Location]` -\\u003e Changes to
-      `It appears we're in New York.`\\n   \\n   - **`Here's what I know:`**\\n   -
-      **Temperature**: Around 25 degrees. (Static temperature data)\\n   - **Condition**:
-      Most likely, it\u2019s cloudy.\\n   \\n   - `Are there any specific aspects
-      of the weather you're curious about? If you wish to ask about another location
-      or time, feel free.`\\n   \\n   This dynamic response maintains a consistent
-      structure while adapting real-time data (like temperature and conditions) for
-      each inputted query. It's powerful because templates allow for easy customization
-      without writing individual responses from scratch every time.\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":142,\"completion_tokens\":389,\"total_tokens\":531}}\n"
+    body:
+      string: "{\"id\":\"cmpl-562\",\"object\":\"text_completion\",\"created\":1752800022,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Absolutely,
+        I'd be delighted to demonstrate chat template features with you! Chat templates
+        allow users like us to reuse parts of conversations efficiently. Here's a
+        simple example: let's say we're often discussing the same set of questions
+        about local events around town, such as when they're happening and any amenities
+        available at those venues.\\n\\n```markdown\\n**Chat Template: Local Event
+        Information Check**\\n\\n**User:** Hey [Your Name], do you know what events
+        are happening next week?\\n\\n**Template Assistant (Me):** Of course! I can
+        help with that. Here\u2019s a snapshot of this week's top local events:\\n\\n-
+        **Event 1:** *Name*\\n  - When: [Date]\\n  - Venue: [Place]. It offers [Amenity].\\n\\n-
+        **Event 2:** *Name*\\n  - When: [Date]\\n  - Venue: [Place]. Here, you'll
+        find [Amenity].\\n\\n**User:** What's the parking situation like for Event
+        1?\\n\\n**Template Assistant (Me):** In this case, it's [Parking Information].
+        Remember to allow enough time for navigation and potential traffic.\\n```\\n\\nIn
+        this template, I've used `[Your Name]` as a placeholder that will fill in
+        with each user's personalized greeting when they engage the template again.
+        This way, we don't have to retype the entire conversation if the user asks
+        about events on multiple occasions within one week. It saves everyone time
+        and keeps our interaction consistent while accommodating individual preferences.\\n\\nWould
+        you like an example of a different type of chat template or another aspect
+        of templating?\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":141,\"completion_tokens\":358,\"total_tokens\":499}}\n"
     headers:
+      Content-Length:
+      - '1734'
       Content-Type:
       - application/json
       Date:
-      - Tue, 11 Mar 2025 08:06:39 GMT
-      Transfer-Encoding:
-      - chunked
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 00:53:42 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

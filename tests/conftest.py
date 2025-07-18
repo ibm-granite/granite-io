@@ -39,8 +39,7 @@ def vcr_config():
         "before_record_request": _no_pings_please,
         # Use body of POST requests to index into the cassette. Otherwise vcrpy won't
         # detect changes to the prompt.
-        # Temporarily disabled pending follow-on PR
-        # "match_on": ["uri", "method", "body"],
+        "match_on": ["uri", "method", "body"],
         # Regenerate cassette files if deleted; otherwise fail the test if it produces
         # a request that doesn't match the existing cassette.
         "record_mode": "once",
@@ -106,17 +105,26 @@ def backend_3_3_transformers() -> Backend:
 
 
 @pytest.fixture(scope="function")
-def fake_date():
+def _use_fake_date():
     """
-    We need today's date to be constant so that ``vcrpy`` functions on our prompts.
+    Granite 3 system prompts include the current date.
+    Tests that record network I/O need today's date to be constant so that ``vcrpy``
+    can detect whether the other parts of the prompt have changed, invalidating
+    recorded outgoing inference requests.
 
     By wrapping the creation of this date in a fixture, we can be sure to reset to
     normal behavior if a test fails.
 
-    :returns: a fake version of today's date, for use in prompt text that mentions the
-     date.
+    The name of this fixture starts with an underscore so that we don't need to disable
+    pylint's unused-argument / W0613 warning on every test that uses this fixture.
+
+    :returns: a fake version of today's date that will be used by Granite 3 input
+      processors for the duration of the current test case.
     """
-    yield "April 1, 2025"
+    fake_date = "April 1, 2025"
+    g32_override_date_for_testing(fake_date)
+    g33_override_date_for_testing(fake_date)
+    yield fake_date
 
     # Cleanup code. Augment as needed as we add new IO processors with date-dependent
     # prompts.

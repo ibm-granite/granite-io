@@ -6,7 +6,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\nGit Repos and Issue Tracking is an
+      {\"document_id\": \"2\"}<|end_of_role|>\nGit Repos and Issue Tracking is an
       IBM-hosted component of the Continuous Delivery service. All of the data that
       you provide to Git Repos and Issue Tracking, including but not limited to source
       files, issues, pull requests, and project configuration properties, is managed
@@ -34,7 +34,7 @@ interactions:
       Git Repos and Issue Tracking project Maintainer or Owner, you can invite any
       user and group members to the project. IBM Cloud places no restrictions on who
       you can invite to a project.<|end_of_text|>\n<|start_of_role|>document {\"document_id\":
-      \"2\"}<|end_of_role|>\nAfter you create a project in Git Repos and Issue Tracking,
+      \"1\"}<|end_of_role|>\nAfter you create a project in Git Repos and Issue Tracking,
       but before you entrust any files, issues, records, or other data with the project,
       review the project settings and change any settings that are necessary to protect
       your data. Settings to review include visibility levels, email notifications,
@@ -59,23 +59,23 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","n":5,"temperature":0.2}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '4973'
+      - '4975'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -85,7 +85,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -93,12 +93,12 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-8fa4142b74e241299a6efb542d257ee9","object":"text_completion","created":1750718352,"model":"ibm-granite/granite-3.3-8b-instruct","choices":[{"index":0,"text":"Git
+      string: '{"id":"cmpl-bbe690bc4a9d43c5be29b72354cd73c1","object":"text_completion","created":1752787958,"model":"ibm-granite/granite-3.3-8b-instruct","choices":[{"index":0,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
         private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
@@ -108,14 +108,14 @@ interactions:
         Repos and Issue Tracking projects can have one of three visibility levels:
         private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":4,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
-        private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":968,"total_tokens":1048,"completion_tokens":80,"prompt_tokens_details":null}}'
+        private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":969,"total_tokens":1049,"completion_tokens":80,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '1209'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:12 GMT
+      - Thu, 17 Jul 2025 21:32:37 GMT
       server:
       - uvicorn
     status:
@@ -128,7 +128,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -158,7 +158,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -185,7 +185,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -198,17 +198,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6182'
+      - '6184'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -218,7 +218,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -226,20 +226,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-40681de630e34ce988890488ff149c8b","object":"text_completion","created":1750718353,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1321,"total_tokens":1335,"completion_tokens":14,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-ab0bf1c93ffa42478ed6032129bfdfd2","object":"text_completion","created":1752787960,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1322,"total_tokens":1336,"completion_tokens":14,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '366'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:13 GMT
+      - Thu, 17 Jul 2025 21:32:39 GMT
       server:
       - uvicorn
     status:
@@ -252,7 +252,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -282,7 +282,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -309,7 +309,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -322,17 +322,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6182'
+      - '6184'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -342,7 +342,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -350,20 +350,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-e3378d404db64b87864065acf526cf3f","object":"text_completion","created":1750718355,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1321,"total_tokens":1335,"completion_tokens":14,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-e4e6bbd5b0e94b34833496266ca90755","object":"text_completion","created":1752787962,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1322,"total_tokens":1336,"completion_tokens":14,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '366'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:14 GMT
+      - Thu, 17 Jul 2025 21:32:41 GMT
       server:
       - uvicorn
     status:
@@ -376,7 +376,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -406,7 +406,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -433,7 +433,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -446,17 +446,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6182'
+      - '6184'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -466,7 +466,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -474,20 +474,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-71b045395009419cba669e8c3ee96218","object":"text_completion","created":1750718356,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1321,"total_tokens":1335,"completion_tokens":14,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-3f8cf1b00fb04afa9d2853733e56a8d1","object":"text_completion","created":1752787963,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1322,"total_tokens":1336,"completion_tokens":14,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '366'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:15 GMT
+      - Thu, 17 Jul 2025 21:32:42 GMT
       server:
       - uvicorn
     status:
@@ -500,7 +500,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -530,7 +530,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -557,7 +557,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -570,17 +570,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6182'
+      - '6184'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -590,7 +590,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -598,20 +598,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-f8f3bb5e1eaf41ee9f0415a24ffdd850","object":"text_completion","created":1750718357,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1321,"total_tokens":1335,"completion_tokens":14,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-8befc3dc6a5a461c83a7b71f8ccd0ca1","object":"text_completion","created":1752787965,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1322,"total_tokens":1336,"completion_tokens":14,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '366'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:17 GMT
+      - Thu, 17 Jul 2025 21:32:44 GMT
       server:
       - uvicorn
     status:
@@ -624,7 +624,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -654,7 +654,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -681,7 +681,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -694,17 +694,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6182'
+      - '6184'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -714,7 +714,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -722,20 +722,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-5541ceedda684407a754cda4c18ea7ce","object":"text_completion","created":1750718359,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1321,"total_tokens":1335,"completion_tokens":14,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-f8fc671ad20f4cafa430bea89981647e","object":"text_completion","created":1752787966,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1322,"total_tokens":1336,"completion_tokens":14,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '366'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:18 GMT
+      - Thu, 17 Jul 2025 21:32:46 GMT
       server:
       - uvicorn
     status:

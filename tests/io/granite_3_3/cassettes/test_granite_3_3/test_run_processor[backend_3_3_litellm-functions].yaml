@@ -5,7 +5,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
@@ -15,7 +15,7 @@ interactions:
       host:
       - localhost:11434
       user-agent:
-      - litellm/1.72.7
+      - litellm/1.73.0
     method: POST
     uri: http://localhost:11434/api/show
   response:
@@ -498,7 +498,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 21 Jun 2025 01:17:39 GMT
+      - Fri, 18 Jul 2025 15:20:42 GMT
       Transfer-Encoding:
       - chunked
     status:
@@ -506,7 +506,7 @@ interactions:
       message: OK
 - request:
     body: '{"model": "granite3.3:2b", "prompt": "<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: June 20, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. You are a helpful assistant with access to the following tools. When
       a tool is required to answer the user''s query, respond only with <|tool_call|>
       followed by a JSON list of tools used. If a tool does not exist in the provided
@@ -527,7 +527,7 @@ interactions:
       accept:
       - '*/*'
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
@@ -535,67 +535,20 @@ interactions:
       host:
       - localhost:11434
       user-agent:
-      - litellm/1.72.7
+      - litellm/1.73.0
     method: POST
     uri: http://localhost:11434/api/generate
   response:
     body:
-      string: '{"model":"granite3.3:2b","created_at":"2025-06-21T01:17:39.843967756Z","response":"\u003c|tool_call|\u003e[{\"name\":
-        \"find_money\", \"arguments\": {\"name\": \"John Doe\", \"age\": 35}}]","done":true,"done_reason":"stop","context":[49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,19551,47330,32,0,203,49152,496,49153,49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,23669,1182,2821,44,30422,225,36,34,30,225,36,34,36,39,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,47330,623,2857,372,322,2412,8684,32,5076,312,4559,438,2129,372,7592,322,1256,1182,2467,30,16533,1755,623,225,49154,14628,810,312,3398,1149,432,8684,1654,32,1670,312,4559,1957,646,2307,328,322,3943,1149,432,8684,30,11748,322,1256,688,844,745,646,1159,322,13609,372,33224,322,1326,32,0,203,49152,7230,81,4280,49153,77,284,301,291,313,426,563,313,371,81,1700,81,15859,392,291,313,2310,563,313,936,322,1550,20023,392,291,313,5138,563,301,324,313,681,563,313,1473,392,324,313,2645,563,301,400,313,681,563,313,800,392,400,313,2310,563,313,1318,11297,461,1603,30,484,32,89,32,21100,48633,30,10556,20,324,320,291,320,284,801,284,301,291,313,426,563,313,1809,81,15407,392,291,313,2310,563,313,1607,332,312,4916,1182,17564,4414,291,313,5138,563,301,324,313,681,563,313,1473,392,324,313,426,563,301,400,313,681,563,313,800,392,400,313,2310,563,313,4728,23452,636,432,322,4916,20,324,801,324,313,381,563,301,400,313,681,563,313,5823,392,400,313,16516,563,225,34,30,400,313,2310,563,313,8257,3610,322,4916,438,20,324,320,291,320,284,320,203,79,0,203,49152,496,49153,8127,438,1672,17564,49,0,203,49152,17594,49153,0,203,49152,17594,49153,49154,7739,426,563,313,1809,81,15407,392,313,8299,563,3447,426,563,313,19693,41747,392,313,381,563,225,37,39,1540,79],"total_duration":260177720,"load_duration":9443037,"prompt_eval_count":345,"prompt_eval_duration":13103954,"eval_count":28,"eval_duration":236388258}'
+      string: '{"model":"granite3.3:2b","created_at":"2025-07-18T15:20:42.54308354Z","response":"\u003c|tool_call|\u003e[{\"name\":
+        \"find_money\", \"arguments\": {\"name\": \"John Doe\", \"age\": 30}}]","done":true,"done_reason":"stop","context":[49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,19551,47330,32,0,203,49152,496,49153,49152,2946,49153,39558,390,17071,2821,44,30468,225,36,34,36,38,32,203,23669,1182,2821,44,30468,225,35,30,225,36,34,36,39,32,203,4282,884,8080,278,659,30,18909,810,25697,32,2448,884,312,17247,47330,623,2857,372,322,2412,8684,32,5076,312,4559,438,2129,372,7592,322,1256,1182,2467,30,16533,1755,623,225,49154,14628,810,312,3398,1149,432,8684,1654,32,1670,312,4559,1957,646,2307,328,322,3943,1149,432,8684,30,11748,322,1256,688,844,745,646,1159,322,13609,372,33224,322,1326,32,0,203,49152,7230,81,4280,49153,77,284,301,291,313,426,563,313,371,81,1700,81,15859,392,291,313,2310,563,313,936,322,1550,20023,392,291,313,5138,563,301,324,313,681,563,313,1473,392,324,313,2645,563,301,400,313,681,563,313,800,392,400,313,2310,563,313,1318,11297,461,1603,30,484,32,89,32,21100,48633,30,10556,20,324,320,291,320,284,801,284,301,291,313,426,563,313,1809,81,15407,392,291,313,2310,563,313,1607,332,312,4916,1182,17564,4414,291,313,5138,563,301,324,313,681,563,313,1473,392,324,313,426,563,301,400,313,681,563,313,800,392,400,313,2310,563,313,4728,23452,636,432,322,4916,20,324,801,324,313,381,563,301,400,313,681,563,313,5823,392,400,313,16516,563,225,34,30,400,313,2310,563,313,8257,3610,322,4916,438,20,324,320,291,320,284,320,203,79,0,203,49152,496,49153,8127,438,1672,17564,49,0,203,49152,17594,49153,0,203,49152,17594,49153,49154,7739,426,563,313,1809,81,15407,392,313,8299,563,3447,426,563,313,19693,41747,392,313,381,563,225,37,34,1540,79],"total_duration":291643788,"load_duration":21241166,"prompt_eval_count":344,"prompt_eval_duration":28951054,"eval_count":28,"eval_duration":240093022}'
     headers:
       Content-Length:
-      - '1989'
+      - '1986'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 21 Jun 2025 01:17:39 GMT
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"model": "granite3.3:2b", "prompt": "<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: June 20, 2025.\nYou are Granite, developed
-      by IBM. You are a helpful assistant with access to the following tools. When
-      a tool is required to answer the user''s query, respond only with <|tool_call|>
-      followed by a JSON list of tools used. If a tool does not exist in the provided
-      list of tools, notify the user that you do not have the ability to fulfill the
-      request.<|end_of_text|>\n<|start_of_role|>available_tools<|end_of_role|>[\n    {\n        \"name\":
-      \"get_current_weather\",\n        \"description\": \"Get the current weather\",\n        \"parameters\":
-      {\n            \"type\": \"object\",\n            \"location\": {\n                \"type\":
-      \"string\",\n                \"description\": \"The city and state, e.g. San
-      Francisco, CA\"\n            }\n        }\n    },\n    {\n        \"name\":
-      \"find_money\",\n        \"description\": \"Locate a person''s money.\",\n        \"parameters\":
-      {\n            \"type\": \"object\",\n            \"name\": {\n                \"type\":
-      \"string\",\n                \"description\": \"Full legal name of the person\"\n            },\n            \"age\":
-      {\n                \"type\": \"integer\",\n                \"minimum\": 0,\n                \"description\":
-      \"How old the person is\"\n            }\n        }\n    }\n]<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Where
-      is my money?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>", "options":
-      {}, "stream": false}'
-    headers:
-      accept:
-      - '*/*'
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1572'
-      host:
-      - localhost:11434
-      user-agent:
-      - litellm/1.72.7
-    method: POST
-    uri: http://localhost:11434/api/generate
-  response:
-    body:
-      string: ''
-    headers:
-      Content-Length:
-      - '1989'
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Sat, 21 Jun 2025 01:17:39 GMT
+      - Fri, 18 Jul 2025 15:20:42 GMT
     status:
       code: 200
       message: OK

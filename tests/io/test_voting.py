@@ -22,9 +22,8 @@ from granite_io.io.voting import (
 from granite_io.types import ChatCompletionInputs, ChatCompletionResults
 
 
-@pytest.mark.vcr(record_mode="new_episodes")
-@pytest.mark.block_network
-def test_numeric_voting(backend_x: Backend):
+@pytest.mark.vcr
+def test_numeric_voting(backend_x: Backend, _use_fake_date: str):
     if isinstance(backend_x, TransformersBackend):
         pytest.xfail(
             "TransformersBackend top-k currently returning low-quality results"
@@ -71,9 +70,8 @@ def test_numeric_voting(backend_x: Backend):
     #         == first_number + second_number)
 
 
-@pytest.mark.vcr(record_mode="new_episodes")
-@pytest.mark.block_network
-def test_mbrd_majority_voting(backend_x: Backend):
+@pytest.mark.vcr
+def test_mbrd_majority_voting(backend_x: Backend, _use_fake_date: str):
     base_processor = make_io_processor(_GRANITE_3_2_MODEL_NAME, backend=backend_x)
     voting_processor = MBRDMajorityVotingProcessor(
         base_processor,

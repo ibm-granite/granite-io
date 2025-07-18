@@ -1,136 +1,65 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":3}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '417'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: '{"id":"cmpl-1a16eb5d57c24841a1714fca1466e78e","object":"text_completion","created":1744791361,"model":"ibm-granite/granite-3.3-2b-instruct","choices":[{"index":0,"text":"The
-      phrase \"How much wood could a woodchuck chuck?\" is a tongue twister. There''s
-      no scientific consensus on the actual amount of wood a woodchuck could chuck,
-      as it''s based on a misinterpretation of an old folk saying. However, a study
-      by wildlife biologist Richard Thomas estimated that a woodchuck could chuck
-      about 700 pounds of dirt when digging a burrow! So, if we take that into account,
-      a woodchuck could potentially chuck a rather large amount of \"dirt,\" but not
-      wood.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"The
-      phrase \"how much wood could a wood chuck chuck\" is a folkorable saying, not
-      a factual question about the biology of woodchucks. Woodchucks, also known as
-      groundhogs, are burrowing mammals and they don''t actually chuck (throw) wood.
-      However, in a playful response, it''s estimated that a woodchuck could chuck
-      around 7000 pounds of dirt when digging a burrow, according to a New York newspaper
-      article in 1884. This led to the humorous extrapolation that they could chuck
-      about 3,000 pounds of wood, which is often quoted. But remember, it''s not a
-      serious estimate about the woodchuck''s chucking ability.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":2,"text":"The
-      phrase \"How much wood would a woodchuck chuck?\" is a tongue twister. There''s
-      no definitive answer as it''s based on a popular joke. However, a fun fact is
-      that a study by wildlife expert Richard Thomas in 1989 used helical stacks to
-      estimate a woodchuck could chuck approximately 700 pounds (317 kg) of dirt when
-      digging a burrow. But wood? That''s just a misdirection in the joke! Woodchucks,
-      or groundhogs, primarily eat grasses, fruits, and vegetables, not wood.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":69,"total_tokens":510,"completion_tokens":441,"prompt_tokens_details":null}}'
-    headers:
-      content-length:
-      - '2119'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:16:01 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '395'
+      - '381'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
-      - '1'
+      - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-458","object":"text_completion","created":1744815893,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"The
-      phrase \"How much wood would a woodchuck chuck\" is actually a tongue twister
-      and not based on any factual measurement of a woodchuck''s capabilities. Woodchucks,
-      also known as groundhogs, are burrowing mammals that don''t actually eat wood;
-      they prefer grasses, fruits, and vegetables. \n\nSo, there''s no accurate answer
-      to this question, but it remains a popular joke or challenge among children.
-      If humorized by its wordplay, one might say: \"A woodchuck could chuck... an
-      impressive amount of dirt!\"","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":112,"completion_tokens":134,"total_tokens":246}}
+    body:
+      string: '{"id":"cmpl-897","object":"text_completion","created":1752852958,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"This
+        is an interesting tongue twister! The phrase \"How much wood would a woodchuck
+        chuck if a woodchuck could chuck wood?\" comes from an old New England folksong.
+        \n\nThe answer, however, lies in a misconception. Woodchucks (also known as
+        groundhogs) don''t actually chuck or push wood; they burrow and occasionally
+        move soil. The term \"chuck\" in this context is a playful and nonsensical
+        word game, not meant to be taken literally. \n\nSo, there isn''t a factual
+        answer to the amount of wood a woodchuck could chuck, as it''s a grammatical
+        puzzle rather than a scientific or biological question!","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":112,"completion_tokens":158,"total_tokens":270}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '759'
+      - '850'
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:53 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 15:35:58 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

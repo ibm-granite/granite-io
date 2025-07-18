@@ -1,242 +1,92 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.\nRespond to every
-      user query in a comprehensive and detailed way. You can write down your thoughts
-      and reasoning process before responding. In the thought process, engage in a
-      comprehensive cycle of analysis, summarization, exploration, reassessment, reflection,
-      backtracing, and iteration to develop well-considered thinking process. In the
-      response section, based on various attempts, explorations, and reflections from
-      the thoughts section, systematically present the final solution that you deem
-      correct. The response should summarize the thought process. Write your thoughts
-      between <think></think> and write your response between <response></response>
-      for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.\nRespond to every user query in a comprehensive
+      and detailed way. You can write down your thoughts and reasoning process before
+      responding. In the thought process, engage in a comprehensive cycle of analysis,
+      summarization, exploration, reassessment, reflection, backtracing, and iteration
+      to develop well-considered thinking process. In the response section, based
+      on various attempts, explorations, and reflections from the thoughts section,
+      systematically present the final solution that you deem correct. The response
+      should summarize the thought process. Write your thoughts between <think></think>
+      and write your response between <response></response> for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":3}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '1096'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: "{\"id\":\"cmpl-8d13a7edbd04410cba2b30f1b7e18f6c\",\"object\":\"text_completion\",\"created\":1744791313,\"model\":\"ibm-granite/granite-3.3-2b-instruct\",\"choices\":[{\"index\":0,\"text\":\"<think>The
-      phrase \\\"How much wood would a woodchuck chuck\\\" is a tongue twister, often
-      used in humor to amuse people. The entertainment value comes from the poetic
-      and nonsensical mangling of a specific animal's name and the fantastical idea
-      of an animal's capacious burrowing actions.\\n\\nIn reality, there is no scientific
-      evidence or definitive study that provides a precise amount of wood a woodchuck
-      (also known as a groundhog) could chuck. Woodchucks, or groundhogs, are burrowing
-      animals primarily known for digging burrows and are not equipped to carry or
-      move large amounts of wood.\\n\\nThe myth or joke typically escalates with exaggerated
-      answers, such as the woodchuck chucking \\\"you know, a woodchuck would chuck
-      as much wood as a woodchuck could chuck if a woodchuck could chuck wood.\\\"
-      This fanciful response often leads to humorous figures, like chucking hundreds
-      or even thousands of cubic feet of wood, which is purely imaginative and not
-      based on any actual data about the animal's behavior or capabilities.\\n\\nIn
-      summary, while it's an interesting cultural concept and a fun tongue twister,
-      there is no scientific basis for determining a literal answer to how much wood
-      a woodchuck would physically chuck.</think><response>The phrase \\\"How much
-      wood would a woodchuck chuck\\\" is a classic tongue twister, with no scientific
-      basis in reality. In reality, woodchucks, also known as groundhogs, are not
-      equipped to carry or move vast quantities of wood. They are burrowing animals,
-      and any speculative answer about their chucking wood capacity is purely fantastical.
-      Therefore, the humor and entertainment come from the nonsensical and exaggerated
-      responses, rather than any empirical data regarding woodchuck capabilities.\\n\\nIn
-      summary, the question mocks the absurdity of the idea, and there is no definitive
-      amount of wood a woodchuck would chuck according to science.</response>\",\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"prompt_logprobs\":null},{\"index\":1,\"text\":\"<think>The
-      phrase \\\"How much wood could a woodchuck chuck?\\\" is a humorous tongue twister
-      and a playful riddle, not based on scientific fact. The origin of this phrase
-      dates back to the 19th century. A common folk-answer to this question is derived
-      from an idea that a woodchuck, or groundhog, could potentially chuck (move)
-      enough dirt to create a burrow or lift a significant amount of wood. However,
-      there is no substantiated scientific study or measurement that validates this
-      claim.\\n\\nIn reality, woodchucks, scientifically known as Eastern Chipewars,
-      are burrowing animals rather than wood-moving creatures. They primarily dig
-      to create dens known as \\\"chuckholes\\\" for shelter and protection from predators.
-      While they can move a considerable amount of soil in the course of burrowing,
-      it's unlikely they could physically move significant quantities of wood.\\n\\nA
-      lighthearted interpretation of this question involves estimating the volume
-      of dirt a woodchuck might move during one of its burrowing sessions. Estimates
-      usually suggest a woodchuck could move approximately 700 pounds of dirt in the
-      process of digging a burrow about 15 inches beneath the surface and 3 feet long.
-      However, this relates to soil, not wood. \\n\\nGiven the tongue-in-cheek nature
-      of the question, and without precise scientific data to back it up, various
-      fun, nonsensical answers abound, such as \\\"a woodchuck could chuck\\\" a mere
-      bunch of small logs, a few sticks, or an undefined large amount, typically measured
-      in playful exaggeration like \u2018a ton\u2019.</think><response>### How Much
-      Wood Could a Woodchuck Chuck?\\n\\nThe phrase \\\"How much wood could a woodchuck
-      chuck if a woodchuck could chuck wood?\\\" is a humorous expression known as
-      an \\\"Imitation Onomatopoeia,\\\" often linked with tongue twisters. Unlike
-      the genuine scientific aspect (woodchucks do dig burrows but don\u2019t move
-      wood), it\u2019s rooted in folklore and entertainment.\\n\\n#### Scientific
-      Perspective:\\n- Woodchucks are burrowing animals, not known for wood moving.\\n-
-      They primarily work with dirt, moving and reshaping it while digging.\\n- Estimates
-      suggest a woodchuck might move about 700 pounds of soil in the construction
-      of a burrow.\\n\\n#### Humorous Answers:\\n- While there's no true scientific
-      basis, answers often range from \\\"none\\\" to fanciful volumes, such as \u201Ca
-      ton\u201D or \\\"more than a woodchuck could ever realistically manage.\\\"\\n-
-      It's primarily used for amusement, creative storytelling, or as a light-hearted,
-      made-up answer.\\n\\n### Conclusion:\\nIn essence, the amount of wood (or any
-      logical unit) a woodchuck could chuck is purely fantasy and originates from
-      creative expression rather than genuine scientific measurement. Nonetheless,
-      the question continues to amuse and provide a fun way to engage with language
-      and wordplay.</response>\",\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"prompt_logprobs\":null},{\"index\":2,\"text\":\"<think>The
-      phrase \\\"How much wood would a wood chuck chuck if a wood chuck could chuck
-      wood?\\\" is a tongue twister, often used for its amusing nature rather than
-      for a specific, factual answer. It is a part of folklore and humor, not a scientific
-      question with a definitive numerical answer.\\n\\nThe origin of this question
-      dates back to a folktale where a woodchuck (also known as a groundhog) was imagined
-      to have the ability to chuck (push) wood. The phrase's popularity is likely
-      due to its playful rhythm and the imaginative nature of the question.\\n\\nThere
-      is no scientific estimation for how much wood a woodchuck could chuck because
-      woodchucks (technically groundhogs) do not possess the anatomy or the capacity
-      to chuck significant amounts of wood in the way the riddle suggests. They have
-      strong digging claws and can excavate substantial dirt, but they do not have
-      the morphology to handle wood.\\n\\nThe tongue twister serves as a classic example
-      of a figure of speech, highlighting playful language manipulation over a literal
-      inquiry. Therefore, there's no concrete numerical answer to this question beyond
-      the entertainment value provided by its memorable delivery and rhyme.</think><response>###
-      How Much Wood Could a Wood Chuck Chuck?\\n\\nThis classic tongue twister is
-      more about humor and words than a scientific inquiry. There's no factual basis
-      for an answer, as woodchucks (groundhogs) do not have the physical capability
-      to \\\"chuck\\\" wood in the way the riddle implies.\\n\\n- **Woodchucks are
-      burrowing animals**: They have strong claws for digging burrows, not for carrying
-      or pushing wood.\\n- **No Scientific Estimate**: There is no scientific data
-      or calculation for how much wood a woodchuck could mythically chuck.\\n\\n###
-      Conclusion:\\nThe phrase \\\"How much wood would a wood chuck chuck?\\\" is
-      a whimsical tongue twister, offering amusement through language rather than
-      a serios statement of fact. There's no precise, measurable quantity, as woodchucks
-      lack the ability to chuck wood as described.</response>\",\"logprobs\":null,\"finish_reason\":\"stop\",\"stop_reason\":null,\"prompt_logprobs\":null}],\"usage\":{\"prompt_tokens\":199,\"total_tokens\":1913,\"completion_tokens\":1714,\"prompt_tokens_details\":null}}"
-    headers:
-      content-length:
-      - '7309'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:15:12 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.\nRespond to every
-      user query in a comprehensive and detailed way. You can write down your thoughts
-      and reasoning process before responding. In the thought process, engage in a
-      comprehensive cycle of analysis, summarization, exploration, reassessment, reflection,
-      backtracing, and iteration to develop well-considered thinking process. In the
-      response section, based on various attempts, explorations, and reflections from
-      the thoughts section, systematically present the final solution that you deem
-      correct. The response should summarize the thought process. Write your thoughts
-      between <think></think> and write your response between <response></response>
-      for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1074'
+      - '1060'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
-      - '1'
+      - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-367\",\"object\":\"text_completion\",\"created\":1744815881,\"model\":\"granite3.3:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"\\u003cthink\\u003eThe
-      phrase \\\"How much wood could a woodchuck chuck?\\\" is a playful tongue twister,
-      often used to explore the fable attributed to Abraham Lincoln. This story describes
-      how a \\\"woodchuck\\\", or groundhog, could supposedly chuck (move) more wood
-      than a man.\\n\\nThe actual answer isn't derived from scientific study but rather
-      it's a fun, rhetorical question in American folklore. The line often goes like
-      this:\\n\\n- According to the myth, a single woodchuck (groundhog) can dig up
-      and move approximately 700 pounds of dirt when preparing for hibernation.\\n-
-      While this might suggest a lot of movement in a literal sense (dirt), it's important
-      to note that the term \\\"wood\\\" was likely meant metaphorically, as woodchucks
-      don\u2019t actually chuck or transport wood. They are burrowing animals primarily
-      digging for roots and insects.\\n- If interpreted literally, moving 700 pounds
-      of dirt implies moving roughly a ton of soil over a short distance in a groundhog
-      habitat.\\n\\nGiven this context, the figure \\\"How much wood could a woodchuck
-      chuck?\\\" is more about humor and tongue-twisting than a factual biological
-      or ecological query.\\u003c/think\\u003e\\n\\n\\u003cresponse\\u003e### Explanation:\\n\\nThe
-      phrase \\\"How much wood could a woodchuck chuck?\\\" is fundamentally a whimsical,
-      repetitive question with no concrete scientific basis. Despite numerous attempts
-      at both scientific analysis and estimation, no definitive answer exists beyond
-      the tongue-twisting and metaphorical interpretation.\\n\\nThe misconception
-      originates from an old folk tale or fable often attributed to Abraham Lincoln
-      but most likely predates him:\\n\\n- The story asserts that a woodchuck (groundhog)
-      could dig up and move 700 pounds of dirt, which was interpreted as a hyperbole
-      indicating the animal's immense burrowing capacity.\\n- In reality, groundhogs
-      do not engage in carrying substantial amounts of wood or material; they are
-      primarily root foragers, moving soil for hibernation preparation and burrow
-      habitats for themselves.\\n- The 700 pounds figure is seen more as a playful
-      exaggeration intended to evoke amusement through rhythmic repetition rather
-      than an accurate measure of the creature's capabilities.\\n\\nThus, there isn't
-      a definitive numerical answer to \\\"How much wood could a woodchuck chuck?\\\"
-      - it\u2019s more of a light-hearted curiosity with no objective measurement
-      in science.\\u003c/response\\u003e\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":242,\"completion_tokens\":608,\"total_tokens\":850}}\n"
+    body:
+      string: "{\"id\":\"cmpl-88\",\"object\":\"text_completion\",\"created\":1752849798,\"model\":\"granite3.3:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"\\u003cthink\\u003eThe
+        phrase \\\"HOW MUCH WOOD WOULD A WOODCUTTER CHUCK\\\" is actually a popular
+        tongue twister, not a question about the ability of an actual woodchuck (groundhog).
+        The woodchuck, also known as the groundhog, is a burrowing mammal native to
+        North America. While woodchucks do have a reputation for accumulating and
+        moving quite a bit of dirt when digging burrows, they don't literally chuck
+        or throw wood.\\n\\nHowever, given its usage in tongue twisters like \\\"How
+        much wood would a woodchuck chuck if a woodchuck could chuck wood?\\\", it's
+        humorously assumed to ask about hypothetical scenarios:\\n\\n- In fact, there
+        isn't a definitive empirical answer based on actual woodchucks. The tongue
+        twister creates an amusing thought experiment around their burrowing habits.\\n-
+        Hypothetically speaking, considering the sheer excavation capabilities of
+        a woodchuck can move significant amounts of soil (and some might argue, inadvertently
+        collect wood as byproduct), one could imagine they might chuck (\\\"dispose\\\")
+        a substantial amount if they were tasked with such. But this remains firmly
+        in the realm of playful wordplay and isn't reflective of their natural behavior.\\n\\nThus,
+        as per standard responses for such tongue twisters, the answer is often humorously
+        stated: \\\"A woodchuck would chuck\u2026 an immeasurable amount if it could!\\\"
+        \\n\\n\\u003c/think\\u003e\\u003cresponse\\u003e### Tongue Twister Response\\n\\nThe
+        question \\\"How much wood could a woodchuck chuck?\\\" is actually from a
+        playful tongue twister, meant to be a humorous and nonsensical riddle. Woodchucks
+        are neither capable of chucking wood nor do they engage in such activity;
+        they are burrowing mammals focused more on digging than hauling logs.\\n\\nIn
+        the context of tongue twisters, answers can vary depending on humor and intention:\\n-
+        A common, creative answer emphasizing wordplay could be: \\\"A woodchuck would
+        chuck... an immeasurable amount if it could!\\\"\\n- For lightheartedness,
+        another amusing response is \\\"Let\u2019s make up a figure\u2014how about
+        700 pounds (or a ton) of dirt for fun? But remember, that's pure fiction.\\\"\\n\\nThere
+        isn't a serious scientific calculation on the actual amount of wood a wild
+        woodchuck could chuck. The query thus serves as an entertaining brain tease.\\u003c/response\\u003e\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":242,\"completion_tokens\":588,\"total_tokens\":830}}\n"
     headers:
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:41 GMT
+      - Fri, 18 Jul 2025 14:43:18 GMT
       Transfer-Encoding:
       - chunked
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1

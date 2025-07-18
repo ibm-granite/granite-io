@@ -16,7 +16,6 @@ from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.base import RewriteRequestProcessor
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 from granite_io.io.hallucinations import (
     HallucinationsCompositeIOProcessor,
@@ -236,13 +235,12 @@ def test_canned_output():
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
     lora_backend = lora_server.make_lora_backend(_LORA_NAME)
     io_proc = HallucinationsIOProcessor(lora_backend)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Pass our example input thorugh the I/O processor and retrieve the result
     chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT)
@@ -251,7 +249,7 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_composite(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the composite I/O processor.
     """
@@ -259,7 +257,6 @@ def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
     lora_backend = lora_server.make_lora_backend(_LORA_NAME)
     granite_io_proc = make_io_processor("Granite 3.3", backend=granite_backend)
     io_proc = HallucinationsCompositeIOProcessor(granite_io_proc, lora_backend)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     # Strip off last message and rerun
     input_without_msg = _EXAMPLE_CHAT_INPUT.model_copy(
@@ -270,14 +267,13 @@ def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_run_processor(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_processor(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the composite I/O processor.
     """
     lora_backend = lora_server.make_lora_backend(_LORA_NAME)
     io_proc = HallucinationsIOProcessor(lora_backend)
     request_proc = RewriteRequestProcessor(io_proc)
-    override_date_for_testing(fake_date)  # For consistent VCR output
 
     results = request_proc.process(_EXAMPLE_CHAT_INPUT)
     assert len(results) == 1

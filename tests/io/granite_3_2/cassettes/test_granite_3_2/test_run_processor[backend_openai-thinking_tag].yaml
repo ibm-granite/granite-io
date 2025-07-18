@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: March 11, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. You are a helpful AI assistant.\nRespond to every user query in a comprehensive
       and detailed way. You can write down your thoughts and reasoning process before
       responding. In the thought process, engage in a comprehensive cycle of analysis,
@@ -12,34 +12,32 @@ interactions:
       should summarize the thought process. Write your thoughts after ''Here is my
       thought process:'' and write your response after ''Here is my response:'' for
       each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How much
-      wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":1,"n":1}'
+      wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '1066'
+      - '1047'
       content-type:
       - application/json
       host:
       - localhost:11434
-      rits_api_key:
-      - ollama
       user-agent:
-      - OpenAI/Python 1.65.5
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
-      - 'false'
+      - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.65.5
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -47,58 +45,37 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.5
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-594\",\"object\":\"text_completion\",\"created\":1741680407,\"model\":\"granite3.2:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"Here
-      is my thought process:\\n\\nThis question is a play on words, cleverly reimagining
-      the phrase \\\"how much wood a woodchuck could chuck\\\" to sound like \\\"how
-      much wood would a woodchuck chuck.\\\" The original phrase's intent is to measure
-      the digging capability of these animals based on the folk belief that they can
-      move or push considerable amounts of earth, not their actual food consumption.\\n\\nThe
-      term \\\"woodchuck\\\" refers to a North American groundhog. It turns out that
-      this creature has a reputation in popular culture for its ability to dig extensive
-      burrows due to its robust shovel-like forelimbs and a particularly thick coat
-      of fur called guard hair.\\n\\nBy extension, the phrase is humorous; no woodchuck
-      actually eats more wood than not, because they are herbivores\u2014groundhogs
-      consume mostly grass, vegetation, leaves, and fruits found in their habitats
-      while burrowing. The idiom's basis is imaginative, serving as a lively proverb
-      about the animal's digging capacities rather than food consumption or wood-related
-      capacity.\\n\\nTherefore, it's technically incorrect to quantify how much wood
-      a woodchuck could chuck literally because woodchucks don't chew or consume any.
-      The most significant \u201Cwood\u201D they 'chuck' is earth from the act of
-      burrowing, not harvesting wood from trees\u2014hence, logically, they couldn\u2019t
-      \\\"chuck\\\" enough wood to answer a serious question like this one with a
-      meaningful value.\\n\\nHere is my response:\\n\\nThe phrase you're asking about
-      humorously implies that groundhogs, or woodchucks, could potentially dig out
-      substantial amounts of wood because of their burrowing habit. This belief comes
-      from misunderstanding the animal's actual behavior and focusing on its capacity
-      to excavate earth rather than edible items like plants.\\n\\nHowever, it\u2019s
-      crucial to note that this is a fictional scenario. Woodchucks aren't capable
-      of consuming wood; they are herbivores, meaning their diet consists primarily
-      of grasses and vegetation. Digging isn't about searching for or chewing wood.
-      They use those powerful forepaws just to build and maintain their underground
-      homes as part of their defensive strategy against predators during winter when
-      food is scarce above ground.\\n\\nSo, in practical terms, if presented with
-      a literal interpretation, you would say: \\\"A woodchuck could dig an extraordinary
-      amount of earth \u2013 enough to build large burrows over time, perhaps weighing
-      tens to hundreds of pounds\u2014but when it comes to actual wood, they consume
-      none.\\\"\\n\\nThat said, in the realm of idiomatic language and humor, if people
-      still use this phrase lightly to convey an exaggerated ability for digging,
-      it might be jokingly re-phrased as \\\"a woodchuck could dig around [X amount
-      of typical burrowing equivalent].\\\" The real limit here is set by the size
-      of their existing earthwork and not an extension into wood.\\n\\nIn conclusion,
-      the 'wood' they could theoretically chuck in a fanciful sense extends far beyond
-      any meaningful context for consumption, primarily serving as a clever exaggeration
-      for amusement.\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":246,\"completion_tokens\":731,\"total_tokens\":977}}\n"
+    body:
+      string: '{"id":"cmpl-193","object":"text_completion","created":1752800071,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Here
+        is my thought process:\n\nThis question is a play on words, or an anagram,
+        that humorously reimagines how ''wood chuck'' (a common name for a beaver)
+        might respond to the phrase \"how much wood could a [common noun] push?\"
+        This is a reference to a popular nursery rhyme.\n\nIn the original rhyme,
+        the response would be: \"CHUK-CHUK, CHUK-CHUK.\"\n\nApplying this twist to
+        ''wood chuck'':\n\n- The name suggests the answer would be connected to an
+        activity related to moving wood.\n- It is a play on words, not requiring practical
+        physical measurement or actual wood movement by ''wood chucks''.\n\nTherefore,
+        based on this understanding of the pun:\n\nHere is my response: \"A woodchuck,
+        if it were to respond as such in a playful nursery rhyme twist, would say...\"
+        *pauses for effect*\n\n\"Chuck-chucked!\"\n\nThis phrase maintains the original
+        rhythm of ''CHUK-CHUK, CHUK-CHUK'' while humorously reimagining an activity.
+        It implies that a wood chuck could theoretically convey its capacity to move
+        a large pile of wood if asked in this specific context, despite it being an
+        impossibility in reality (as wood chucks are not known for such task).","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":245,"completion_tokens":308,"total_tokens":553}}
+
+        '
     headers:
+      Content-Length:
+      - '1398'
       Content-Type:
       - application/json
       Date:
-      - Tue, 11 Mar 2025 08:06:47 GMT
-      Transfer-Encoding:
-      - chunked
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 00:54:31 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

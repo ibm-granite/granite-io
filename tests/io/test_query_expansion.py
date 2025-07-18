@@ -15,7 +15,6 @@ from granite_io import make_io_processor
 from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor import (
     Granite3Point2Inputs,
-    override_date_for_testing,
 )
 from granite_io.io.query_expansion import QueryExpansionIOProcessor
 from granite_io.io.query_rewrite import QueryRewriteIOProcessor
@@ -57,7 +56,7 @@ _TODAYS_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion using the I/O processor.
     """
@@ -67,7 +66,6 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
     io_processor = make_io_processor("Granite 3.2", backend=backend)
     rewrite_io_proc = QueryRewriteIOProcessor(query_rewrite_lora_backend)
-    override_date_for_testing(fake_date)
 
     rag_io_proc = QueryExpansionIOProcessor(
         backend,

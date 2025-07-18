@@ -1,142 +1,83 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
       how are you?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>I''m doing
       great. How can I help you today?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I''d
-      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
+      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":3}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '597'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: '{"id":"cmpl-98bdef1d68614ee1a454ebf69bf3daf0","object":"text_completion","created":1744791296,"model":"ibm-granite/granite-3.3-2b-instruct","choices":[{"index":0,"text":"Of
-      course! Chat templating allows for dynamic content creation based on user inputs.
-      It''s a powerful tool for creating personalized and interactive conversations.
-      Please go ahead and demonstrate.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"Sure,
-      I''d be happy to demonstrate how chat templating works. Chat templating is a
-      method of dynamically generating content based on user input or other variables.\n\nIn
-      a typical chat interface, templating allows for the insertion of variables into
-      pre-defined templates. This way, the system can generate a response tailored
-      to the user''s interaction.\n\nFor example, a simple template could be:\n\n\"Hello,
-      {{user_name}}! You''ve entered the chat. How can I assist you today?\"\n\nHere,
-      \"{{user_name}}\" would be a placeholder that the system would replace with
-      the actual user''s name when generating the response.\n\nWould you like to see
-      an example of a more complex templating scenario?","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null},{"index":2,"text":"Sure,
-      I''d be happy to help you understand chat templating! In a general sense, chat
-      templating involves using a template to generate responses dynamically based
-      on input. This can be done using different methods, depending on the platform
-      or technology you''re using.\n\nFor instance, in a web application, you might
-      use a templating engine like Jinja (Python), Handlebars, or Mustache to create
-      reusable templates with placeholders for dynamic data. When the user''s input
-      generates a specific set of data, the templating engine fills the placeholders,
-      generating a complete, personalized response.\n\nIf you''re referring to a specific
-      chat platform or tool, please ensure to mention it, and I can provide a more
-      tailored explanation.","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":98,"total_tokens":446,"completion_tokens":348,"prompt_tokens_details":null}}'
-    headers:
-      content-length:
-      - '2181'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:14:56 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Hello,
-      how are you?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>I''m doing
-      great. How can I help you today?<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>I''d
-      like to show off how chat templating works!<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":3,"max_tokens":1024,"n":3}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '575'
+      - '561'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
-      - '1'
+      - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-754","object":"text_completion","created":1744815864,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"That''s
-      fascinating! Templating in a chat system can involve using predefined responses
-      or slots for dynamic data insertion. I can provide information on this topic
-      if you have specific questions or scenarios in mind.\n\nFor example, a simple
-      template could look like this: \"Welcome, {user_name}! Today is {current_date}.
-      How can I assist you further?\" Here, `{user_name}` and `{current_date}` are
-      dynamic placeholders that would be replaced with actual user-specific data during
-      our conversation.\n\nPlease provide more details if you''d like a deeper dive
-      into chat templating or any specific aspect of it.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":141,"completion_tokens":133,"total_tokens":274}}
+    body:
+      string: '{"id":"cmpl-279","object":"text_completion","created":1752849811,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Absolutely!
+        Chat templating is a powerful method for creating dynamic content based on
+        user inputs or other variables. It allows for the generation of tailored responses,
+        making it versatile and useful in various applications like customer service,
+        e-commerce, and more.\n\nHere''s an example using Python:\n\n```python\ndef
+        chat_template(user_input, options):\n    # Process user input (e.g., find
+        greeting based on time)\n    user_greeting = \"Good Morning\"  # If the current
+        time is before noon\n\n    # Evaluate options for customization based on a
+        condition or user''s intent\n    if user_input.lower() == \"price\":\n        return
+        f\"The price is {options[''price'']}.\"\n    elif user_input.lower() in [\"color\",
+        \"size\"]:\n        return f\"{options[''get_attribute'']}\"  # If the input
+        matches any of predefined attributes\n\n    else:\n        return user_greeting\n\nuser_input
+        = \"price\"  # Or any other user-provided text\nuser_options = {\n    \"price\":
+        19.99,\n    \"color\": \"Red\",\n    \"size\": \"Medium\"\n}\n\nprint(chat_template(user_input,
+        user_options))\n```\n\nIn this example, we define a function called `chat_template`
+        that takes a user''s input and a dictionary of options. The function processes
+        the user input (in this case, whether it''s related to price) and returns
+        a customized response using string formatting.\n\nWhen you run this snippet
+        with \"price\" as the user input, it will return: \n`The price is 19.99.`
+        using the predefined options from the `user_options` dictionary.\n\nThis is
+        just one example of how chat templating can work, and there are many other
+        programming languages and frameworks that support this functionality (like
+        JavaScript''s string interpolation or Python''s f-strings). Let me know if
+        you''d like to explore specific cases or have any questions about implementing
+        this in a particular context!","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":141,"completion_tokens":434,"total_tokens":575}}
 
-      '
+        '
     headers:
-      Content-Length:
-      - '861'
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:24 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 14:43:31 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
 version: 1

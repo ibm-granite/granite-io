@@ -1,93 +1,34 @@
 interactions:
 - request:
     body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: March 13, 2025.\nYou are Granite, developed
-      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Can
-      you answer my question?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","presence_penalty":0.5,"temperature":0.5}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '387'
-      content-type:
-      - application/json
-      host:
-      - localhost:11434
-      rits_api_key:
-      - ollama
-      user-agent:
-      - AsyncOpenAI/Python 1.66.3
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.66.3
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '0'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:11434/v1/completions
-  response:
-    content: '{"id":"cmpl-690","object":"text_completion","created":1741921511,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Of
-      course! Please go ahead and ask your question. I''m here to help with information
-      up to April 2024.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":108,"completion_tokens":28,"total_tokens":136}}
-
-      '
-    headers:
-      Content-Length:
-      - '353'
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 14 Mar 2025 03:05:11 GMT
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: March 13, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Can
       you answer my question?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","frequency_penalty":0.5,"presence_penalty":0.5,"temperature":0.5}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '411'
+      - '410'
       content-type:
       - application/json
       host:
       - localhost:11434
-      rits_api_key:
-      - ollama
       user-agent:
-      - AsyncOpenAI/Python 1.66.3
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.66.3
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -95,24 +36,26 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-27","object":"text_completion","created":1741926105,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Of
-      course! I''m here to help with your questions. Please go ahead and ask me anything.
-      Whether it''s general knowledge, trivia, or information on a specific topic,
-      feel free to share the question. I''ll do my best to provide an accurate and
-      helpful response based on the data up until April 2024.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":108,"completion_tokens":69,"total_tokens":177}}
+    body:
+      string: '{"id":"cmpl-669","object":"text_completion","created":1752848770,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Of
+        course! Please go ahead and ask your question, and I''ll do my best to provide
+        an accurate response based on the information available up until April 2024.
+        Keep in mind that while I strive for accuracy, there might be some changes
+        or developments since then. What''s your question?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":107,"completion_tokens":64,"total_tokens":171}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '544'
+      - '534'
       Content-Type:
       - application/json
       Date:
-      - Fri, 14 Mar 2025 04:21:45 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 14:26:10 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

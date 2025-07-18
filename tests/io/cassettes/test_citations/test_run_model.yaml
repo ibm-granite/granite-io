@@ -6,7 +6,7 @@ interactions:
       facts in the provided documents. If the information needed to answer the question
       is not available in the documents, inform the user that the question cannot
       be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"1\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
+      {\"document_id\": \"2\"}<|end_of_role|>\n<c0> Git Repos and Issue Tracking is
       an IBM-hosted component of the Continuous Delivery service. <c1> All of the
       data that you provide to Git Repos and Issue Tracking, including but not limited
       to source files, issues, pull requests, and project configuration properties,
@@ -36,7 +36,7 @@ interactions:
       If you are a Git Repos and Issue Tracking project Maintainer or Owner, you can
       invite any user and group members to the project. <c24> IBM Cloud places no
       restrictions on who you can invite to a project.<|end_of_text|>\n<|start_of_role|>document
-      {\"document_id\": \"2\"}<|end_of_role|>\n<c25> After you create a project in
+      {\"document_id\": \"1\"}<|end_of_role|>\n<c25> After you create a project in
       Git Repos and Issue Tracking, but before you entrust any files, issues, records,
       or other data with the project, review the project settings and change any settings
       that are necessary to protect your data. <c26> Settings to review include visibility
@@ -63,7 +63,7 @@ interactions:
       <c47> From the project sidebar, click Settings > General. <c48> 2. <c49> On
       the **General Settings **page, click Visibility > project features > permissions.
       <c50> 3. <c51> Select the Disable email notifications checkbox. <c52> 4. <c53>
-      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What
+      Click Save changes. <c54> Project integrations and webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What
       is the visibility level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><r0>
       Git Repos and Issue Tracking projects can have one of the following visibility
       levels: private, internal, or public. <r1> Private projects are visible only
@@ -80,17 +80,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6497'
+      - '6499'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -100,7 +100,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -108,20 +108,20 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-4852836801614c39b593bc0506227070","object":"text_completion","created":1750718346,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
-        0, \"c\": [7]}, {\"r\": 1, \"c\": [8, 10, 11]}, {\"r\": 2, \"c\": [9]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1389,"total_tokens":1435,"completion_tokens":46,"prompt_tokens_details":null}}'
+      string: '{"id":"cmpl-c66c50cbc19f4e69beed8de6fb4b28aa","object":"text_completion","created":1752787951,"model":"citation_generation","choices":[{"index":0,"text":"[{\"r\":
+        0, \"c\": [7]}, {\"r\": 1, \"c\": [8, 10, 11]}, {\"r\": 2, \"c\": [9]}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1390,"total_tokens":1437,"completion_tokens":47,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '422'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:39:05 GMT
+      - Thu, 17 Jul 2025 21:32:31 GMT
       server:
       - uvicorn
     status:

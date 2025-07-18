@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: '{"model":"granite3.2:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
-      Cutoff Date: April 2024.\nToday''s Date: April 05, 2025.\nYou are Granite, developed
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
       by IBM. You are a helpful AI assistant.\nRespond to every user query in a comprehensive
       and detailed way. You can write down your thoughts and reasoning process before
       responding. In the thought process, engage in a comprehensive cycle of analysis,
@@ -12,7 +12,7 @@ interactions:
       should summarize the thought process. Write your thoughts after ''Here is my
       thought process:'' and write your response after ''Here is my response:'' for
       each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is
-      1 + 22?\nAnswer with just a number please.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","best_of":10,"max_tokens":1024,"n":10,"temperature":0.6}'
+      1 + 22?\nAnswer with just a number please.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"n":10,"temperature":0.6}'
     headers:
       accept:
       - application/json
@@ -21,46 +21,48 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '1115'
+      - '1101'
       content-type:
       - application/json
       host:
       - localhost:11434
-      rits_api_key:
-      - ollama
       user-agent:
-      - AsyncOpenAI/Python 1.61.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.61.0
+      - 1.90.0
+      x-stainless-read-timeout:
+      - '600'
       x-stainless-retry-count:
       - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.5
+      - 3.12.3
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-153","object":"text_completion","created":1743878084,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Here
-      is my thought process:\nThe problem is straightforward: add two numbers, 1 and
-      22.\n\nHere is my response:\nThe sum of 1 and 22 is 23.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":252,"completion_tokens":46,"total_tokens":298}}
+    body:
+      string: '{"id":"cmpl-460","object":"text_completion","created":1752798381,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Here
+        is my thought process:\nThe task is straightforward; it involves basic arithmetic
+        addition.\n\nHere is my response:\nThe sum of 1 and 22 is 23.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":251,"completion_tokens":41,"total_tokens":292}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '391'
+      - '400'
       Content-Type:
       - application/json
       Date:
-      - Sat, 05 Apr 2025 18:34:44 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 00:26:21 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

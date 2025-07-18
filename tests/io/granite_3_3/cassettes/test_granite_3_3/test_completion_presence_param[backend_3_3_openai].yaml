@@ -1,111 +1,59 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Can
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Can
       you answer my question?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","frequency_penalty":0.5,"presence_penalty":0.5,"temperature":0.5}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '434'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: '{"id":"cmpl-016dbf0b8df9432e8d5e60749c7b0b41","object":"text_completion","created":1744791308,"model":"ibm-granite/granite-3.3-2b-instruct","choices":[{"index":0,"text":"Of
-      course! Please go ahead and ask your question. I''ll do my best","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":64,"total_tokens":80,"completion_tokens":16,"prompt_tokens_details":null}}'
-    headers:
-      content-length:
-      - '421'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:15:07 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Can
-      you answer my question?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","frequency_penalty":0.5,"presence_penalty":0.5,"temperature":0.5}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '412'
+      - '410'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
-      - '1'
+      - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-700","object":"text_completion","created":1744815865,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Of
-      course! Please go ahead and ask your question, and I''ll do my best to provide
-      a concise and accurate response in English.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":107,"completion_tokens":28,"total_tokens":135}}
+    body:
+      string: '{"id":"cmpl-624","object":"text_completion","created":1752849061,"model":"granite3.3:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Of
+        course! I''ll do my best to provide accurate and concise answers to your questions.
+        Please go ahead and ask.","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":107,"completion_tokens":25,"total_tokens":132}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '376'
+      - '362'
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:25 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Fri, 18 Jul 2025 14:31:01 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

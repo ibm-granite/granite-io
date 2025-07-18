@@ -59,23 +59,23 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","n":5,"temperature":0.2}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '4973'
+      - '4975'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -85,7 +85,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -93,12 +93,12 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-88a278eadf9344f8afa5cad30706deb7","object":"text_completion","created":1750717327,"model":"ibm-granite/granite-3.3-8b-instruct","choices":[{"index":0,"text":"Git
+      string: '{"id":"cmpl-66c97cc9130a478ab177de4a2c27f4d7","object":"text_completion","created":1752787987,"model":"ibm-granite/granite-3.3-8b-instruct","choices":[{"index":0,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
         private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":1,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
@@ -108,14 +108,14 @@ interactions:
         Repos and Issue Tracking projects can have one of three visibility levels:
         private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null},{"index":4,"text":"Git
         Repos and Issue Tracking projects can have one of three visibility levels:
-        private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":968,"total_tokens":1048,"completion_tokens":80,"prompt_tokens_details":null}}'
+        private","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":969,"total_tokens":1049,"completion_tokens":80,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '1209'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:06 GMT
+      - Thu, 17 Jul 2025 21:33:06 GMT
       server:
       - uvicorn
     status:
@@ -181,7 +181,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -195,17 +195,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '5958'
+      - '5960'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -215,7 +215,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -223,25 +223,25 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-526f430935504243b99f7170ca4838f0","object":"text_completion","created":1750717328,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-32f3991afa2045e99dd7b5febc2bc311","object":"text_completion","created":1752787989,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' The assistant''s claim is partially correct,
         as it only mentions ''private'' visibility level, while the document also
-        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1081,"total_tokens":1178,"completion_tokens":97,"prompt_tokens_details":null}}'
+        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1082,"total_tokens":1179,"completion_tokens":97,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '793'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:07 GMT
+      - Thu, 17 Jul 2025 21:33:08 GMT
       server:
       - uvicorn
     status:
@@ -307,7 +307,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -321,17 +321,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '5958'
+      - '5960'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -341,7 +341,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -349,25 +349,25 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-62f4572c2e8442559c37eee9d4cb3348","object":"text_completion","created":1750717338,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-9f44aacb43a14931831336f46e0a13f6","object":"text_completion","created":1752788000,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' The assistant''s claim is partially correct,
         as it only mentions ''private'' visibility level, while the document also
-        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1081,"total_tokens":1178,"completion_tokens":97,"prompt_tokens_details":null}}'
+        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1082,"total_tokens":1179,"completion_tokens":97,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '793'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:17 GMT
+      - Thu, 17 Jul 2025 21:33:19 GMT
       server:
       - uvicorn
     status:
@@ -433,7 +433,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -447,17 +447,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '5958'
+      - '5960'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -467,7 +467,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -475,25 +475,25 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-0ec174930c9f4b68ae80eaa011915df2","object":"text_completion","created":1750717348,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-49a17f0f540f45928bcca123896b4094","object":"text_completion","created":1752788010,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' The assistant''s claim is partially correct,
         as it only mentions ''private'' visibility level, while the document also
-        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1081,"total_tokens":1178,"completion_tokens":97,"prompt_tokens_details":null}}'
+        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1082,"total_tokens":1179,"completion_tokens":97,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '793'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:27 GMT
+      - Thu, 17 Jul 2025 21:33:30 GMT
       server:
       - uvicorn
     status:
@@ -559,7 +559,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -573,17 +573,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '5958'
+      - '5960'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -593,7 +593,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -601,25 +601,25 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-76e411dabfd549ffb7f8f6e947dffa60","object":"text_completion","created":1750717357,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-65d62274b40245ab932360afbb278336","object":"text_completion","created":1752788021,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' The assistant''s claim is partially correct,
         as it only mentions ''private'' visibility level, while the document also
-        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1081,"total_tokens":1178,"completion_tokens":97,"prompt_tokens_details":null}}'
+        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1082,"total_tokens":1179,"completion_tokens":97,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '793'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:36 GMT
+      - Thu, 17 Jul 2025 21:33:41 GMT
       server:
       - uvicorn
     status:
@@ -685,7 +685,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private<|end_of_text|>\n<|start_of_role|>system<|end_of_role|>Split the last
@@ -699,17 +699,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '5958'
+      - '5960'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -719,7 +719,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -727,25 +727,25 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-471d53ed596b4eb3b2815e7b66f57bf9","object":"text_completion","created":1750717367,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-8a2e5e8edd5842de96c87afcdc9844e0","object":"text_completion","created":1752788032,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' The assistant''s claim is partially correct,
         as it only mentions ''private'' visibility level, while the document also
-        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1081,"total_tokens":1178,"completion_tokens":97,"prompt_tokens_details":null}}'
+        lists ''internal'' and ''public'' as options.\", \"f\": \"partial\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1082,"total_tokens":1179,"completion_tokens":97,"prompt_tokens_details":null}}'
     headers:
       content-length:
       - '793'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:22:46 GMT
+      - Thu, 17 Jul 2025 21:33:52 GMT
       server:
       - uvicorn
     status:

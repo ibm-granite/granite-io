@@ -70,7 +70,7 @@ def input_json_str(request: pytest.FixtureRequest) -> str:
 
 
 @pytest.mark.vcr
-def test_make_io_processor(backend_x: Backend, input_json_str: str):  # pylint: disable=redefined-outer-name
+def test_make_io_processor(backend_x: Backend, input_json_str: str, _use_fake_date):  # pylint: disable=redefined-outer-name
     inputs = ChatCompletionInputs.model_validate_json(input_json_str)
     io_processor = make_new_io_processor(
         input_processor=get_input_processor(general_model_name),

@@ -1,33 +1,31 @@
 interactions:
 - request:
-    body: '{"model":"granite3.2:2b","prompt":"what is up?","best_of":3,"n":3}'
+    body: '{"model":"granite3.2:2b","prompt":"what is up?","n":3}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '66'
+      - '54'
       content-type:
       - application/json
       host:
       - localhost:11434
-      rits_api_key:
-      - ollama
       user-agent:
-      - OpenAI/Python 1.65.3
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
-      - 'false'
+      - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.65.3
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -35,24 +33,24 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.11.8
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: '{"id":"cmpl-272","object":"text_completion","created":1741222541,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"As
-      an artificial intelligence, I don''t have feelings or emotions, so there''s
-      nothing \"up\" or \"down\" in the traditional sense. I''m here to provide information,
-      answer questions, and assist you with tasks as best I can. How can I help you
-      today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":47,"completion_tokens":61,"total_tokens":108}}
+    body:
+      string: '{"id":"cmpl-789","object":"text_completion","created":1752788906,"model":"granite3.2:2b","system_fingerprint":"fp_ollama","choices":[{"text":"Not
+        much. I''m here to assist you with any questions or information you need.
+        How can I help you today?","index":0,"finish_reason":"stop"}],"usage":{"prompt_tokens":47,"completion_tokens":25,"total_tokens":72}}
 
-      '
+        '
     headers:
       Content-Length:
-      - '498'
+      - '352'
       Content-Type:
       - application/json
       Date:
-      - Thu, 06 Mar 2025 00:55:41 GMT
-    http_version: HTTP/1.1
-    status_code: 200
+      - Thu, 17 Jul 2025 21:48:26 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -1,160 +1,97 @@
 interactions:
 - request:
-    body: '{"model":"ibm-granite/granite-3.3-2b-instruct","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.\nRespond to every
-      user query in a comprehensive and detailed way. You can write down your thoughts
-      and reasoning process before responding. In the thought process, engage in a
-      comprehensive cycle of analysis, summarization, exploration, reassessment, reflection,
-      backtracing, and iteration to develop well-considered thinking process. In the
-      response section, based on various attempts, explorations, and reflections from
-      the thoughts section, systematically present the final solution that you deem
-      correct. The response should summarize the thought process. Write your thoughts
-      between <think></think> and write your response between <response></response>
-      for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
+    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.\nRespond to every user query in a comprehensive
+      and detailed way. You can write down your thoughts and reasoning process before
+      responding. In the thought process, engage in a comprehensive cycle of analysis,
+      summarization, exploration, reassessment, reflection, backtracing, and iteration
+      to develop well-considered thinking process. In the response section, based
+      on various attempts, explorations, and reflections from the thoughts section,
+      systematically present the final solution that you deem correct. The response
+      should summarize the thought process. Write your thoughts between <think></think>
+      and write your response between <response></response> for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
       much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
     headers:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '1060'
-      content-type:
-      - application/json
-      host:
-      - localhost:8000
-      user-agent:
-      - AsyncOpenAI/Python 1.72.0
-      x-stainless-arch:
-      - arm64
-      x-stainless-async:
-      - async:asyncio
-      x-stainless-lang:
-      - python
-      x-stainless-os:
-      - MacOS
-      x-stainless-package-version:
-      - 1.72.0
-      x-stainless-read-timeout:
-      - '600'
-      x-stainless-retry-count:
-      - '1'
-      x-stainless-runtime:
-      - CPython
-      x-stainless-runtime-version:
-      - 3.12.6
-    method: POST
-    uri: http://localhost:8000/v1/completions
-  response:
-    content: '{"id":"cmpl-f9730f93f99e4818adb7d85db2a4f13b","object":"text_completion","created":1744791310,"model":"ibm-granite/granite-3.3-2b-instruct","choices":[{"index":0,"text":"<think>The
-      phrase \"How much wood could a wood chuck chuck","logprobs":null,"finish_reason":"length","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":199,"total_tokens":215,"completion_tokens":16,"prompt_tokens_details":null}}'
-    headers:
-      content-length:
-      - '416'
-      content-type:
-      - application/json
-      date:
-      - Wed, 16 Apr 2025 08:15:09 GMT
-      server:
-      - uvicorn
-    http_version: HTTP/1.1
-    status_code: 200
-- request:
-    body: '{"model":"granite3.3:2b","prompt":"<|start_of_role|>system<|end_of_role|>
-      Knowledge Cutoff Date: April 2024.\n Today''s Date: April 16, 2025. You are
-      Granite, developed by IBM. You are a helpful AI assistant.\nRespond to every
-      user query in a comprehensive and detailed way. You can write down your thoughts
-      and reasoning process before responding. In the thought process, engage in a
-      comprehensive cycle of analysis, summarization, exploration, reassessment, reflection,
-      backtracing, and iteration to develop well-considered thinking process. In the
-      response section, based on various attempts, explorations, and reflections from
-      the thoughts section, systematically present the final solution that you deem
-      correct. The response should summarize the thought process. Write your thoughts
-      between <think></think> and write your response between <response></response>
-      for each user query.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>How
-      much wood could a wood chuck chuck?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>"}'
-    headers:
-      accept:
-      - application/json
-      accept-encoding:
-      - gzip, deflate
-      connection:
-      - keep-alive
-      content-length:
-      - '1038'
+      - '1036'
       content-type:
       - application/json
       host:
       - localhost:11434
       user-agent:
-      - AsyncOpenAI/Python 1.72.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
-      - arm64
+      - x64
       x-stainless-async:
       - async:asyncio
       x-stainless-lang:
       - python
       x-stainless-os:
-      - MacOS
+      - Linux
       x-stainless-package-version:
-      - 1.72.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
-      - '1'
+      - '0'
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.6
+      - 3.11.13
     method: POST
     uri: http://localhost:11434/v1/completions
   response:
-    content: "{\"id\":\"cmpl-522\",\"object\":\"text_completion\",\"created\":1744815873,\"model\":\"granite3.3:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"\\u003cthink\\u003eThe
-      phrase \\\"how much wood could a woodchuck chuck\\\" is a well-known tongue
-      twister designed to amuse rather than have a definitive, scientific answer.
-      Woodchucks, or groundhogs, are burrowing mammals that do emit small amounts
-      of material during their excavations as they move through the soil.\\n\\nHowever,
-      to approach this seriously, we must consider:\\n\\n1. **Scientific Literature**:
-      There isn't any extensive scientific research directly measuring how much wood
-      a single woodchuck could chuck. The phrase is often cited in humorous contexts
-      or used for storytelling purposes.\\n\\n2. **Estimation**: A common misconception
-      arises from an old wive's tale where it\u2019s suggested a woodchuck can move
-      about 300 pounds of dirt when burrowing, which is then mistakenly extrapolated
-      to mean they could chuck (move) something equivalent. However, this is not related
-      accurately to their actual activity or capacity for carrying things.\\n\\nGiven
-      these points, a concrete factual answer based on empirical evidence isn't available
-      because:\\n- There's no standardized measure of \\\"woodchucking\\\" ability.\\n-
-      Woodchucks primarily clear earth for burrowing, not specifically to move logs
-      or wood.\\n\\nThus, the response typically remains humorous and non-quantitative.\\u003c/think\\u003e\\u003cresponse\\u003e###
-      The Tongue Twister and Reality:\\n\\nThe phrase \\\"how much wood could a woodchuck
-      chuck?\\\" is a whimsical expression popularized by tall tales and song lyrics.
-      It originates in an old wive's proverb suggesting that a woodchuck\u2014a burrowing
-      mammal\u2014could move enough earth to carry 300 pounds.\\n\\n### Truth Behind
-      \\\"Chuck\\\":\\n- **Woodchucks (Groundhogs)**: While these animals are excellent
-      diggers, they move soil during their activities rather than lifting and moving
-      substantial wooden objects in a meaningful manner. Their burrowing behavior
-      is about tunneling for shelter, not transportation of heavy logs.\\n- **Scientific
-      Consistency**: There's no scientific data supporting or validating the \\\"chuck\\\"
-      capability quantitatively. No study has accurately measured how much wood a
-      single woodchuck could carry; they primarily handle earth piles and not timber.\\n\\n###
-      Humorous Conclusion:\\nThe phrase is entertaining but doesn't offer a genuine
-      scientific answer due to the contrast between their earth-moving burrowing habits
-      and carrying real wood. In essence, while woodchucks may metaphorically 'chuck'
-      out dirt in abundance, the concept of them moving substantial amounts of solid
-      wood is fanciful and lacks real-world equivalence based on their biology or
-      behavior. \\n\\nSo, while it's fun to utter \\\"a woodchuck could chuck,\\\"
-      there's no specific numeric response backed by empirical evidence, maintaining
-      its status as a humorous riddle.\\u003c/response\\u003e\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":242,\"completion_tokens\":680,\"total_tokens\":922}}\n"
+    body:
+      string: "{\"id\":\"cmpl-663\",\"object\":\"text_completion\",\"created\":1752852499,\"model\":\"granite3.3:2b\",\"system_fingerprint\":\"fp_ollama\",\"choices\":[{\"text\":\"\\u003cthink\\u003eThis
+        phrase is a popular tongue twister, often attributed to children's rhymes
+        or American folklore. The expression \\\"how much wood would a woodchuck chuck
+        if a woodchuck could chuck wood?\\\" is meant to be a nonsensical question,
+        similar to the famous \\\"how many rop\xE9s in a leopard?\\\" riddle. \\n\\nThe
+        amusing part lies in the lack of real-world logic applied directly:\\n\\n1.
+        The animal known as a \\\"chuck\\\" (or woodchuck) is actually a burrowing
+        marmot and not capable of chucking (throwing) actual wood. \\n2. Humorous
+        stories often attribute grand, exaggerated capabilities to nonsensical creatures
+        like the woodchuck due to playful language usage.\\n3. The phrase serves as
+        an example of a pun played on wordplay or the inherent oddity of the question
+        itself\u2014there's no logical answer rooted in reality since these animals
+        don't engage in chucking trees.\\n\\nTherefore, while it's tempting to explore
+        potential clever answers based on volume (e.g., tons), this is just a playful
+        linguistic construction designed for amusement rather than factual measurement.\\u003c/think\\u003e\\n\\n\\u003cresponse\\u003e###
+        The Tongue Twister Known as \\\"A Wood Chuck Chuck\\\":\\nThis phrase, often
+        posed rhetorically rather than seriously, is a classic example of wordplay.
+        The question asks \\\"How much wood would a woodchuck chuck if a woodchuck
+        could chuck wood?\\\" \\n\\n**Reality Behind the Question:**\\n- Woodchucks
+        (also called groundhogs or prairie dogs) are burrowing mammals that are primarily
+        herbivores, but they don't have hands to move logs and don\u2019t live near
+        lumberyards or forests to consume such quantities. \\n- They are known more
+        for digging burrows than chucking (throwing) large quantities of wood by themselves.\\n\\n**The
+        Humor:**\\nThis type of question leverages the nature of puns: exaggerated
+        capabilities and logical incongruity\u2014hence, there's no factual answer
+        because a real woodchuck can't actually chuck wood.\\n\\n### The Common Folks'
+        Response (Humorous/Mythical):\\nTo satisfy the playful spirit without providing
+        a realistic figure:\\n- A common humorous response might be to propose \\\"a
+        variety,\\\" perhaps stating \\\"A woodchuck could potentially chuck a whopping
+        amount, say, about 300 pounds\\\"\u2014though it's purely a jest based on
+        perceived strength rather than practical ability. \\n\\n### Conclusion:\\nIn
+        essence, the answer to this question is nonsensical and not derived from scientific
+        understanding because woodchucks are non-wood-toting mammals in nature. This
+        punning phrase is enjoyed more for its cleverness and amusement than as a
+        serious query about woodmoving abilities.\\u003c/response\\u003e\",\"index\":0,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":242,\"completion_tokens\":672,\"total_tokens\":914}}\n"
     headers:
       Content-Type:
       - application/json
       Date:
-      - Wed, 16 Apr 2025 15:04:33 GMT
+      - Fri, 18 Jul 2025 15:28:19 GMT
       Transfer-Encoding:
       - chunked
-    http_version: HTTP/1.1
-    status_code: 200
+    status:
+      code: 200
+      message: OK
 version: 1

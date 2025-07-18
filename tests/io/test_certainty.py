@@ -17,7 +17,6 @@ from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.certainty import CertaintyCompositeIOProcessor, CertaintyIOProcessor
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 from granite_io.types import (
     GenerateResult,
@@ -113,7 +112,7 @@ def test_canned_output():
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
@@ -121,7 +120,6 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
     io_proc = CertaintyIOProcessor(backend)
 
     # Pass our example input thorugh the I/O processor and retrieve the result
-    override_date_for_testing(fake_date)  # For consistent VCR output
     chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT)
 
     # We run at temperature zero, so this result should be consistent
@@ -129,7 +127,7 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
 
 
 @pytest.mark.vcr
-def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_composite(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Generate chat completions and check certainty using a composite I/O processor to
     choreograph the flow.
@@ -145,7 +143,6 @@ def test_run_composite(lora_server: LocalVLLMServer, fake_date: str):
     input_without_msg = _EXAMPLE_CHAT_INPUT.model_copy(
         update={"messages": _EXAMPLE_CHAT_INPUT.messages[:-1]}
     ).with_addl_generate_params({"temperature": 0.2, "n": 5})
-    override_date_for_testing(fake_date)  # For consistent VCR output
     results = io_proc.create_chat_completion(input_without_msg)
     assert len(results.results) > 1
 

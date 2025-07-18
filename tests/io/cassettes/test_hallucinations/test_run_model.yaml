@@ -59,7 +59,7 @@ interactions:
       From the project sidebar, click Settings > General. 2. On the **General Settings
       **page, click Visibility > project features > permissions. 3. Select the Disable
       email notifications checkbox. 4. Click Save changes. Project integrations and
-      webhooks<|end_of_text|><|start_of_role|>user<|end_of_role|>What is the visibility
+      webhooks<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>What is the visibility
       level of Git Repos and Issue Tracking projects?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|><i0>
       Git Repos and Issue Tracking projects can have one of three visibility levels:
       private, internal, or public. <i1> Private projects are visible only to project
@@ -75,17 +75,17 @@ interactions:
       accept:
       - application/json
       accept-encoding:
-      - gzip, deflate
+      - gzip, deflate, zstd
       connection:
       - keep-alive
       content-length:
-      - '6146'
+      - '6148'
       content-type:
       - application/json
       host:
       - localhost:35782
       user-agent:
-      - AsyncOpenAI/Python 1.91.0
+      - AsyncOpenAI/Python 1.90.0
       x-stainless-arch:
       - x64
       x-stainless-async:
@@ -95,7 +95,7 @@ interactions:
       x-stainless-os:
       - Linux
       x-stainless-package-version:
-      - 1.91.0
+      - 1.90.0
       x-stainless-read-timeout:
       - '600'
       x-stainless-retry-count:
@@ -103,29 +103,29 @@ interactions:
       x-stainless-runtime:
       - CPython
       x-stainless-runtime-version:
-      - 3.12.3
+      - 3.11.13
     method: POST
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-aeec4fec1827437cb4de4652551902ec","object":"text_completion","created":1750717309,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
+      string: '{"id":"cmpl-db193c43e08c4d96a858435db27f54d0","object":"text_completion","created":1752787968,"model":"hallucination_detection","choices":[{"index":0,"text":"[{\"i\":
         0, \"r\": \"This sentence makes a factual claim about the visibility levels
         of Git Repos and Issue Tracking projects. The document states ''Git Repos
         and Issue Tracking projects can have one of the following visibility levels:
         private, internal, or public.'' This matches exactly with the claim in the
         sentence.\", \"f\": \"faithful\"}, {\"i\": 1, \"r\": \"This sentence makes
         factual claims about the visibility of each type of project. The document
-        states ''Private projects are visible only to project members,'' ''Internal
-        projects are visible to all users that are logged in to IBM Cloud,'' and ''Public
-        projects are visible to anyone.'' These statements match exactly with the
-        claims in the sentence.\", \"f\": \"faithful\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1121,"total_tokens":1279,"completion_tokens":158,"prompt_tokens_details":null}}'
+        states ''Private projects are visible only to project members. Internal projects
+        are visible to all users that are logged in to IBM Cloud. Public projects
+        are visible to anyone.'' This matches exactly with the claims in the sentence.\",
+        \"f\": \"faithful\"}]","logprobs":null,"finish_reason":"stop","stop_reason":null,"prompt_logprobs":null}],"usage":{"prompt_tokens":1122,"total_tokens":1276,"completion_tokens":154,"prompt_tokens_details":null}}'
     headers:
       content-length:
-      - '1079'
+      - '1061'
       content-type:
       - application/json
       date:
-      - Mon, 23 Jun 2025 22:21:48 GMT
+      - Thu, 17 Jul 2025 21:32:47 GMT
       server:
       - uvicorn
     status:

@@ -16,7 +16,6 @@ from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.context_relevancy import ContextRelevancyIOProcessor
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
 )
 
 _EXAMPLE_CHAT_INPUT = Granite3Point3Inputs.model_validate(
@@ -77,7 +76,7 @@ the context relevance classification:
 
 
 @pytest.mark.vcr
-def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
+def test_run_model(lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
@@ -85,7 +84,6 @@ def test_run_model(lora_server: LocalVLLMServer, fake_date: str):
     io_proc = ContextRelevancyIOProcessor(backend)
 
     # Pass our example input thorugh the I/O processor and retrieve the result
-    override_date_for_testing(fake_date)  # For consistent VCR output
     chat_result = io_proc.create_chat_completion(_EXAMPLE_CHAT_INPUT)
 
     assert chat_result.results[0].next_message.content == "relevant"
