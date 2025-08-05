@@ -292,6 +292,7 @@ class ElasticsearchRetriever:
 
     def __init__(
         self,
+        corpus_name: str,
         host: str,
         **kwargs: Dict[str, int],
     ):
@@ -302,6 +303,8 @@ class ElasticsearchRetriever:
 
         # Third Party
         from elasticsearch import Elasticsearch
+
+        self.corpus_name = corpus_name
 
         # Hosts is the minimum required param to init a connection to the
         # Elasticsearch server, so make it explicit here.
@@ -337,13 +340,17 @@ class ElasticsearchRetriever:
         return body
 
     def retrieve(self,
-                 corpus_name: str,
                  query: str,
                  top_k: int = 5
                 ) -> list[dict]:
+        import pyarrow as pa
+
         body = self.create_es_body(top_k, query)
 
-        retriever_results = self.es.search(index=corpus_name, body=body)
+        retriever_results = self.es.search(
+            index=self.corpus_name,
+            body=body,
+        )
         hits = retriever_results["hits"]["hits"]
 
         # Format for the processor.
@@ -354,7 +361,9 @@ class ElasticsearchRetriever:
                 "text": hit["_source"]["text"],
             }
             _documents.append(document)
-        return _documents
+        table = pa.Table.from_pylist(_documents)
+
+        return table
 
 
 class RetrievalRequestProcessor(RequestProcessor):
