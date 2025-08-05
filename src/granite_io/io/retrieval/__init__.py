@@ -5,6 +5,7 @@
 from . import util
 from .retrieval import (
     InMemoryRetriever,
+    ElasticsearchRetriever,
     RetrievalRequestProcessor,
     Retriever,
     compute_embeddings,
@@ -15,6 +16,7 @@ from .retrieval import (
 __all__ = [
     "Retriever",
     "InMemoryRetriever",
+    "ElasticsearchRetriever",
     "RetrievalRequestProcessor",
     "compute_embeddings",
     "write_embeddings",
