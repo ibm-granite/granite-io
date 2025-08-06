@@ -4,8 +4,8 @@
 # Local
 from . import util
 from .retrieval import (
-    InMemoryRetriever,
     ElasticsearchRetriever,
+    InMemoryRetriever,
     RetrievalRequestProcessor,
     Retriever,
     compute_embeddings,

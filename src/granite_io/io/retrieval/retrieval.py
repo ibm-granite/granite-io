@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Standard
+from typing import Dict
 import abc
 import os
 import pathlib
 import shutil
-from typing import Dict
 
 # Third Party
 import numpy as np
@@ -311,10 +311,7 @@ class ElasticsearchRetriever:
         self.hosts = host
         self.kwargs = kwargs
 
-        self.es = Elasticsearch(
-            hosts=host,
-            **kwargs
-        )
+        self.es = Elasticsearch(hosts=host, **kwargs)
 
     def create_es_body(self, limit, query):
         """
@@ -330,19 +327,17 @@ class ElasticsearchRetriever:
                         "text_expansion": {
                             "ml.tokens": {
                                 "model_id": ".elser_model_1",
-                                "model_text": query
+                                "model_text": query,
                             }
                         }
                     }
                 }
-            }
+            },
         }
         return body
 
-    def retrieve(self,
-                 query: str,
-                 top_k: int = 5
-                ) -> list[dict]:
+    def retrieve(self, query: str, top_k: int = 5) -> list[dict]:
+        # Third Party
         import pyarrow as pa
 
         body = self.create_es_body(top_k, query)
