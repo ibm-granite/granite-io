@@ -10,6 +10,7 @@ sufficient disk space. See CONTRIBUTING.md for more details.
 """
 
 # Standard
+from unittest import mock
 import pathlib
 import tempfile
 
@@ -22,6 +23,7 @@ from granite_io.io.granite_3_2.input_processors.granite_3_2_input_processor impo
     Granite3Point2Inputs,
 )
 from granite_io.io.retrieval import (
+    ElasticsearchRetriever,
     InMemoryRetriever,
     RetrievalRequestProcessor,
     compute_embeddings,
@@ -121,8 +123,9 @@ def test_in_memory_retriever(govt_embeddings_file):  # pylint: disable=redefined
     ]
 
 
-def test_retrieval_request_processor(govt_embeddings_file):  # pylint: disable=redefined-outer-name
-    """Basic test of the RequestProcessor that performs RAG retrieval"""
+def test_retrieval_in_memory_request_processor(govt_embeddings_file):  # pylint: disable=redefined-outer-name
+    """Basic test of the RequestProcessor with InMemoryRetriever that
+    performs RAG retrieval"""
     retriever = InMemoryRetriever(govt_embeddings_file, _EMBEDDING_MODEL_NAME)
     request_processor = RetrievalRequestProcessor(retriever, top_k=3)
     results = request_processor.process(_EXAMPLE_CHAT_INPUT)
@@ -132,4 +135,50 @@ def test_retrieval_request_processor(govt_embeddings_file):  # pylint: disable=r
         "775449d1aa187ec5",
         "775449d1aa187ec5",
         "775449d1aa187ec5",
+    ]
+
+
+@pytest.fixture()
+def mocked_elasticsearch_retriever():  # pylint: disable=redefined-outer-name
+    with mock.patch(
+        "elasticsearch.Elasticsearch.search",
+        return_value={
+            "hits": {
+                "hits": [
+                    {"_source": {"id": "1", "text": "test1"}},
+                    {"_source": {"id": "2", "text": "test2"}},
+                ]
+            }
+        },
+    ):
+        mocked_retriever = ElasticsearchRetriever(
+            corpus_name="test", host="https://localhost:9200"
+        )
+        yield mocked_retriever
+
+
+def test_elasticsearch_retriever(mocked_elasticsearch_retriever):  # pylint: disable=redefined-outer-name
+    """Verify basic functionality of the ElasticsearchRetriever class"""
+
+    result = mocked_elasticsearch_retriever.retrieve(
+        _EXAMPLE_CHAT_INPUT.messages[-1].content, 1
+    )
+    assert result.column("id").to_pylist() == [
+        "1",
+        "2",
+    ]
+
+
+def test_retrieval_elasticsearch_request_processor(mocked_elasticsearch_retriever):  # pylint: disable=redefined-outer-name
+    """Basic test of the RequestProcessor with ElasticsearchRetriever that
+    performs RAG retrieval"""
+
+    request_processor = RetrievalRequestProcessor(
+        mocked_elasticsearch_retriever, top_k=3
+    )
+    results = request_processor.process(_EXAMPLE_CHAT_INPUT)
+    # print(results[0].documents)
+    assert [d.doc_id for d in results[0].documents] == [
+        "1",
+        "2",
     ]
