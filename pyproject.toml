@@ -59,7 +59,7 @@ voting = [
 retriever = [
     "sentence-transformers",
     "pyarrow",
-    "elasticsearch",
+    "elasticsearch>=8.0.0,<9.0.0",
 ]
 dev = [
     "isort==6.0.1",
