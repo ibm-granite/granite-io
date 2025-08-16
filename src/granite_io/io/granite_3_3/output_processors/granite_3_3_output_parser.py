@@ -177,6 +177,11 @@ def _add_hallucination_response_spans(
     augmented_hallucination_info = copy.deepcopy(hallucination_info)
 
     for hallucination in augmented_hallucination_info:
+        # Init values in event of error in processing
+        hallucination["response_text"] = ""
+        hallucination["response_begin"] = 0
+        hallucination["response_end"] = 0
+
         hallucination_response_text_without_citations = (
             _remove_citations_from_response_text(hallucination["response_text"])
         )
@@ -418,6 +423,11 @@ def _add_citation_response_spans(
     # For each citation bring the response sentence to which it refers and its
     # begin/end spans
     for i, citation in enumerate(augmented_citation_info):
+        # Init values in event of error in processing
+        citation["response_text"] = ""
+        citation["response_begin"] = 0
+        citation["response_end"] = 0
+
         response_text = response_sents_by_citation_id.get(str(i), "")
         index = response_text_without_citations.find(response_text)
         if index < 0:
