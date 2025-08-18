@@ -177,11 +177,6 @@ def _add_hallucination_response_spans(
     augmented_hallucination_info = copy.deepcopy(hallucination_info)
 
     for hallucination in augmented_hallucination_info:
-        # Init values in event of error in processing
-        hallucination["response_text"] = ""
-        hallucination["response_begin"] = 0
-        hallucination["response_end"] = 0
-
         hallucination_response_text_without_citations = (
             _remove_citations_from_response_text(hallucination["response_text"])
         )
@@ -194,6 +189,9 @@ def _add_hallucination_response_spans(
                 "Error in adding the response spans to hallucination: "
                 "Hallucination text not found in response"
             )
+            # Install placeholder values to avoid breaking downstream code.
+            hallucination["response_begin"] = 0
+            hallucination["response_end"] = 0
             continue
 
         if len(matches) > 1:
