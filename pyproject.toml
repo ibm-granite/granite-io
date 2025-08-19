@@ -45,7 +45,7 @@ nltk = [
 ]
 openai = [
     # As of August 18, 2025, OpenAI v1.100 breaks all versions of LiteLLM
-    "openai >= 1.68.2, < 1.100",
+    "openai >= 1.68.2, < 1.101",
 ]
 litellm = [
     "litellm >= 1.63.14, < 2.0",
