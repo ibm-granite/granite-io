@@ -31,9 +31,9 @@ dynamic = ["version"]
 dependencies = [
     "alchemy-config",
     "jsonschema",
-    "pydantic >= 2.0.0, < 3.0",  # LiteLLM requires >= 2
+    "pydantic >= 2.0.0",  # LiteLLM requires >= 2
     "rouge_score",
-    "aiohttp"
+    "aiohttp",
 ]
 
 [project.optional-dependencies]
@@ -44,8 +44,8 @@ nltk = [
     "nltk~=3.9.1",
 ]
 openai = [
-    # As of August 18, 2025, OpenAI v1.100 breaks all versions of LiteLLM
-    "openai >= 1.68.2, < 1.100",
+    # OpenAI v1.100 breaks all versions of LiteLLM
+    "openai > 1.100",
 ]
 litellm = [
     "litellm >= 1.63.14, < 2.0",
