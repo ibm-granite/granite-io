@@ -167,7 +167,7 @@ class QueryRewriteIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
                 m = re.search(r"\{.*\}", s, re.DOTALL)
                 parsed_output = QueryRewriteRawOutput.model_validate_json(m.group(0))
                 rewrite = parsed_output.rewritten_question
-            except (json.JSONDecodeError, AttributeError):
+            except (json.JSONDecodeError, AttributeError, pydantic.ValidationError):
                 # JSON parsing failed, will fallback to raw string
                 pass
 

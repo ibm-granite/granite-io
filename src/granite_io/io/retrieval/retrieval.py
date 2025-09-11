@@ -383,8 +383,12 @@ class RetrievalRequestProcessor(RequestProcessor):
 
         # Retriever returns a PyArrow table. Currently we just use the texts and IDs of
         # the snippets.
-        documents = [
-            Document(doc_id=row["id"], text=row["text"])
-            for row in retriever_output.to_pylist()
-        ]
+        documents = []
+        for idx, row in enumerate(retriever_output.to_pylist()):
+            if not isinstance(row["id"], int):
+                doc_id = idx
+            else:
+                doc_id = row["id"]
+
+            documents.append(Document(doc_id=doc_id, text=row["text"]))
         return [inputs.model_copy(update={"documents": documents})]
