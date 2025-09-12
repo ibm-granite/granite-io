@@ -385,10 +385,7 @@ class RetrievalRequestProcessor(RequestProcessor):
         # the snippets.
         documents = []
         for idx, row in enumerate(retriever_output.to_pylist()):
-            if not isinstance(row["id"], int):
-                doc_id = idx
-            else:
-                doc_id = row["id"]
-
+            doc_id = idx if not isinstance(row["id"], int) else row["id"]
             documents.append(Document(doc_id=doc_id, text=row["text"]))
+
         return [inputs.model_copy(update={"documents": documents})]
