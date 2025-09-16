@@ -145,8 +145,8 @@ def mocked_elasticsearch_retriever():  # pylint: disable=redefined-outer-name
         return_value={
             "hits": {
                 "hits": [
-                    {"_source": {"id": "1", "text": "test1"}},
-                    {"_source": {"id": "2", "text": "test2"}},
+                    {"_id": "1", "_score": 0.9, "_source": {"id": "1", "text": "test1"}},
+                    {"_id": "2", "_score": 0.8, "_source": {"id": "2", "text": "test2"}},
                 ]
             }
         },
@@ -163,7 +163,7 @@ def test_elasticsearch_retriever(mocked_elasticsearch_retriever):  # pylint: dis
     result = mocked_elasticsearch_retriever.retrieve(
         _EXAMPLE_CHAT_INPUT.messages[-1].content, 1
     )
-    assert result.column("id").to_pylist() == [
+    assert result.column("doc_id").to_pylist() == [
         "1",
         "2",
     ]
