@@ -145,8 +145,16 @@ def mocked_elasticsearch_retriever():  # pylint: disable=redefined-outer-name
         return_value={
             "hits": {
                 "hits": [
-                    {"_id": "1", "_score": 0.9, "_source": {"id": "1", "text": "test1"}},
-                    {"_id": "2", "_score": 0.8, "_source": {"id": "2", "text": "test2"}},
+                    {
+                        "_id": "1",
+                        "_score": 0.9,
+                        "_source": {"id": "1", "text": "test1"},
+                    },
+                    {
+                        "_id": "2",
+                        "_score": 0.8,
+                        "_source": {"id": "2", "text": "test2"},
+                    },
                 ]
             }
         },
