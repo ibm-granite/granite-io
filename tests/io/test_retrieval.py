@@ -163,7 +163,7 @@ def test_elasticsearch_retriever(mocked_elasticsearch_retriever):  # pylint: dis
     result = mocked_elasticsearch_retriever.retrieve(
         _EXAMPLE_CHAT_INPUT.messages[-1].content, 1
     )
-    assert result.column("doc_id").to_pylist() == [
+    assert result.column("id").to_pylist() == [
         "1",
         "2",
     ]

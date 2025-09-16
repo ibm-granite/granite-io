@@ -352,7 +352,7 @@ class ElasticsearchRetriever:
         _documents = []
         for hit in hits:
             document = {
-                "doc_id": hit["_id"],
+                "id": hit["_id"],
                 "text": hit["_source"]["text"],
                 "score": hit["_score"],
             }
@@ -390,7 +390,7 @@ class RetrievalRequestProcessor(RequestProcessor):
             # documents.append(Document(doc_id=doc_id, text=row["text"]))
             documents.append(
                 Document(
-                    doc_id=row["doc_id"],
+                    doc_id=row["id"],
                     text=row["text"],
                     score=row["score"],
                 )
