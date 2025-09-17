@@ -123,6 +123,7 @@ class Document(pydantic.BaseModel):
 
     text: str
     doc_id: str | int | None = None
+    score: float | None = None
 
 
 class _ChatMessageBase(pydantic.BaseModel, NoDefaultsMixin):

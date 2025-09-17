@@ -70,7 +70,7 @@ interactions:
       provided documents and generate the faithfulness reasoning and faithfulness
       decision. Ensure that your output includes all response sentence IDs, and for
       each response sentence ID, provide the corresponding faithfulness reasoning
-      and faithfulness decision. The output must be a json structure.<|end_of_text|>","max_tokens":1024,"n":1,"temperature":0.0,"guided_json":{"$defs":{"_MODEL_OUTPUT_ENTRY":{"additionalProperties":false,"properties":{"i":{"minimum":0,"title":"I","type":"integer"},"r":{"title":"R","type":"string"},"f":{"title":"F","type":"string"}},"required":["i","r","f"],"title":"_MODEL_OUTPUT_ENTRY","type":"object"}},"items":{"$ref":"#/$defs/_MODEL_OUTPUT_ENTRY"},"title":"_MODEL_OUTPUT","type":"array"}}'
+      and faithfulness decision. The output must be a json structure.<|end_of_text|>","max_tokens":4096,"n":1,"temperature":0.0,"guided_json":{"$defs":{"_MODEL_OUTPUT_ENTRY":{"additionalProperties":false,"properties":{"i":{"minimum":0,"title":"I","type":"integer"},"r":{"title":"R","type":"string"},"f":{"title":"F","type":"string"}},"required":["i","r","f"],"title":"_MODEL_OUTPUT_ENTRY","type":"object"}},"items":{"$ref":"#/$defs/_MODEL_OUTPUT_ENTRY"},"title":"_MODEL_OUTPUT","type":"array"}}'
     headers:
       accept:
       - application/json

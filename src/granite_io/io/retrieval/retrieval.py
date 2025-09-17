@@ -352,8 +352,9 @@ class ElasticsearchRetriever:
         _documents = []
         for hit in hits:
             document = {
-                "id": hit["_source"]["id"],
+                "id": hit["_id"],
                 "text": hit["_source"]["text"],
+                "score": hit["_score"],
             }
             _documents.append(document)
         table = pa.Table.from_pylist(_documents)
@@ -383,8 +384,16 @@ class RetrievalRequestProcessor(RequestProcessor):
 
         # Retriever returns a PyArrow table. Currently we just use the texts and IDs of
         # the snippets.
-        documents = [
-            Document(doc_id=row["id"], text=row["text"])
-            for row in retriever_output.to_pylist()
-        ]
+        documents = []
+        for _idx, row in enumerate(retriever_output.to_pylist()):
+            # doc_id = idx if not isinstance(row["id"], int) else row["id"]
+            # documents.append(Document(doc_id=doc_id, text=row["text"]))
+            documents.append(
+                Document(
+                    doc_id=row["id"],
+                    text=row["text"],
+                    score=row["score"],
+                )
+            )
+
         return [inputs.model_copy(update={"documents": documents})]
