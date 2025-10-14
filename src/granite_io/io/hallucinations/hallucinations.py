@@ -301,7 +301,7 @@ are visible to anyone.",
                 "temperature": 0.0,
                 # Ensure we have enough of a token budget to reliably produce the
                 # full output.
-                "max_tokens": 1024,
+                "max_tokens": 4096,
                 # Enable constrained decoding on vLLM backends
                 "extra_body": {"guided_json": _MODEL_OUTPUT_SCHEMA},
             }
