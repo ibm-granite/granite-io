@@ -178,6 +178,8 @@ def lora_server_session_scoped() -> collections.abc.Generator[
         "query_rewrite",  # Maps to query_rewrite_lora
         "context_relevancy",  # Maps to context_relevancy_lora
         "prm",  # Maps to prm_lora
+        "answer_relevance_classifier",  # Maps to answer_relevance_lora
+        "answer_relevance_rewriter",  # Maps to answer_relevance_lora
     ]
 
     # Download and get local paths for all LoRA adapters
@@ -186,6 +188,12 @@ def lora_server_session_scoped() -> collections.abc.Generator[
         try:
             if lora_name == "prm":
                 lora_path = "ibm-granite/granite-3.3-8b-lora-math-prm"
+            elif lora_name == "answer_relevance_classifier":
+                lora_path = "rag-intrinsics-lib/answer_relevance_classifier/lora/granite-3.3-8b-instruct"
+                print(lora_name, lora_path)
+            elif lora_name == "answer_relevance_rewriter":
+                lora_path = "rag-intrinsics-lib/answer_relevance_rewriter/lora/granite-3.3-8b-instruct/"
+                print(lora_name, lora_path)
             else:
                 lora_path = obtain_lora(lora_name)
             lora_adapters.append((lora_name, str(lora_path)))
@@ -194,6 +202,7 @@ def lora_server_session_scoped() -> collections.abc.Generator[
             print(f"❌ Failed to download LoRA adapter {lora_name}: {e}")
             # Continue with other adapters
 
+    print(lora_adapters)
     server = LocalVLLMServer(
         base_model, lora_adapters=lora_adapters, port=35782, max_model_len=8192
     )

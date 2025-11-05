@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: '{"model":"answer_relevance_classifier","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Who
+      attended the meeting?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Many
+      people attended the meeting.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>answer_relevance<|end_of_text|>","max_tokens":1024,"temperature":0.0,"guided_json":{"properties":{"answer_relevance_analysis":{"title":"Answer
+      Relevance Analysis","type":"string"},"answer_relevance_category":{"title":"Answer
+      Relevance Category","type":"string"},"answer_relevance_judgment":{"title":"Answer
+      Relevance Judgment","type":"boolean"}},"required":["answer_relevance_analysis","answer_relevance_category","answer_relevance_judgment"],"title":"AnswerRelevanceRawOutput","type":"object"}}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '936'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.109.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.109.1
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-63e1674e62334c3fb6d01936fdb82d48","object":"text_completion","created":1762304605,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+        \"The inquiry asks who attended the meeting. The response provides a vague
+        and non-specific answer that does not address the question directly. It does
+        not provide any specific information about the attendees.\",\n  \"answer_relevance_category\":
+        \"No attempt\",\n  \"answer_relevance_judgment\":  false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":81,"total_tokens":161,"completion_tokens":80,"prompt_tokens_details":null},"kv_transfer_params":null}'
+    headers:
+      content-length:
+      - '802'
+      content-type:
+      - application/json
+      date:
+      - Wed, 05 Nov 2025 01:03:25 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+version: 1
