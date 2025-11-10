@@ -6,19 +6,19 @@ Test cases for io_adapters/answer_relevancy.py
 
 # Standard
 import datetime
-import textwrap
 import json
 import logging
+import pathlib
+import textwrap
 
 # Third Party
 import pytest
+import yaml
 
 # Local
 from granite_io.backend.vllm_server import LocalVLLMServer
 from granite_io.io.answer_relevance import (
-    # AnswerRelevanceIOProcessor,
     AnswerRelevanceRewriteIOProcessor,
-    # AnswerRelevanceCompositeIOProcessor,
 )
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
@@ -40,9 +40,6 @@ def _make_result(content: str):
 
 _TODAYS_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
-import pathlib
-import pytest
-import yaml
 
 DATA_FILE = pathlib.Path(__file__).parent / "data" / "test_answer_relevance3.yaml"
 
@@ -91,10 +88,10 @@ def test_rewriter_canned_input(case):
     """
     logger.info("test_rewriter_canned_input")
     io_processor = AnswerRelevanceRewriteIOProcessor(None)
-    input = case["rewriter_input"]
-    if not input:
+    rewriter_input = case["rewriter_input"]
+    if not rewriter_input:
         return
-    output = io_processor.inputs_to_generate_inputs(input).prompt
+    output = io_processor.inputs_to_generate_inputs(rewriter_input).prompt
     logger.info(output)
     expected_output = textwrap.dedent(case["rewriter_prompt"])
     assert output == expected_output
@@ -145,7 +142,7 @@ def test_rewriter_canned_output(case):
 
 
 @pytest.mark.vcr(
-    record_mode="none" # none, all, once, new_episodes
+    record_mode="none"  # none, all, once, new_episodes
     # record_mode="new_episodes"
 )
 @pytest.mark.parametrize("case", examples, ids=lambda c: c["name"])
@@ -158,11 +155,11 @@ def test_run_rewriter(case, lora_server: LocalVLLMServer, fake_date: str):
     io_proc = AnswerRelevanceRewriteIOProcessor(backend)
 
     override_date_for_testing(fake_date)  # For consistent VCR output
-    input = case["rewriter_input"]
-    if not input:
+    rewriter_input = case["rewriter_input"]
+    if not rewriter_input:
         return
     expected = case["rewriter_output"]
-    chat_result = io_proc.create_chat_completion(input)
+    chat_result = io_proc.create_chat_completion(rewriter_input)
     actual = chat_result.results[0].next_message.content
     assert actual == expected
 

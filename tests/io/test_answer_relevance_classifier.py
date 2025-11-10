@@ -6,12 +6,14 @@ Test cases for io_adapters/answer_relevancy.py
 
 # Standard
 import datetime
-import textwrap
 import json
 import logging
+import pathlib
+import textwrap
 
 # Third Party
 import pytest
+import yaml
 
 # Local
 from granite_io.backend.vllm_server import LocalVLLMServer
@@ -38,9 +40,6 @@ def _make_result(content: str):
 
 _TODAYS_DATE = datetime.datetime.now().strftime("%B %d, %Y")
 
-import pathlib
-import pytest
-import yaml
 
 DATA_FILE = pathlib.Path(__file__).parent / "data" / "test_answer_relevance3.yaml"
 
@@ -73,9 +72,9 @@ def test_classifier_canned_input(case):
     expected way.
     """
     io_processor = AnswerRelevanceIOProcessor(None)
-    input = case["classifier_input"]
-    logger.info(input)
-    output = io_processor.inputs_to_generate_inputs(input).prompt
+    classifier_input = case["classifier_input"]
+    logger.info(classifier_input)
+    output = io_processor.inputs_to_generate_inputs(classifier_input).prompt
     logger.info(output)
     expected_output = textwrap.dedent(case["classifier_prompt"])
     assert output == expected_output
@@ -135,7 +134,6 @@ def test_run_classifier(case, lora_server: LocalVLLMServer, fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
-    name = case["name"]
     backend = lora_server.make_lora_backend("answer_relevance_classifier")
     io_proc = AnswerRelevanceIOProcessor(backend)
 
@@ -150,9 +148,7 @@ def test_run_classifier(case, lora_server: LocalVLLMServer, fake_date: str):
     chat_result = io_proc.create_chat_completion(classifier_input)
 
     output_json = json.loads(chat_result.results[0].next_message.content)
-    logger.info(
-        f"== Classifier output content\n{json.dumps(output_json, indent=2)}"
-    )
+    logger.info(f"== Classifier output content\n{json.dumps(output_json, indent=2)}")
 
     assert output_json == classifier_output
 
