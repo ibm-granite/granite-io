@@ -181,10 +181,16 @@ def lora_server_session_scoped() -> collections.abc.Generator[
             if lora_name == "prm":
                 lora_path = "ibm-granite/granite-3.3-8b-lora-math-prm"
             elif lora_name == "answer_relevance_classifier":
-                lora_path = "rag-intrinsics-lib/answer_relevance_classifier/lora/granite-3.3-8b-instruct"
+                lora_path = (
+                    "rag-intrinsics-lib/answer_relevance_classifier/lora/"
+                    "granite-3.3-8b-instruct"
+                )
                 print(lora_name, lora_path)
             elif lora_name == "answer_relevance_rewriter":
-                lora_path = "rag-intrinsics-lib/answer_relevance_rewriter/lora/granite-3.3-8b-instruct/"
+                lora_path = (
+                    "rag-intrinsics-lib/answer_relevance_rewriter/lora/"
+                    "granite-3.3-8b-instruct/"
+                )
                 print(lora_name, lora_path)
             else:
                 lora_path = obtain_lora(lora_name)
