@@ -45,7 +45,7 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-119afadbd6fb42fb8bce91779bdb5f16","object":"text_completion","created":1762304609,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-d2b9f0507eeb4789bca5fc6086341636","object":"text_completion","created":1762889532,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks whether Pluto is a planet. The response states that Pluto
         is a planet, which is a direct and complete answer to the question. This is
         a pertinent answer with no extra information.\",\n  \"answer_relevance_category\":
@@ -56,7 +56,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:28 GMT
+      - Tue, 11 Nov 2025 19:32:11 GMT
       server:
       - uvicorn
     status:

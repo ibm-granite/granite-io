@@ -17,7 +17,7 @@ interactions:
       about the attendees.\nDecide if you agree with this assessment, then act according
       to the following instructions: \nIf you disagree with the assessment, provide
       a verbatim copy of the original response.  DO NOT attempt to correct any other
-      perceived defects in the response. \nIf you agree with the assessment, provide
+      perceived defects in the response.\nIf you agree with the assessment, provide
       an updated response that no longer fit the label No attempt, by providing a
       relevant response if an inquiry should be answered, or providing a short response
       if the last user utterance contains no inquiry.  Your response should be entirely
@@ -35,7 +35,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2504'
+      - '2503'
       content-type:
       - application/json
       host:
@@ -64,15 +64,15 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-8a3025e2e3564f6aac819789664eba71","object":"text_completion","created":1762304640,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
-        \"Alice, Bob, and Carol attended the meeting.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":439,"total_tokens":462,"completion_tokens":23,"prompt_tokens_details":null},"kv_transfer_params":null}'
+      string: '{"id":"cmpl-04bc44a288854a198b21cd4042262f2c","object":"text_completion","created":1762891261,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
+        \"Alice, Bob, and Carol attended the meeting.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":438,"total_tokens":461,"completion_tokens":23,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
       - '538'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:04:00 GMT
+      - Tue, 11 Nov 2025 20:01:01 GMT
       server:
       - uvicorn
     status:

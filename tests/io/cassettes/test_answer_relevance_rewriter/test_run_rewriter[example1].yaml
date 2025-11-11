@@ -19,7 +19,7 @@ interactions:
       at all.\nDecide if you agree with this assessment, then act according to the
       following instructions: \nIf you disagree with the assessment, provide a verbatim
       copy of the original response.  DO NOT attempt to correct any other perceived
-      defects in the response. \nIf you agree with the assessment, provide an updated
+      defects in the response.\nIf you agree with the assessment, provide an updated
       response that no longer fit the label No attempt, by providing a relevant response
       if an inquiry should be answered, or providing a short response if the last
       user utterance contains no inquiry.  Your response should be entirely based
@@ -37,7 +37,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2555'
+      - '2554'
       content-type:
       - application/json
       host:
@@ -66,15 +66,15 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-b07f4ef9d3f241169a46e871755fa5cb","object":"text_completion","created":1762304636,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
-        \"Your dog has fleas. Your cat does not have fleas.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":453,"total_tokens":480,"completion_tokens":27,"prompt_tokens_details":null},"kv_transfer_params":null}'
+      string: '{"id":"cmpl-dc88b102183d4f5ba79ff5a2da9a4921","object":"text_completion","created":1762891260,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
+        \"Your dog has fleas. Your cat does not have fleas.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":452,"total_tokens":479,"completion_tokens":27,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
       - '544'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:56 GMT
+      - Tue, 11 Nov 2025 20:00:59 GMT
       server:
       - uvicorn
     status:

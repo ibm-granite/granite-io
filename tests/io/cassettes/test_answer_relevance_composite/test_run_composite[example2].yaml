@@ -45,18 +45,18 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-34ad2c21c07a4220a3569ca3625b7a0f","object":"text_completion","created":1762304620,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-725334faf65d4a8dbd270d46884f2ee2","object":"text_completion","created":1762891528,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks who attended the meeting. The response provides a vague
         and non-specific answer that does not address the question directly. It does
         not provide any specific information about the attendees.\",\n  \"answer_relevance_category\":
-        \"No attempt\",\n  \"answer_relevance_judgment\": false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":81,"total_tokens":160,"completion_tokens":79,"prompt_tokens_details":null},"kv_transfer_params":null}'
+        \"No attempt\",\n  \"answer_relevance_judgment\":  false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":81,"total_tokens":161,"completion_tokens":80,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
-      - '801'
+      - '802'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:40 GMT
+      - Tue, 11 Nov 2025 20:05:27 GMT
       server:
       - uvicorn
     status:
@@ -80,7 +80,7 @@ interactions:
       about the attendees.\nDecide if you agree with this assessment, then act according
       to the following instructions: \nIf you disagree with the assessment, provide
       a verbatim copy of the original response.  DO NOT attempt to correct any other
-      perceived defects in the response. \nIf you agree with the assessment, provide
+      perceived defects in the response.\nIf you agree with the assessment, provide
       an updated response that no longer fit the label No attempt, by providing a
       relevant response if an inquiry should be answered, or providing a short response
       if the last user utterance contains no inquiry.  Your response should be entirely
@@ -98,7 +98,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2504'
+      - '2503'
       content-type:
       - application/json
       host:
@@ -127,15 +127,15 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-29da5327ec5d47f49e47fe90316ea5ab","object":"text_completion","created":1762304626,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
-        \"Alice, Bob, and Carol attended the meeting.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":439,"total_tokens":462,"completion_tokens":23,"prompt_tokens_details":null},"kv_transfer_params":null}'
+      string: '{"id":"cmpl-f86195910c41408780dc2503f9c51297","object":"text_completion","created":1762891535,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
+        \"Alice, Bob, and Carol attended the meeting.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":438,"total_tokens":461,"completion_tokens":23,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
       - '538'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:46 GMT
+      - Tue, 11 Nov 2025 20:05:34 GMT
       server:
       - uvicorn
     status:

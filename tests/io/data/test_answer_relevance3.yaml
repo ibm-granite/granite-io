@@ -39,7 +39,7 @@ examples:
     <|start_of_role|>user<|end_of_role|>Rewrite the response for relevance.
     The last assistant response is considered not fully relevant to the last user inquiry due to No attempt: The inquiry asks which of the user's pets have fleas. The response states that 'the cat fled,' which is not relevant to the inquiry about fleas. The response does not address the user's question at all.
     Decide if you agree with this assessment, then act according to the following instructions: 
-    If you disagree with the assessment, provide a verbatim copy of the original response.  DO NOT attempt to correct any other perceived defects in the response. 
+    If you disagree with the assessment, provide a verbatim copy of the original response.  DO NOT attempt to correct any other perceived defects in the response.
     If you agree with the assessment, provide an updated response that no longer fit the label No attempt, by providing a relevant response if an inquiry should be answered, or providing a short response if the last user utterance contains no inquiry.  Your response should be entirely based on the provided documents and should not rely on other prior knowledge. Your response should be suitable to be directly provided to the user.  It should NOT contain meta information regarding the original response, its assessment, or this instruction.  The user does not see any of these.  Your response is the only response they will see to their inquiry, in place of the original response.<|end_of_text|>
     <|start_of_role|>assistant<|end_of_role|>
   rewriter_output: >-
@@ -84,7 +84,7 @@ examples:
     <|start_of_role|>user<|end_of_role|>Rewrite the response for relevance.
     The last assistant response is considered not fully relevant to the last user inquiry due to No attempt: The inquiry asks who attended the meeting. The response provides a vague and non-specific answer that does not address the question directly. It does not provide any specific information about the attendees.
     Decide if you agree with this assessment, then act according to the following instructions: 
-    If you disagree with the assessment, provide a verbatim copy of the original response.  DO NOT attempt to correct any other perceived defects in the response. 
+    If you disagree with the assessment, provide a verbatim copy of the original response.  DO NOT attempt to correct any other perceived defects in the response.
     If you agree with the assessment, provide an updated response that no longer fit the label No attempt, by providing a relevant response if an inquiry should be answered, or providing a short response if the last user utterance contains no inquiry.  Your response should be entirely based on the provided documents and should not rely on other prior knowledge. Your response should be suitable to be directly provided to the user.  It should NOT contain meta information regarding the original response, its assessment, or this instruction.  The user does not see any of these.  Your response is the only response they will see to their inquiry, in place of the original response.<|end_of_text|>
     <|start_of_role|>assistant<|end_of_role|>
   rewriter_output: >-

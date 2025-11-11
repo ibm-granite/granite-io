@@ -35,7 +35,7 @@ from granite_io.types import (
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 
-CLASSIFITER_INSTRUCTION_TEXT = """answer_relevance"""
+CLASSIFIER_INSTRUCTION_TEXT = """answer_relevance"""
 
 
 REWRITER_INSTRUCTION_TEXT = (
@@ -186,8 +186,7 @@ class AnswerRelevanceIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         if add_generation_prompt:
             prompt = (
                 prompt + "<|start_of_role|>user<|end_of_role|>"
-                "{CLASSIFITER_INSTRUCTION_TEXT}"
-                "<|end_of_text|>"
+                f"{CLASSIFIER_INSTRUCTION_TEXT}<|end_of_text|>"
             )
         logger.debug(f"Classifier prompt\n{prompt}")
 

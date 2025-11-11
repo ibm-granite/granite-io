@@ -22,7 +22,7 @@ from granite_io.io.answer_relevance import (
 )
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
+    # override_date_for_testing,
 )
 from granite_io.types import GenerateResult, GenerateResults
 
@@ -130,14 +130,14 @@ def test_classifier_canned_output(case):
     # record_mode="new_episodes"
 )
 @pytest.mark.parametrize("case", examples, ids=lambda c: c["name"])
-def test_run_classifier(case, lora_server: LocalVLLMServer, fake_date: str):
+def test_run_classifier(case, lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
     backend = lora_server.make_lora_backend("answer_relevance_classifier")
     io_proc = AnswerRelevanceIOProcessor(backend)
 
-    override_date_for_testing(fake_date)  # For consistent VCR output
+    # override_date_for_testing(_use_fake_date)  # For consistent VCR output
     classifier_input = case["classifier_input"]
     classifier_output = case["classifier_output"]
 

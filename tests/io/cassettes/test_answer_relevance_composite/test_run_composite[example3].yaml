@@ -45,19 +45,18 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-7e448aaa9dfc4cd097d5edb2c915be0d","object":"text_completion","created":1762304630,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-f51921e9e983471faf6064b8188fe02d","object":"text_completion","created":1762891538,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks whether Pluto is a planet. The response states that Pluto
-        is a planet, which is a direct and complete answer to the question. The response
-        does not provide any additional information or context that is not relevant
-        to the inquiry.\",\n  \"answer_relevance_category\": \"Pertinent\",\n  \"answer_relevance_judgment\":
-        true\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":80,"total_tokens":170,"completion_tokens":90,"prompt_tokens_details":null},"kv_transfer_params":null}'
+        is a planet, which is a direct and complete answer to the question. This is
+        a pertinent answer with no extra information.\",\n  \"answer_relevance_category\":
+        \"Pertinent\",\n  \"answer_relevance_judgment\": true\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":80,"total_tokens":162,"completion_tokens":82,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
-      - '839'
+      - '788'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:50 GMT
+      - Tue, 11 Nov 2025 20:05:37 GMT
       server:
       - uvicorn
     status:

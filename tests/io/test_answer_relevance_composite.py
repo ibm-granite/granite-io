@@ -20,7 +20,7 @@ from granite_io.io.answer_relevance import (
 )
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    override_date_for_testing,
+    # override_date_for_testing,
 )
 from granite_io.types import GenerateResult
 
@@ -57,7 +57,7 @@ for example in examples:
     # record_mode="new_episodes"
 )
 @pytest.mark.parametrize("case", examples, ids=lambda c: c["name"])
-def test_run_composite(case, lora_server: LocalVLLMServer, fake_date: str):
+def test_run_composite(case, lora_server: LocalVLLMServer, _use_fake_date: str):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
@@ -65,7 +65,7 @@ def test_run_composite(case, lora_server: LocalVLLMServer, fake_date: str):
     rewriter_backend = lora_server.make_lora_backend("answer_relevance_rewriter")
     io_proc = AnswerRelevanceCompositeIOProcessor(classifier_backend, rewriter_backend)
 
-    override_date_for_testing(fake_date)  # For consistent VCR output
+    # override_date_for_testing(_use_fake_date)  # For consistent VCR output
 
     classifier_input = case["classifier_input"]
     output = case["composite_output"]

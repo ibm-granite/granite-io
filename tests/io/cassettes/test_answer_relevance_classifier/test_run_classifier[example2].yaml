@@ -45,7 +45,7 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-63e1674e62334c3fb6d01936fdb82d48","object":"text_completion","created":1762304605,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-06a1401305334b3fb3748c5c327a542b","object":"text_completion","created":1762889529,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks who attended the meeting. The response provides a vague
         and non-specific answer that does not address the question directly. It does
         not provide any specific information about the attendees.\",\n  \"answer_relevance_category\":
@@ -56,7 +56,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:25 GMT
+      - Tue, 11 Nov 2025 19:32:08 GMT
       server:
       - uvicorn
     status:

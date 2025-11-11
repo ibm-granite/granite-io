@@ -46,7 +46,7 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-6a63e753eb304855b77c2f6a38a8c354","object":"text_completion","created":1762304612,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-909e1188eb4c4e7ab26fe55dbbd0df1d","object":"text_completion","created":1762891517,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks which of the user''s pets have fleas. The response states
         that ''the cat fled,'' which is not relevant to the inquiry about fleas. The
         response does not address the user''s question at all.\",\n  \"answer_relevance_category\":
@@ -57,7 +57,7 @@ interactions:
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:32 GMT
+      - Tue, 11 Nov 2025 20:05:16 GMT
       server:
       - uvicorn
     status:
@@ -83,7 +83,7 @@ interactions:
       at all.\nDecide if you agree with this assessment, then act according to the
       following instructions: \nIf you disagree with the assessment, provide a verbatim
       copy of the original response.  DO NOT attempt to correct any other perceived
-      defects in the response. \nIf you agree with the assessment, provide an updated
+      defects in the response.\nIf you agree with the assessment, provide an updated
       response that no longer fit the label No attempt, by providing a relevant response
       if an inquiry should be answered, or providing a short response if the last
       user utterance contains no inquiry.  Your response should be entirely based
@@ -101,7 +101,7 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2555'
+      - '2554'
       content-type:
       - application/json
       host:
@@ -130,15 +130,15 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-8e6d680942234532b0b955cd50fb9b2f","object":"text_completion","created":1762304616,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
-        \"Your dog has fleas. Your cat does not have fleas.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":453,"total_tokens":480,"completion_tokens":27,"prompt_tokens_details":null},"kv_transfer_params":null}'
+      string: '{"id":"cmpl-95102d7b5e984c118a817f3451839255","object":"text_completion","created":1762891524,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
+        \"Your dog has fleas. Your cat does not have fleas.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":452,"total_tokens":479,"completion_tokens":27,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
       - '544'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:36 GMT
+      - Tue, 11 Nov 2025 20:05:23 GMT
       server:
       - uvicorn
     status:

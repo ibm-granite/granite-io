@@ -46,18 +46,18 @@ interactions:
     uri: http://localhost:35782/v1/completions
   response:
     body:
-      string: '{"id":"cmpl-1a1b5d28323147859fa88d642bebfd09","object":"text_completion","created":1762304598,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+      string: '{"id":"cmpl-181b23072a604438a4c6185ebf613686","object":"text_completion","created":1762889521,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
         \"The inquiry asks which of the user''s pets have fleas. The response states
         that ''the cat fled,'' which is not relevant to the inquiry about fleas. The
         response does not address the user''s question at all.\",\n  \"answer_relevance_category\":
-        \"No attempt\",\n  \"answer_relevance_judgment\":  false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":93,"total_tokens":183,"completion_tokens":90,"prompt_tokens_details":null},"kv_transfer_params":null}'
+        \"No attempt\",\n  \"answer_relevance_judgment\": false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":93,"total_tokens":183,"completion_tokens":90,"prompt_tokens_details":null},"kv_transfer_params":null}'
     headers:
       content-length:
-      - '797'
+      - '796'
       content-type:
       - application/json
       date:
-      - Wed, 05 Nov 2025 01:03:18 GMT
+      - Tue, 11 Nov 2025 19:32:00 GMT
       server:
       - uvicorn
     status:
