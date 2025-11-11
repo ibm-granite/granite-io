@@ -22,7 +22,6 @@ from granite_io.io.answer_relevance import (
 )
 from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor import (
     Granite3Point3Inputs,
-    # override_date_for_testing,
 )
 from granite_io.types import GenerateResult, GenerateResults
 
