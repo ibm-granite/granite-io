@@ -58,7 +58,7 @@ jobs:
 
       - name: Free disk space
         uses: ./.github/actions/free-disk-space
-  
+
       - name: Setup Python ${{ matrix.python }}
         uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
         with:
@@ -75,9 +75,9 @@ jobs:
       - name: Download embedding model for tests
         shell: bash
         run: |
-          pip install -U "huggingface_hub[cli]" 
+          pip install huggingface_hub
           pip install hf_xet
-          huggingface-cli download sentence-transformers/multi-qa-mpnet-base-dot-v1
+          hf download sentence-transformers/multi-qa-mpnet-base-dot-v1
           ls /home/runner/.cache/huggingface/hub/models--sentence-transformers--multi-qa-mpnet-base-dot-v1/
 
       - name: "Run unit tests (skipping e2e transformers)"
