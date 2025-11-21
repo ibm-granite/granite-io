@@ -31,7 +31,7 @@ def download_mtrag_corpus(target_dir: str, corpus_name: str) -> pathlib.Path:
     if not os.path.exists(target_file):
         source_url = (
             f"https://github.com/IBM/mt-rag-benchmark/raw/refs/heads/main/"
-            f"corpora/{corpus_name}.jsonl.zip"
+            f"corpora/document_level/{corpus_name}.jsonl.zip"
         )
         urllib.request.urlretrieve(source_url, target_file)
     return target_file
