@@ -2,6 +2,7 @@
 
 # Standard
 import collections.abc
+import os
 
 # Third Party
 import pytest
@@ -146,6 +147,11 @@ def backend_x(request) -> Backend:
 def backend_3_3(request) -> Backend:
     return request.param()
 
+# Temporary: These loras only exist locally
+answer_relevance_classifier_lora_path = "rag-intrinsics-lib/answer_relevance_classifier/lora/granite-3.3-8b-instruct"
+answer_relevance_rewriter_lora_path = "rag-intrinsics-lib/answer_relevance_rewriter/lora/granite-3.3-8b-instruct/"
+answer_relevance_classifier_lora_exists_locally = os.path.isdir(answer_relevance_classifier_lora_path)
+answer_relevance_rewriter_lora_exists_locally = os.path.isdir(answer_relevance_rewriter_lora_path)
 
 @pytest.fixture(scope="session")
 def lora_server_session_scoped() -> collections.abc.Generator[
@@ -189,17 +195,17 @@ def lora_server_session_scoped() -> collections.abc.Generator[
             if lora_name == "prm":
                 lora_path = "ibm-granite/granite-3.3-8b-lora-math-prm"
             elif lora_name == "answer_relevance_classifier":
-                lora_path = (
-                    "rag-intrinsics-lib/answer_relevance_classifier/lora/"
-                    "granite-3.3-8b-instruct"
-                )
-                print(lora_name, lora_path)
+                lora_path = answer_relevance_classifier_lora_path
+                if not answer_relevance_classifier_lora_exists_locally:
+                    print(f"❌ Lora for {lora_name} is expected to exist locally at {lora_path} but it is not.")
+                    lora_adapter_names.remove(lora_name)
+                    continue
             elif lora_name == "answer_relevance_rewriter":
-                lora_path = (
-                    "rag-intrinsics-lib/answer_relevance_rewriter/lora/"
-                    "granite-3.3-8b-instruct/"
-                )
-                print(lora_name, lora_path)
+                lora_path = answer_relevance_rewriter_lora_path
+                if not answer_relevance_rewriter_lora_exists_locally:
+                    print(f"❌ Lora for {lora_name} is expected to exist locally at {lora_path} but it is not.")
+                    lora_adapter_names.remove(lora_name)
+                    continue
             else:
                 lora_path = obtain_lora(lora_name)
             lora_adapters.append((lora_name, str(lora_path)))

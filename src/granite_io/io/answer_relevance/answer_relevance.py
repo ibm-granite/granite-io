@@ -210,23 +210,9 @@ class AnswerRelevanceIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         ### To do:
         results = []
         for raw_result in output.results:
-            raw_str = raw_result.completion_string
-            try:
-                result_json = json.loads(raw_str)
-                # result_json = {key: result_json[val] for key,val in field_map.items()}
-                ## Reset judgment according to category
-                category = result_json["answer_relevance_category"]
-                if category in relevant_categories:
-                    result_json["answer_relevance_judgment"] = True
-                elif category in irrelevant_categories:
-                    result_json["answer_relevance_judgment"] = False
-            except ValueError:
-                logger.warning(f"Failed to parse as json string: {raw_str}")
-                result_json = {}
-
             results.append(
                 ChatCompletionResult(
-                    next_message=AssistantMessage(content=json.dumps(result_json))
+                    next_message=AssistantMessage(content= raw_result.completion_string)
                 )
             )
 
@@ -409,7 +395,7 @@ class AnswerRelevanceCompositeIOProcessor(InputOutputProcessor):
             _format_messages_for_display(inputs.messages),
         )
 
-        # Run clssifier
+        # Run classifier
         classifier_output = await self._classifier.acreate_chat_completion(inputs)
 
         classifier_output_message_content = classifier_output.results[
@@ -431,7 +417,7 @@ class AnswerRelevanceCompositeIOProcessor(InputOutputProcessor):
 
         # Original assistant response already relevant.  Return original response
         classifier_judgment = classifier_output_json["answer_relevance_judgment"]
-        if classifier_judgment == "yes" or classifier_judgment is True:
+        if classifier_judgment is True:
             logger.info("Answer is already relevant.  Do not invoke rewriter")
             chat_output = classifier_output.copy()
             logger.debug(
