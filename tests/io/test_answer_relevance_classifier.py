@@ -24,6 +24,7 @@ from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor impo
     Granite3Point3Inputs,
 )
 from granite_io.types import GenerateResult, GenerateResults
+from conftest import answer_relevance_classifier_lora_exists_locally
 
 logging.basicConfig(level=logging.INFO)
 # logging.getLogger("vcr").setLevel(logging.DEBUG)
@@ -124,6 +125,8 @@ def test_classifier_canned_output(case):
     assert multi_output_jsons == multi_expected
 
 
+@pytest.mark.skipif(not answer_relevance_classifier_lora_exists_locally,
+                    reason = "Missing local lora path")
 @pytest.mark.vcr(
     record_mode="none"
     # record_mode="new_episodes"
