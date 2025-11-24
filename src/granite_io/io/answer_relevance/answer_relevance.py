@@ -212,7 +212,7 @@ class AnswerRelevanceIOProcessor(ModelDirectInputOutputProcessorWithGenerate):
         for raw_result in output.results:
             results.append(
                 ChatCompletionResult(
-                    next_message=AssistantMessage(content= raw_result.completion_string)
+                    next_message=AssistantMessage(content=raw_result.completion_string)
                 )
             )
 

@@ -22,7 +22,6 @@ from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor impo
     Granite3Point3Inputs,
 )
 from granite_io.types import GenerateResult
-from conftest import answer_relevance_classifier_lora_exists_locally, answer_relevance_rewriter_lora_exists_locally
 
 logging.basicConfig(level=logging.INFO)
 # logging.getLogger("vcr").setLevel(logging.DEBUG)
@@ -51,18 +50,29 @@ for example in examples:
         example["classifier_input"]
     )
 
-@pytest.mark.skipif(not answer_relevance_classifier_lora_exists_locally 
-                    or not answer_relevance_rewriter_lora_exists_locally,
-                    reason = "Missing local lora path")
+
 @pytest.mark.vcr(
     record_mode="none"  # none, all, once, new_episodes
     # record_mode="new_episodes"
 )
 @pytest.mark.parametrize("case", examples, ids=lambda c: c["name"])
-def test_run_composite(case, lora_server: LocalVLLMServer, _use_fake_date: str):
+def test_run_composite(
+    case,
+    lora_server: LocalVLLMServer,
+    _use_fake_date: str,
+    answer_relevance_classifier_lora_exists_locally,
+    answer_relevance_rewriter_lora_exists_locally,
+):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
+
+    if not (
+        answer_relevance_classifier_lora_exists_locally
+        and answer_relevance_rewriter_lora_exists_locally
+    ):
+        pytest.skip("Missing local lora path")
+
     classifier_backend = lora_server.make_lora_backend("answer_relevance_classifier")
     rewriter_backend = lora_server.make_lora_backend("answer_relevance_rewriter")
     io_proc = AnswerRelevanceCompositeIOProcessor(classifier_backend, rewriter_backend)

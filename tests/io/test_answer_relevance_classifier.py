@@ -24,7 +24,6 @@ from granite_io.io.granite_3_3.input_processors.granite_3_3_input_processor impo
     Granite3Point3Inputs,
 )
 from granite_io.types import GenerateResult, GenerateResults
-from conftest import answer_relevance_classifier_lora_exists_locally
 
 logging.basicConfig(level=logging.INFO)
 # logging.getLogger("vcr").setLevel(logging.DEBUG)
@@ -125,17 +124,22 @@ def test_classifier_canned_output(case):
     assert multi_output_jsons == multi_expected
 
 
-@pytest.mark.skipif(not answer_relevance_classifier_lora_exists_locally,
-                    reason = "Missing local lora path")
 @pytest.mark.vcr(
     record_mode="none"
     # record_mode="new_episodes"
 )
 @pytest.mark.parametrize("case", examples, ids=lambda c: c["name"])
-def test_run_classifier(case, lora_server: LocalVLLMServer, _use_fake_date: str):
+def test_run_classifier(
+    case,
+    lora_server: LocalVLLMServer,
+    _use_fake_date: str,
+    answer_relevance_classifier_lora_exists_locally,
+):
     """
     Run a chat completion through the LoRA adapter using the I/O processor.
     """
+    if not answer_relevance_classifier_lora_exists_locally:
+        pytest.skip("Missing local lora path")
     backend = lora_server.make_lora_backend("answer_relevance_classifier")
     io_proc = AnswerRelevanceIOProcessor(backend)
 
