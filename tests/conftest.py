@@ -204,7 +204,7 @@ def lora_server_session_scoped() -> collections.abc.Generator[
 
     # Download and get local paths for all LoRA adapters
     lora_adapters = []
-    for lora_name in lora_adapter_names:
+    for lora_name in lora_adapter_names.copy():
         try:
             if lora_name == "prm":
                 lora_path = "ibm-granite/granite-3.3-8b-lora-math-prm"
