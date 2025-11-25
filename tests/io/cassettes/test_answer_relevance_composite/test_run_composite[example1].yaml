@@ -1,0 +1,147 @@
+interactions:
+- request:
+    body: '{"model":"answer_relevance_classifier","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>The
+      cat fled.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>answer_relevance<|end_of_text|>","max_tokens":1024,"temperature":0.0,"guided_json":{"properties":{"answer_relevance_analysis":{"title":"Answer
+      Relevance Analysis","type":"string"},"answer_relevance_category":{"title":"Answer
+      Relevance Category","type":"string"},"answer_relevance_judgment":{"title":"Answer
+      Relevance Judgment","type":"boolean"}},"required":["answer_relevance_analysis","answer_relevance_category","answer_relevance_judgment"],"title":"AnswerRelevanceRawOutput","type":"object"}}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '1002'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.109.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.109.1
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-909e1188eb4c4e7ab26fe55dbbd0df1d","object":"text_completion","created":1762891517,"model":"answer_relevance_classifier","choices":[{"index":0,"text":"{\n  \"answer_relevance_analysis\":
+        \"The inquiry asks which of the user''s pets have fleas. The response states
+        that ''the cat fled,'' which is not relevant to the inquiry about fleas. The
+        response does not address the user''s question at all.\",\n  \"answer_relevance_category\":
+        \"No attempt\",\n  \"answer_relevance_judgment\":  false\n}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":93,"total_tokens":183,"completion_tokens":90,"prompt_tokens_details":null},"kv_transfer_params":null}'
+    headers:
+      content-length:
+      - '797'
+      content-type:
+      - application/json
+      date:
+      - Tue, 11 Nov 2025 20:05:16 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model":"answer_relevance_rewriter","prompt":"<|start_of_role|>system<|end_of_role|>Knowledge
+      Cutoff Date: April 2024.\nToday''s Date: April 1, 2025.\nYou are Granite, developed
+      by IBM. Write the response to the user''s input by strictly aligning with the
+      facts in the provided documents. If the information needed to answer the question
+      is not available in the documents, inform the user that the question cannot
+      be answered based on the available data.<|end_of_text|>\n<|start_of_role|>document
+      {\"document_id\": \"1\"}<|end_of_role|>\nMy dog has fleas. My cat does not have
+      fleas.<|end_of_text|>\n<|start_of_role|>document {\"document_id\": \"2\"}<|end_of_role|>\nMy
+      cat ran away.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>Welcome
+      to pet questions!<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Which
+      of my pets have fleas?<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>The
+      cat fled.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>Rewrite the response
+      for relevance.\nThe last assistant response is considered not fully relevant
+      to the last user inquiry due to No attempt: The inquiry asks which of the user''s
+      pets have fleas. The response states that ''the cat fled,'' which is not relevant
+      to the inquiry about fleas. The response does not address the user''s question
+      at all.\nDecide if you agree with this assessment, then act according to the
+      following instructions: \nIf you disagree with the assessment, provide a verbatim
+      copy of the original response.  DO NOT attempt to correct any other perceived
+      defects in the response.\nIf you agree with the assessment, provide an updated
+      response that no longer fit the label No attempt, by providing a relevant response
+      if an inquiry should be answered, or providing a short response if the last
+      user utterance contains no inquiry.  Your response should be entirely based
+      on the provided documents and should not rely on other prior knowledge. Your
+      response should be suitable to be directly provided to the user.  It should
+      NOT contain meta information regarding the original response, its assessment,
+      or this instruction.  The user does not see any of these.  Your response is
+      the only response they will see to their inquiry, in place of the original response.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>","max_tokens":1024,"temperature":0.0,"guided_json":{"properties":{"answer_relevance_rewrite":{"title":"Answer
+      Relevance Rewrite","type":"string"}},"required":["answer_relevance_rewrite"],"title":"AnswerRelevanceRewriteRawOutput","type":"object"}}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '2554'
+      content-type:
+      - application/json
+      host:
+      - localhost:35782
+      user-agent:
+      - AsyncOpenAI/Python 1.109.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.109.1
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: http://localhost:35782/v1/completions
+  response:
+    body:
+      string: '{"id":"cmpl-95102d7b5e984c118a817f3451839255","object":"text_completion","created":1762891524,"model":"answer_relevance_rewriter","choices":[{"index":0,"text":"{\"answer_relevance_rewrite\":
+        \"Your dog has fleas. Your cat does not have fleas.\"}","logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null,"prompt_logprobs":null,"prompt_token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":452,"total_tokens":479,"completion_tokens":27,"prompt_tokens_details":null},"kv_transfer_params":null}'
+    headers:
+      content-length:
+      - '544'
+      content-type:
+      - application/json
+      date:
+      - Tue, 11 Nov 2025 20:05:23 GMT
+      server:
+      - uvicorn
+    status:
+      code: 200
+      message: OK
+version: 1
