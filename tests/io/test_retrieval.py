@@ -83,7 +83,9 @@ def test_make_embeddings(govt_docs_file):  # pylint: disable=redefined-outer-nam
     """
     full_govt = read_mtrag_corpus(govt_docs_file)
     corpus = full_govt.slice(0, 10)
-    embeddings = compute_embeddings(corpus, _EMBEDDING_MODEL_NAME)
+    embeddings = compute_embeddings(
+        corpus, _EMBEDDING_MODEL_NAME, local_files_only=True
+    )
     assert embeddings.column("embedding").to_pylist()[0][:10] == pytest.approx(
         [
             -0.11038033664226532,
@@ -103,7 +105,9 @@ def test_make_embeddings(govt_docs_file):  # pylint: disable=redefined-outer-nam
     # Round-trip through a file and make sure we get the embeddings back.
     with tempfile.TemporaryDirectory() as tmpdir:
         file_loc = write_embeddings(tmpdir, "test", embeddings)
-        retriever = InMemoryRetriever(file_loc, _EMBEDDING_MODEL_NAME)
+        retriever = InMemoryRetriever(
+            file_loc, _EMBEDDING_MODEL_NAME, local_files_only=True
+        )
         # pylint: disable=protected-access
         assert retriever._embeddings[1] == pytest.approx(
             torch.tensor(embeddings.column("embedding").to_pylist()[1]), abs=1e-3
@@ -112,7 +116,9 @@ def test_make_embeddings(govt_docs_file):  # pylint: disable=redefined-outer-nam
 
 def test_in_memory_retriever(govt_embeddings_file):  # pylint: disable=redefined-outer-name
     """Verify basic functionality of the InMemoryRetriever class"""
-    retriever = InMemoryRetriever(govt_embeddings_file, _EMBEDDING_MODEL_NAME)
+    retriever = InMemoryRetriever(
+        govt_embeddings_file, _EMBEDDING_MODEL_NAME, local_files_only=True
+    )
     result = retriever.retrieve(_EXAMPLE_CHAT_INPUT.messages[-1].content)
     assert result.column("id").to_pylist() == [
         "775449d1aa187ec5",
@@ -126,7 +132,9 @@ def test_in_memory_retriever(govt_embeddings_file):  # pylint: disable=redefined
 def test_retrieval_in_memory_request_processor(govt_embeddings_file):  # pylint: disable=redefined-outer-name
     """Basic test of the RequestProcessor with InMemoryRetriever that
     performs RAG retrieval"""
-    retriever = InMemoryRetriever(govt_embeddings_file, _EMBEDDING_MODEL_NAME)
+    retriever = InMemoryRetriever(
+        govt_embeddings_file, _EMBEDDING_MODEL_NAME, local_files_only=True
+    )
     request_processor = RetrievalRequestProcessor(retriever, top_k=3)
     results = request_processor.process(_EXAMPLE_CHAT_INPUT)
     assert len(results) == 1

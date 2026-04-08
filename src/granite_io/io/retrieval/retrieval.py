@@ -110,6 +110,7 @@ def compute_embeddings(
     embedding_model_name: str,
     chunk_size: int = 512,
     overlap: int = 128,
+    local_files_only: bool = False,
 ):  # "-> pa.Table:"
     # pylint: disable=too-many-locals
     """
@@ -124,6 +125,8 @@ def compute_embeddings(
         sequence length.
     :param overlap: Target overlap between adjacent chunks, in embedding model tokens.
         Actual begins and ends of chunks will be on sentence boundaries.
+    :param local_files_only: If ``True``, don't attempt to download embedding models
+         that aren't cached.
 
     :returns: PyArrow Table of chunks of the corpus, with schema
         ````["id", "url", "title", "begin", "end", "text", "embedding"]``
@@ -136,7 +139,9 @@ def compute_embeddings(
         # Third Party
         import nltk
 
-    embedding_model = sentence_transformers.SentenceTransformer(embedding_model_name)
+    embedding_model = sentence_transformers.SentenceTransformer(
+        embedding_model_name, local_files_only=local_files_only
+    )
     sentence_splitter = nltk.tokenize.punkt.PunktSentenceTokenizer()
 
     # Corpora currently fit in memory, so just iterate with a for loop
@@ -239,6 +244,7 @@ class InMemoryRetriever:
         self,
         data_file_or_table,  #: pathlib.Path | str | pa.Table,
         embedding_model_name: str,
+        local_files_only: bool = False,
     ):
         """
         :param data_file_or_table: Parquet file of document snippets and embeddings,
@@ -247,6 +253,8 @@ class InMemoryRetriever:
         :param embedding_model_name: Name of Sentence Transformers model to use for
          embeddings. Must be the same model that was used to compute embeddings in the
          data file.
+        :param local_files_only: If ``True``, don't attempt to download embedding models
+         that aren't cached.
         """
         # Third Party
         import pyarrow as pa
@@ -263,6 +271,7 @@ class InMemoryRetriever:
         self._embedding_model = sentence_transformers.SentenceTransformer(
             embedding_model_name,
             model_kwargs={"torch_dtype": "float16" if self._is_float16 else "float32"},
+            local_files_only=local_files_only,
         )
         embeddings_array = np.array(
             list(self._data_table.column("embedding").to_numpy())

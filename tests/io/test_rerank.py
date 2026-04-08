@@ -67,7 +67,9 @@ def test_rerank_request_processor(backend_3_3: Backend):  # pylint: disable=rede
             f"{embeddings_location} but were not found there."
         )
     io_proc = make_io_processor(_GRANITE_3_3_MODEL_NAME, backend=backend_3_3)
-    retriever = InMemoryRetriever(embeddings_location, _EMBEDDING_MODEL_NAME)
+    retriever = InMemoryRetriever(
+        embeddings_location, _EMBEDDING_MODEL_NAME, local_files_only=True
+    )
 
     # Enable vcr selectively. The current version of vcrpy crashes the Hugging Face
     # downloader, even when told to ignore all requests to huggingface.co.
