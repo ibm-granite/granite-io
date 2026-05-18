@@ -1,5 +1,11 @@
 <div align="center">
 
+# DEPRECATED: Please use [Mellea](https://github.com/generative-computing/mellea) instead.
+
+All of the functionality of this library has been folded into [Mellea](https://github.com/generative-computing/mellea).
+
+
+
 <img src="./mkdocs/docs/img/ibm_logo_rebus.png" alt="IBM Logo" width="200"/>
 
 # Granite IO Processing
