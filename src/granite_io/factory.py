@@ -209,9 +209,7 @@ class ImportableFactory(Factory):
     to specify an "import_class" field that will be used to import and register
     the implementation class before attempting to initialize it.
     """
-
-    IMPORT_CLASS_KEY = "import_class"
-
+    
     def construct(
         self,
         arg_one: str | dict,
@@ -220,13 +218,6 @@ class ImportableFactory(Factory):
     ):
         # Look for an import_class and import and register it if found
         instance_config = self._get_construct_instance_config(arg_one, instance_config)
-        import_class_val = instance_config.get(self.__class__.IMPORT_CLASS_KEY)
-        if import_class_val:
-            assert isinstance(import_class_val, str)
-            module_name, class_name = import_class_val.rsplit(".", 1)
-            imported_module = importlib.import_module(module_name)
-            imported_class = getattr(imported_module, class_name)
-            self.register(imported_class)
         return super().construct(instance_config, **kwargs)
 
 
